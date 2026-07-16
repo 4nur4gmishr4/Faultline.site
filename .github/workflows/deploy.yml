@@ -71,9 +71,18 @@ jobs:
             echo "POST /pages → HTTP $create_code"
             cat /tmp/pages-create.json || true
             if [ "$create_code" != "201" ] && [ "$create_code" != "409" ]; then
-              echo "::error::Could not enable GitHub Pages (HTTP $create_code)."
-              echo "Open https://github.com/${{ github.repository }}/settings/pages"
-              echo "Set Build and deployment → Source → GitHub Actions, then re-run this workflow."
+              echo "::error::Could not enable GitHub Pages via API (HTTP $create_code)."
+              if [ "$create_code" = "403" ]; then
+                echo "GITHUB_TOKEN cannot create Pages (Resource not accessible by integration)."
+                echo "This is normal — you must enable Pages once in the UI."
+              fi
+              echo ""
+              echo "Do this once:"
+              echo "  1. Open https://github.com/${{ github.repository }}/settings/pages"
+              echo "  2. Build and deployment → Source → GitHub Actions"
+              echo "  3. Save, then re-run: Actions → Deploy site → Re-run all jobs"
+              echo ""
+              echo "After that, deploy-pages will stop 404ing."
               exit 1
             fi
           elif [ "$code" != "200" ]; then
