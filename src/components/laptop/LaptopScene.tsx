@@ -61,7 +61,7 @@ function StageSkeleton() {
     >
       <div className="mb-4 h-px w-24 bg-signal/40" />
       <span className="text-mono-label tracking-[0.14em] text-secondary">
-        Loading preview
+        Loading 3D preview
       </span>
     </div>
   )
