@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { DOCS, getDoc } from '../content/docs'
 import { DocContent } from '../components/docs/DocContent'
 
+/** Doc reader with sidebar aria-current */
 export function DocPage() {
   const { docId = 'readme' } = useParams()
   const doc = getDoc(docId)
