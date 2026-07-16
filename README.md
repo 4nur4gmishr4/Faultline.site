@@ -1,13 +1,13 @@
 # FaultLine Showcase
 
-Marketing + documentation site for **FaultLine** (`4nur4gmishr4.fahh`).
+Marketing + docs site for **FaultLine** (`4nur4gmishr4.fahh`).
 
-**Intended live URL:**  
-https://4nur4gmishr4.github.io/faultline-showcase/
+**Branch:** `showcase` on [vscode-FaultLine-Extension](https://github.com/4nur4gmishr4/vscode-FaultLine-Extension)  
+**Intended live URL:** https://4nur4gmishr4.github.io/faultline-showcase/
 
 ## Stack
 
-Vite · React · TypeScript · Tailwind · React Router · React Three Fiber · GSAP · Playwright
+Vite · React · TypeScript · Tailwind · React Router · R3F · GSAP · Playwright
 
 ## Develop
 
@@ -18,37 +18,36 @@ npm run build
 npm run test:e2e
 ```
 
+Requires Node ≥ 20.
+
 ## Deploy (GitHub Pages)
 
-1. `gh auth login`
-2. Create/push repo `faultline-showcase`
-3. **Settings → Pages → Source: GitHub Actions**
-4. CI builds with `VITE_BASE=/faultline-showcase/`
+1. Repo/Pages source: this site (or monorepo `showcase` branch / `docs` folder — your choice)
+2. Build with `VITE_BASE=/faultline-showcase/` for project Pages
+3. CI: `.github/workflows/deploy.yml`
 
-```bash
-gh auth login
-gh repo create faultline-showcase --public --source=. --remote=origin --push
-```
+## Design
 
-## Design language
+- Brutal monochrome UI (0 radius, hard borders)
+- Sparse VS Code accent `#0078d4` (CTAs / focus)
+- Fault red only for error samples
+- Product sections: capture, defaults, install, palette
+- 3D laptop: rotate-only, spring-back on release
 
-- Brutalist monochrome structure (0 radius, hard borders)
-- Semantic accents only: **signal** (blue), **fault** (red), **warn** (amber), **safe** (green)
-- No typewriter / marquee / scroll-stagger theater
-- Product UI: fault capture panel, defaults matrix, install path, command palette
-- 3D laptop: model keys, 95° lid, rotate only (no zoom)
+## Routes
 
-## Credits / license
+| Path | Page |
+|------|------|
+| `/` | Home |
+| `/docs`, `/docs/:id` | Docs |
+| `/donate` | Support (UPI / bank / GitHub Sponsors) |
+| `/credits` | Attribution |
 
-- FaultLine extension: Anurag Mishra, MIT  
-- 3D laptop adapted from [Ksenia Kondrashova](https://codepen.io/ksenia-k/pen/gOEgyaj) (public CodePen → MIT).  
-  See `src/components/laptop/LICENSE-ksenia-k-laptop.txt` and `/credits`.
+## Credits
 
-## Docs
+- Extension: Anurag Mishra, MIT  
+- Laptop: [Ksenia Kondrashova](https://codepen.io/ksenia-k/pen/gOEgyaj) (MIT) — see `/credits`
 
-Embedded under `src/content/docs/` (structured pages, not runtime markdown fetch).  
-Re-sync manually when the extension ships a release that changes user-facing docs.
+## Docs content
 
-## Commit style
-
-Small local commits after every change. Never push unless asked.
+Embedded under `src/content/docs/` (no runtime markdown fetch).

@@ -1,21 +1,44 @@
-# FaultLine showcase ignores
-node_modules
-dist
-dist-ssr
+# Dependencies
+node_modules/
+
+# Build
+dist/
+dist-ssr/
 *.local
-.DS_Store
-coverage
-test-results
-playwright-report
-blob-report
-playwright/.cache
+
+# Env / secrets (never commit)
 .env
 .env.*
+!.env.example
+
+# Logs & caches
 *.log
-.vite
+npm-debug.log*
+.vite/
+.cache/
+.turbo/
+*.tsbuildinfo
 
+# Test / Playwright
+coverage/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
 
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
 
+# Local tooling junk
+*.pem
+*.key
+.vercel/
+.netlify/
 
-# keep source icons; public/brand is what we serve
-
+# One-off / duplicate asset packs (source icons live in public/brand)
+visual-studio-code-icons/

@@ -2,33 +2,24 @@
 
 ## Git
 
-- **Never push** unless the user explicitly asks (every time).
-- After **every** meaningful change, make a **local commit**.
-- Prefer many small commits over one giant dump.
-- Commit voice: short, human, Gen-Z energy — still clear about *what* changed.
+- Never push unless the user explicitly asks.
+- Prefer small local commits after meaningful changes.
+- This work lives on branch **`showcase`** (extension repo remote).
 
-### Good
+## Design
 
-```
-lid 95 no zoom only rotate
-palette filter clear escape
-og urls absolute for pages
-```
+- Brutalist mono structure, zero radius
+- Signal blue only for CTAs / focus / links; fault red only for errors
+- No decorative AI motion spam (marquee, scroll theater)
+- Laptop: rotate free, return to rest on release; no zoom
 
-### Bad
+## Donate
 
-```
-Update files
-Fix stuff
-WIP
-```
+- Prefer 0% cut methods (UPI, bank)
+- Mask bank account on UI; copy CTA has full details
+- Do not invent new payment processors without asking
 
-## Design language
+## Safety
 
-- Brutalist structure, 0 radius, hard borders
-- Accents only: signal / fault / warn / safe
-- No AI-slop motion (typewriter, marquee, scroll stagger spam)
-
-## Branch plan
-
-Local-only until user says push. May merge into extension monorepo later.
+- Do not commit `.env` or private keys
+- Do not force-push `main` of the extension without explicit ask
