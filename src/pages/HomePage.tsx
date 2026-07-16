@@ -12,9 +12,10 @@ import { DOCS } from '../content/docs'
 import { MARKETPLACE_URL } from '../data/commands'
 
 /**
- * Home sections are unique:
- * hero (pitch) → identity bar → capture proof → defaults → install → palette → docs index link
- * (no repeated ids, no doc card descriptions — those live on /docs only)
+ * Home ownership map (no duplicated copy):
+ * hero = pitch only · SpecBar = id/version · Capture = transcript ·
+ * Defaults = privacy table · Install = paths · Palette = commands ·
+ * Docs strip = titles only (descriptions live on /docs)
  */
 export function HomePage() {
   return (
@@ -22,7 +23,7 @@ export function HomePage() {
       <section className="grid min-h-[calc(100dvh-3rem)] w-full grid-cols-1 border-b border-primary/85 max-[720px]:min-h-0 md:grid-cols-12">
         <div className="order-1 flex flex-col justify-center border-b border-primary/85 px-6 py-14 md:col-span-5 md:border-r md:border-b-0 md:px-12 md:py-20 lg:px-16 xl:px-20">
           <div className="max-w-[22rem]">
-            <p className="icon-inline mb-7 text-mono-label uppercase tracking-[0.16em] text-signal">
+            <p className="icon-inline mb-7 text-mono-label uppercase tracking-[0.16em] text-secondary">
               <VscodeIcon size={16} />
               VS Code extension
             </p>
@@ -69,7 +70,7 @@ export function HomePage() {
       <section className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-16 lg:px-16">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="max-w-md">
-            <p className="mb-3 text-mono-label uppercase tracking-[0.14em] text-signal">
+            <p className="mb-3 text-mono-label uppercase tracking-[0.14em] text-secondary">
               Docs
             </p>
             <h2 className="text-headline-lg text-primary">Full reference</h2>

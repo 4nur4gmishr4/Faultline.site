@@ -10,7 +10,7 @@ export function SpecBar() {
       className="flex w-full flex-wrap items-center gap-x-6 gap-y-2 border-b border-primary/85 px-6 py-3 md:px-12 lg:px-16"
       role="presentation"
     >
-      <span className="chip-signal">v{VERSION}</span>
+      <span className="mono-chip">v{VERSION}</span>
       <span className="text-mono-code text-secondary">{EXTENSION_ID}</span>
       <span className="icon-inline text-mono-label tracking-[0.1em] text-secondary">
         <VscodeIcon size={14} />

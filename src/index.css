@@ -1,8 +1,10 @@
 @import 'tailwindcss';
 
 /**
- * Monochrome base + sparse VS Code accents only:
- * signal = button.background #0078d4, fault = editor error (rare).
+ * Monochrome base + sparse VS Code accents.
+ * signal (#0078d4) = solid CTAs, focus ring, hover links only.
+ * fault = error line in capture sample only.
+ * Labels, chips, chrome stay black / white / gray.
  */
 @theme {
   --color-background: #000000;

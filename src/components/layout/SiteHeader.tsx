@@ -1,10 +1,10 @@
 import { NavLink, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { MARKETPLACE_URL, VERSION } from '../../data/commands'
+import { MARKETPLACE_URL } from '../../data/commands'
 import { useTheme } from '../../hooks/useTheme'
 import { VscodeIcon } from '../brand/VscodeIcon'
 
-/** ≤5 primary items (skill: nav hierarchy). */
+/** ≤5 primary items (skill: nav hierarchy). Version lives only in SpecBar. */
 const topNav: { to: string; label: string; end?: boolean }[] = [
   { to: '/', label: 'Home', end: true },
   { to: '/docs', label: 'Docs' },
@@ -29,13 +29,10 @@ export function SiteHeader() {
       <div className="flex h-12 w-full items-stretch">
         <Link
           to="/"
-          className="flex min-h-11 shrink-0 items-center gap-2 border-r border-primary/85 bg-signal px-5 text-mono-label font-semibold tracking-[0.16em] text-white"
+          className="flex min-h-11 shrink-0 items-center gap-2 border-r border-primary/85 px-5 text-mono-label font-semibold tracking-[0.16em] text-primary"
         >
-          <VscodeIcon alt size={16} />
+          <VscodeIcon size={16} />
           FAULTLINE
-          <span className="ml-1 hidden font-normal tracking-[0.08em] opacity-80 sm:inline">
-            {VERSION}
-          </span>
         </Link>
 
         <nav className="hidden flex-1 md:flex" aria-label="Primary">

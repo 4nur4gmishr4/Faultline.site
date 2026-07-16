@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { GITHUB_URL, LICENSE_URL, MARKETPLACE_URL } from '../../data/commands'
 
+/** Credits lives only in the meta row (not repeated in this nav). */
 const FOOTER_LINKS: { to?: string; href?: string; label: string }[] = [
   { to: '/', label: 'Home' },
   { to: '/docs', label: 'Docs' },
@@ -9,7 +10,6 @@ const FOOTER_LINKS: { to?: string; href?: string; label: string }[] = [
   { href: MARKETPLACE_URL, label: 'Marketplace' },
   { href: GITHUB_URL, label: 'GitHub' },
   { href: LICENSE_URL, label: 'License' },
-  { to: '/credits', label: 'Credits' },
 ]
 
 export function SiteFooter() {
@@ -51,7 +51,7 @@ export function SiteFooter() {
             to="/credits"
             className="text-signal underline-offset-2 hover:underline md:text-right"
           >
-            Credits & attribution
+            Credits
           </Link>
         </div>
       </div>

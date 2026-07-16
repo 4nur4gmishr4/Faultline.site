@@ -11,7 +11,7 @@ export function InstallPath() {
       aria-labelledby="install-path-title"
     >
       <div className="mb-8 max-w-lg">
-        <p className="icon-inline mb-4 text-mono-label uppercase tracking-[0.14em] text-signal">
+        <p className="icon-inline mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
           <VscodeIcon size={15} />
           Install
         </p>
@@ -25,7 +25,7 @@ export function InstallPath() {
 
       <div className="grid grid-cols-1 border border-primary/85 md:grid-cols-2">
         <div className="border-b border-primary/85 p-6 md:border-r md:border-b-0 md:p-8">
-          <p className="mb-3 text-mono-label tracking-[0.12em] text-signal">
+          <p className="mb-3 text-mono-label tracking-[0.12em] text-secondary">
             01 · Marketplace
           </p>
           <p className="mb-6 text-body-md text-secondary">

@@ -27,7 +27,7 @@ const ROWS: { feature: string; defaultValue: string; why: string }[] = [
 ]
 
 /**
- * Privacy defaults — gray chips; only signal on section label.
+ * Privacy defaults — mono only. Signal reserved for CTAs elsewhere.
  */
 export function DefaultsMatrix() {
   return (
@@ -75,7 +75,7 @@ export function DefaultsMatrix() {
                   {row.feature}
                 </td>
                 <td className="border border-primary/85 px-4 py-3">
-                  <span className="chip-signal">{row.defaultValue}</span>
+                  <span className="mono-chip">{row.defaultValue}</span>
                 </td>
                 <td className="border border-primary/85 px-4 py-3 text-body-md text-secondary">
                   {row.why}

@@ -1,6 +1,6 @@
 /**
- * Capture proof — one place for failure transcript (not repeated elsewhere).
- * Only error line uses fault red; rest monochrome + signal for command.
+ * Capture proof — sole failure transcript on the home page.
+ * Fault red only on the error line; everything else mono.
  */
 export function FaultSample() {
   return (
@@ -17,7 +17,7 @@ export function FaultSample() {
             Keep the context. Open analysis when you choose.
           </h2>
           <p className="text-body-md max-w-sm text-secondary">
-            Sanitized command + output stay local. Auto-open stays off.
+            Sanitized command + output stay local.
           </p>
         </div>
 
@@ -48,7 +48,7 @@ export function FaultSample() {
                 <span className="text-secondary">&gt; pii: scrubbed · autoShow: OFF</span>
               </code>
             </pre>
-            <div className="border-t border-primary/85 px-4 py-3 text-mono-label tracking-[0.1em] text-signal">
+            <div className="border-t border-primary/85 px-4 py-3 text-mono-label tracking-[0.1em] text-secondary">
               Analyze Last Failure
             </div>
           </div>

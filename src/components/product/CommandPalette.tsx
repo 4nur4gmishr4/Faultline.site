@@ -48,23 +48,23 @@ export function CommandPalette() {
       aria-labelledby="palette-title"
     >
       <div className="mb-8 max-w-lg">
-        <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-signal">
+        <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
           Command palette
         </p>
         <h2 id="palette-title" className="text-headline-lg mb-3 text-primary">
           FaultLine in the palette
         </h2>
         <p className="text-body-md text-secondary">
-          Type <span className="text-signal">FaultLine</span> in VS Code. Filter
-          below mirrors the real titles. Press Escape to clear this filter.
+          Type FaultLine in VS Code. Filter below mirrors the real titles.
+          Press Escape to clear.
         </p>
       </div>
 
       <div className="mx-auto max-w-3xl border border-primary/85 bg-surface">
-        <div className="flex items-stretch border-b border-primary/85 bg-signal-soft">
+        <div className="flex items-stretch border-b border-primary/85">
           <label className="flex min-h-12 flex-1 items-center">
             <span className="sr-only">Filter commands</span>
-            <span className="px-4 text-mono-label text-signal" aria-hidden>
+            <span className="px-4 text-mono-label text-secondary" aria-hidden>
               &gt;
             </span>
             <input
@@ -119,7 +119,7 @@ export function CommandPalette() {
                   <span className="text-body-md font-medium text-primary">
                     {cmd.title}
                   </span>
-                  <span className="shrink-0 text-mono-code text-signal-dim">
+                  <span className="shrink-0 text-mono-code text-secondary">
                     {cmd.id}
                   </span>
                 </div>
