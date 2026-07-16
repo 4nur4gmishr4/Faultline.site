@@ -1,59 +1,33 @@
-const ROWS: {
-  feature: string
-  defaultValue: string
-  why: string
-  tone: 'safe' | 'signal' | 'fault'
-}[] = [
+const ROWS: { feature: string; defaultValue: string; why: string }[] = [
   {
     feature: 'Auto-open explainer',
     defaultValue: 'Off',
     why: 'No surprise outbound requests',
-    tone: 'safe',
   },
   {
     feature: 'Log summaries',
     defaultValue: 'Off',
-    why: 'Same reason',
-    tone: 'safe',
+    why: 'Same privacy default',
   },
   {
-    feature: 'Jira create',
+    feature: 'Jira',
     defaultValue: 'Off',
     why: 'Opt-in only',
-    tone: 'safe',
   },
   {
     feature: 'Webhooks',
     defaultValue: 'Empty',
-    why: 'Nothing sent until https URL',
-    tone: 'signal',
+    why: 'https only when set',
   },
   {
     feature: 'Provider keys',
     defaultValue: 'SecretStorage',
     why: 'Not plain settings text',
-    tone: 'signal',
   },
 ]
 
-function ToneChip({
-  tone,
-  children,
-}: {
-  tone: 'safe' | 'signal' | 'fault'
-  children: string
-}) {
-  const cls =
-    tone === 'safe'
-      ? 'chip-safe'
-      : tone === 'fault'
-        ? 'chip-fault'
-        : 'chip-signal'
-  return <span className={cls}>{children}</span>
-}
-
 /**
- * Privacy defaults as a dense matrix (chips not cards) with semantic chips.
+ * Privacy defaults — gray chips; only signal on section label.
  */
 export function DefaultsMatrix() {
   return (
@@ -62,41 +36,46 @@ export function DefaultsMatrix() {
       aria-labelledby="defaults-title"
     >
       <div className="mb-8 max-w-lg">
-        <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-safe">
-          Safe defaults
+        <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
+          Defaults
         </p>
         <h2 id="defaults-title" className="text-headline-lg mb-3 text-primary">
           Quiet until you ask.
         </h2>
-        <p className="text-body-md text-secondary">
-          Debugger first. Notifier second. Outbound paths stay closed unless you
-          open them.
-        </p>
       </div>
 
       <div className="w-full overflow-x-auto border border-primary/85">
-        <table className="w-full min-w-[520px] border-collapse text-left">
+        <table className="w-full min-w-[480px] border-collapse text-left">
           <thead className="brutal-invert">
             <tr>
-              <th className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
+              <th
+                scope="col"
+                className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]"
+              >
                 Feature
               </th>
-              <th className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
+              <th
+                scope="col"
+                className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]"
+              >
                 Default
               </th>
-              <th className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
+              <th
+                scope="col"
+                className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]"
+              >
                 Why
               </th>
             </tr>
           </thead>
           <tbody>
             {ROWS.map((row) => (
-              <tr key={row.feature} className="bg-surface/40">
+              <tr key={row.feature}>
                 <td className="border border-primary/85 px-4 py-3 text-body-md text-primary">
                   {row.feature}
                 </td>
                 <td className="border border-primary/85 px-4 py-3">
-                  <ToneChip tone={row.tone}>{row.defaultValue}</ToneChip>
+                  <span className="chip-signal">{row.defaultValue}</span>
                 </td>
                 <td className="border border-primary/85 px-4 py-3 text-body-md text-secondary">
                   {row.why}

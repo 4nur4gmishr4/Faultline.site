@@ -9,12 +9,13 @@ import {
   SpecBar,
 } from '../components/product'
 import { DOCS } from '../content/docs'
-import { GITHUB_URL, MARKETPLACE_URL } from '../data/commands'
+import { MARKETPLACE_URL } from '../data/commands'
 
-/** Home teaser — full catalog lives on /docs. */
-const DOC_TEASER = DOCS.slice(0, 6)
-
-/** Home: hero → product proof → install → palette → docs teaser */
+/**
+ * Home sections are unique:
+ * hero (pitch) → identity bar → capture proof → defaults → install → palette → docs index link
+ * (no repeated ids, no doc card descriptions — those live on /docs only)
+ */
 export function HomePage() {
   return (
     <div className="flex w-full flex-col">
@@ -28,15 +29,9 @@ export function HomePage() {
             <h1 className="text-display-xl mb-7 text-primary">
               Debugger and fault explainer for VS Code.
             </h1>
-            <p className="text-body-lg mb-5 text-secondary">
+            <p className="text-body-lg mb-10 text-secondary">
               Understand terminal and task failures first. Optional sounds and
               notifications second.
-            </p>
-            <p className="text-body-md mb-11 text-secondary">
-              By Anurag Mishra ·{' '}
-              <code className="border border-signal/50 bg-signal-soft px-1.5 py-0.5 text-mono-code text-signal">
-                4nur4gmishr4.fahh
-              </code>
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a
@@ -47,17 +42,9 @@ export function HomePage() {
               >
                 Install
               </a>
-              <Link to="/docs/readme" className="brutal-btn">
+              <Link to="/docs" className="brutal-btn">
                 Documentation
               </Link>
-              <a
-                href={GITHUB_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="brutal-btn"
-              >
-                GitHub
-              </a>
             </div>
           </div>
         </div>
@@ -79,56 +66,28 @@ export function HomePage() {
       <InstallPath />
       <CommandPalette />
 
-      <section className="border-b border-primary/85 px-6 py-16 md:px-12 md:py-24 lg:px-16">
-        <div className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-lg">
-            <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-signal">
-              Reference
+      <section className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-16 lg:px-16">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-md">
+            <p className="mb-3 text-mono-label uppercase tracking-[0.14em] text-signal">
+              Docs
             </p>
-            <h2 className="text-headline-lg mb-3 text-primary">Documentation</h2>
-            <p className="text-body-md text-secondary">
-              Core docs on this site. Full index under Docs.
-            </p>
+            <h2 className="text-headline-lg text-primary">Full reference</h2>
           </div>
-          <Link
-            to="/docs"
-            className="brutal-btn shrink-0 self-start sm:self-auto"
+          <nav
+            className="flex flex-wrap gap-x-6 gap-y-3"
+            aria-label="Documentation links"
           >
-            All documentation
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 border border-primary/85 sm:grid-cols-2 lg:grid-cols-3">
-          {DOC_TEASER.map((d, i) => {
-            const col = i % 3
-            const isLastRow =
-              i >=
-              DOC_TEASER.length -
-                (DOC_TEASER.length % 3 === 0 ? 3 : DOC_TEASER.length % 3)
-            return (
+            {DOCS.map((d) => (
               <Link
                 key={d.id}
                 to={`/docs/${d.id}`}
-                className={[
-                  'group block min-h-[7.5rem] border-primary/85 p-7 no-underline transition-colors duration-200 hover:bg-primary hover:text-on-primary',
-                  col < 2 ? 'lg:border-r' : '',
-                  i % 2 === 0 ? 'sm:border-r lg:border-r' : '',
-                  !isLastRow || i < DOC_TEASER.length - 1 ? 'border-b' : '',
-                  i === DOC_TEASER.length - 1 && DOC_TEASER.length % 3 !== 0
-                    ? 'lg:border-b-0'
-                    : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ')}
+                className="text-mono-label uppercase tracking-[0.1em] text-secondary transition-colors hover:text-signal"
               >
-                <h3 className="text-headline-md mb-2 text-primary group-hover:text-on-primary">
-                  {d.title}
-                </h3>
-                <p className="text-body-md text-secondary group-hover:text-on-primary/65">
-                  {d.description}
-                </p>
+                {d.title}
               </Link>
-            )
-          })}
+            ))}
+          </nav>
         </div>
       </section>
     </div>

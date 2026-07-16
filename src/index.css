@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 
 /**
- * Pure monochrome — black / white / gray only (no accent colors).
+ * Monochrome base + sparse VS Code accents only:
+ * signal = button.background #0078d4, fault = editor error (rare).
  */
 @theme {
   --color-background: #000000;
@@ -22,18 +23,17 @@
   --color-secondary: #8e8e8e;
   --color-outline: #666666;
   --color-outline-variant: #333333;
-  /* semantic aliases → grayscale (components keep class names) */
-  --color-fault: #ffffff;
-  --color-fault-dim: #b3b3b3;
-  --color-fault-soft: #141414;
-  --color-warn: #c6c6c6;
-  --color-warn-dim: #a1a1a1;
-  --color-safe: #c6c6c6;
-  --color-safe-dim: #a1a1a1;
+  --color-fault: #f14c4c;
+  --color-fault-dim: #c72e0f;
+  --color-fault-soft: #1a1212;
+  --color-warn: #8e8e8e;
+  --color-warn-dim: #666666;
+  --color-safe: #8e8e8e;
+  --color-safe-dim: #666666;
   --color-safe-soft: #141414;
-  --color-signal: #ffffff;
-  --color-signal-dim: #b3b3b3;
-  --color-signal-soft: #141414;
+  --color-signal: #0078d4;
+  --color-signal-dim: #0e639c;
+  --color-signal-soft: #0d1f2d;
   --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
@@ -145,17 +145,17 @@ body {
   --color-secondary: #8e8e8e;
   --color-outline: #666666;
   --color-outline-variant: #333333;
-  --color-fault: #ffffff;
-  --color-fault-dim: #b3b3b3;
-  --color-fault-soft: #141414;
-  --color-warn: #c6c6c6;
-  --color-warn-dim: #a1a1a1;
-  --color-safe: #c6c6c6;
-  --color-safe-dim: #a1a1a1;
+  --color-fault: #f14c4c;
+  --color-fault-dim: #c72e0f;
+  --color-fault-soft: #1a1212;
+  --color-warn: #8e8e8e;
+  --color-warn-dim: #666666;
+  --color-safe: #8e8e8e;
+  --color-safe-dim: #666666;
   --color-safe-soft: #141414;
-  --color-signal: #ffffff;
-  --color-signal-dim: #b3b3b3;
-  --color-signal-soft: #141414;
+  --color-signal: #0078d4;
+  --color-signal-dim: #0e639c;
+  --color-signal-soft: #0d1f2d;
 }
 
 [data-theme='light'] {
@@ -179,21 +179,21 @@ body {
   --color-secondary: #666666;
   --color-outline: #999999;
   --color-outline-variant: #e0e0e0;
-  --color-fault: #000000;
-  --color-fault-dim: #666666;
-  --color-fault-soft: #f0f0f0;
-  --color-warn: #444444;
-  --color-warn-dim: #666666;
-  --color-safe: #444444;
-  --color-safe-dim: #666666;
+  --color-fault: #e51400;
+  --color-fault-dim: #a1260d;
+  --color-fault-soft: #fcebeb;
+  --color-warn: #666666;
+  --color-warn-dim: #888888;
+  --color-safe: #666666;
+  --color-safe-dim: #888888;
   --color-safe-soft: #f0f0f0;
-  --color-signal: #000000;
-  --color-signal-dim: #666666;
-  --color-signal-soft: #f0f0f0;
+  --color-signal: #0078d4;
+  --color-signal-dim: #005a9e;
+  --color-signal-soft: #e5f1fb;
 }
 
 :focus-visible {
-  outline: 1px solid var(--color-primary);
+  outline: 1px solid var(--color-signal);
   outline-offset: 2px;
 }
 
@@ -343,15 +343,16 @@ body {
 }
 
 .brutal-btn-solid {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-on-primary);
+  /* VS Code button.background — only real accent fill */
+  background: var(--color-signal);
+  border-color: var(--color-signal);
+  color: #ffffff;
 }
 
 .brutal-btn-solid:hover {
-  background: transparent;
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  background: var(--color-signal-dim);
+  border-color: var(--color-signal-dim);
+  color: #ffffff;
 }
 
 /* Semantic text helpers */

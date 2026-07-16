@@ -2,7 +2,7 @@ import { MARKETPLACE_URL, RELEASES_URL } from '../../data/commands'
 import { VscodeIcon } from '../brand/VscodeIcon'
 
 /**
- * Two-step install path (Marketplace preferred).
+ * Install detail lives here only (hero has a single Install CTA).
  */
 export function InstallPath() {
   return (
@@ -19,21 +19,17 @@ export function InstallPath() {
           Two ways in
         </h2>
         <p className="text-body-md text-secondary">
-          Prefer Marketplace when the listing is available. Use the GitHub VSIX
-          for a direct install of 3.5.0.
+          Marketplace when listed; GitHub VSIX for a direct 3.5.0 package.
         </p>
       </div>
 
       <div className="grid grid-cols-1 border border-primary/85 md:grid-cols-2">
         <div className="border-b border-primary/85 p-6 md:border-r md:border-b-0 md:p-8">
           <p className="mb-3 text-mono-label tracking-[0.12em] text-signal">
-            01 · Preferred
+            01 · Marketplace
           </p>
-          <h3 className="text-headline-md mb-3 text-primary">Marketplace</h3>
           <p className="mb-6 text-body-md text-secondary">
-            Extensions → search <strong className="text-primary">FaultLine</strong>{' '}
-            → Install. Id stays{' '}
-            <code className="text-mono-code text-signal">4nur4gmishr4.fahh</code>.
+            Extensions → search FaultLine → Install.
           </p>
           <a
             href={MARKETPLACE_URL}
@@ -46,11 +42,12 @@ export function InstallPath() {
           </a>
         </div>
         <div className="p-6 md:p-8">
-          <p className="mb-3 text-mono-label tracking-[0.12em] text-warn">02 · Direct</p>
-          <h3 className="text-headline-md mb-3 text-primary">GitHub VSIX</h3>
+          <p className="mb-3 text-mono-label tracking-[0.12em] text-secondary">
+            02 · VSIX
+          </p>
           <p className="mb-6 text-body-md text-secondary">
-            Download <code className="text-mono-code text-primary">fahh-3.5.0.vsix</code>
-            , then Extensions → Install from VSIX… Reload the window after install.
+            Install <code className="text-mono-code text-primary">fahh-3.5.0.vsix</code>{' '}
+            from Releases, then reload.
           </p>
           <a
             href={RELEASES_URL}
@@ -59,7 +56,7 @@ export function InstallPath() {
             className="brutal-btn"
           >
             <VscodeIcon size={16} />
-            Releases v3.5.0
+            Releases
           </a>
         </div>
       </div>

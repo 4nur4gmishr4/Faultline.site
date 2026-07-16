@@ -1,10 +1,5 @@
 import { Link } from 'react-router-dom'
-import {
-  EXTENSION_ID,
-  GITHUB_URL,
-  LICENSE_URL,
-  MARKETPLACE_URL,
-} from '../../data/commands'
+import { GITHUB_URL, LICENSE_URL, MARKETPLACE_URL } from '../../data/commands'
 
 const FOOTER_LINKS: { to?: string; href?: string; label: string }[] = [
   { to: '/', label: 'Home' },
@@ -22,7 +17,7 @@ export function SiteFooter() {
     <footer className="w-full shrink-0 border-t border-primary/85 bg-background">
       <div className="flex w-full flex-col gap-11 px-6 py-14 md:px-12 md:py-20 lg:px-16">
         <p className="text-footer-slogan max-w-3xl uppercase text-primary">
-          When it breaks, <span className="text-fault">keep the fault</span>.
+          When it breaks, keep the fault.
         </p>
         <nav
           className="flex flex-wrap gap-x-9 gap-y-4"
@@ -51,15 +46,13 @@ export function SiteFooter() {
           )}
         </nav>
         <div className="flex flex-col gap-3 border-t border-primary/15 pt-9 text-mono-code text-secondary md:flex-row md:items-start md:justify-between">
-          <span>Anurag Mishra</span>
-          <span className="max-w-md md:text-right">
-            {EXTENSION_ID} · MIT ·{' '}
-            <Link to="/credits" className="text-signal underline-offset-2 hover:underline">
-              Credits
-            </Link>
-            {' · '}
-            3D laptop: Ksenia Kondrashova (MIT)
-          </span>
+          <span>Anurag Mishra · MIT</span>
+          <Link
+            to="/credits"
+            className="text-signal underline-offset-2 hover:underline md:text-right"
+          >
+            Credits & attribution
+          </Link>
         </div>
       </div>
     </footer>
