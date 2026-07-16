@@ -28,3 +28,7 @@ WIP
 - Brutalist structure, 0 radius, hard borders
 - Accents only: signal / fault / warn / safe
 - No AI-slop motion (typewriter, marquee, scroll stagger spam)
+
+## Branch plan
+
+Local-only until user says push. May merge into extension monorepo later.
