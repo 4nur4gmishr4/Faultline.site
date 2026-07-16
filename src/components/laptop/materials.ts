@@ -8,7 +8,7 @@ export interface LaptopMaterials {
   baseMetal: THREE.MeshStandardMaterial
   logo: THREE.MeshBasicMaterial
   screen: THREE.MeshBasicMaterial
-  /** Model keycaps — solid black chiclet color, no overlay plane. */
+  /** GLB model keycaps — solid black chiclet color, no overlay plane. */
   keyboard: THREE.MeshStandardMaterial
   screenImageTexture: THREE.Texture
   screenCameraTexture: THREE.VideoTexture
