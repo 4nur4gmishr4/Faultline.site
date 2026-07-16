@@ -13,6 +13,7 @@ import { GITHUB_URL, MARKETPLACE_URL } from '../data/commands'
 /** Home teaser — full catalog lives on /docs. */
 const DOC_TEASER = DOCS.slice(0, 6)
 
+/** Home: hero → product proof → install → palette → docs teaser */
 export function HomePage() {
   return (
     <div className="flex w-full flex-col">
