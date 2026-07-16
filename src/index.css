@@ -126,6 +126,7 @@ body {
 }
 
 .skip-link {
+  /* high contrast skip target */
   position: absolute;
   left: -9999px;
   top: 0;
