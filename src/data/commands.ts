@@ -33,3 +33,5 @@ export const CHANGELOG_URL =
   'https://github.com/4nur4gmishr4/vscode-FaultLine-Extension/blob/main/CHANGELOG.md'
 export const EXTENSION_ID = '4nur4gmishr4.fahh'
 export const VERSION = '3.5.0'
+
+// titles match package.nls FaultLine category
