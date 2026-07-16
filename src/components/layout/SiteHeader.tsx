@@ -36,10 +36,10 @@ export function SiteHeader() {
       <div className="flex h-[var(--header-h)] w-full min-h-[var(--header-h)] items-stretch">
         <Link
           to="/"
-          className="flex min-h-[var(--header-h)] shrink-0 items-center gap-2 border-r border-primary/85 px-4 text-mono-label font-semibold tracking-[0.16em] text-primary sm:px-5"
+          className="flex min-h-[var(--header-h)] min-w-0 shrink items-center gap-1.5 border-r border-primary/85 px-3 text-mono-label font-semibold tracking-[0.12em] text-primary sm:gap-2 sm:px-5 sm:tracking-[0.16em]"
         >
           <VscodeIcon size={16} />
-          FAULTLINE
+          <span className="truncate">FAULTLINE</span>
         </Link>
 
         <nav className="hidden min-w-0 flex-1 md:flex" aria-label="Primary">

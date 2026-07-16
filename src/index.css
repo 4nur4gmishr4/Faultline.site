@@ -360,21 +360,33 @@ button:not(:disabled),
   }
 }
 
-/* Shared section inset — mobile-first */
+/* Shared section inset — phone-first (tight) → roomy desktop */
 .section-pad {
-  padding: 2.5rem 1.25rem;
+  padding: 1.75rem 1rem;
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
+}
+
+@media (min-width: 480px) {
+  .section-pad {
+    padding: 2.25rem 1.25rem;
+    padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+  }
 }
 
 @media (min-width: 768px) {
   .section-pad {
     padding: 3.5rem 3rem;
+    padding-left: max(3rem, env(safe-area-inset-left, 0px));
+    padding-right: max(3rem, env(safe-area-inset-right, 0px));
   }
 }
 
 @media (min-width: 1024px) {
   .section-pad {
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-left: max(4rem, env(safe-area-inset-left, 0px));
+    padding-right: max(4rem, env(safe-area-inset-right, 0px));
   }
 }
 
@@ -382,6 +394,15 @@ button:not(:disabled),
   .section-pad {
     padding-top: 5rem;
     padding-bottom: 5rem;
+  }
+}
+
+/* Prevent iOS input zoom on small fields */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
   }
 }
 

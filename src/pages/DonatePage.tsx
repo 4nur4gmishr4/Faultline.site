@@ -83,6 +83,7 @@ export function DonatePage() {
   }, [selectedAmount, currency, rate])
 
   const activeMethod = methods.find((m) => m.id === methodId) ?? methods[0]
+  const upiHref = buildUpiHref(selectedInr > 0 ? selectedInr : undefined)
 
   const currencyChoices = useMemo(() => {
     const base: CurrencyCode[] = ['INR', 'USD']
@@ -117,51 +118,70 @@ export function DonatePage() {
     }
 
     if (methodId === 'upi') {
-      const href = buildUpiHref(selectedInr > 0 ? selectedInr : 0)
       return (
         <div className="flex flex-col gap-4">
           <div>
             <p className="text-body-md text-secondary">Pay to</p>
             <p className="text-body-md text-primary">{p.upiDisplayName}</p>
-            <p className="mt-1">
+            <p className="mt-1 break-all">
               <code className="text-mono-code text-primary">{p.upiId}</code>
             </p>
           </div>
+
           {p.upiQrSrc ? (
-            <img
-              src={p.upiQrSrc}
-              alt="UPI QR code for Anurag Mishra"
-              width={192}
-              height={192}
-              className="max-w-[12rem] border border-primary/85 bg-white p-2"
-            />
+            <div className="flex justify-center sm:justify-start">
+              <img
+                src={p.upiQrSrc}
+                alt="UPI QR code for Anurag Mishra"
+                width={176}
+                height={176}
+                className="h-44 w-44 border border-primary/85 bg-white p-2"
+              />
+            </div>
           ) : null}
-          <div className="flex flex-col gap-2 sm:flex-row">
-            {href && selectedInr > 0 ? (
-              <a
-                href={href}
-                className="brutal-btn brutal-btn-solid w-full sm:w-auto"
-              >
-                Open UPI · {formatMoney(selectedInr, 'INR')}
-              </a>
-            ) : null}
-            <button
-              type="button"
-              className="brutal-btn w-full sm:w-auto"
-              onClick={() =>
-                void copyText(
-                  'UPI',
-                  `UPI: ${p.upiId}\nName: ${p.upiDisplayName}\nAmount: ${
-                    selectedInr > 0
-                      ? formatMoney(selectedInr, 'INR')
-                      : '(choose amount)'
-                  }\nNote: FaultLine support`
-                )
+
+          {/* Primary CTA — opens GPay / PhonePe / Paytm / BHIM / bank UPI apps */}
+          {upiHref ? (
+            <a
+              href={upiHref}
+              className="brutal-btn brutal-btn-solid w-full min-h-12"
+              aria-label={
+                selectedInr > 0
+                  ? `Pay ${formatMoney(selectedInr, 'INR')} via UPI apps`
+                  : 'Pay via UPI apps'
               }
             >
-              Copy UPI details
-            </button>
-          </div>
+              {selectedInr > 0
+                ? `Pay via UPI apps · ${formatMoney(selectedInr, 'INR')}`
+                : 'Pay via UPI apps'}
+            </a>
+          ) : null}
+
+          <p className="text-body-md text-secondary">
+            Opens PhonePe, Google Pay, Paytm, BHIM, or your bank UPI app with
+            the same VPA
+            {selectedInr > 0
+              ? ` and amount ${formatMoney(selectedInr, 'INR')}`
+              : ''}
+            . On desktop, scan the QR or copy the ID.
+          </p>
+
+          <button
+            type="button"
+            className="brutal-btn w-full min-h-12"
+            onClick={() =>
+              void copyText(
+                'UPI',
+                `UPI: ${p.upiId}\nName: ${p.upiDisplayName}\nAmount: ${
+                  selectedInr > 0
+                    ? formatMoney(selectedInr, 'INR')
+                    : '(choose amount)'
+                }\nNote: FaultLine support`
+              )
+            }
+          >
+            Copy UPI details
+          </button>
         </div>
       )
     }
@@ -170,8 +190,7 @@ export function DonatePage() {
       return (
         <div className="flex flex-col gap-4">
           <p className="text-body-md text-secondary">
-            Account numbers are hidden on the page. Use the button to copy full
-            bank details for IMPS / NEFT.
+            Account numbers are hidden. Copy full details for IMPS / NEFT.
           </p>
           <dl className="space-y-2 text-body-md">
             <div>
@@ -207,7 +226,7 @@ export function DonatePage() {
           </dl>
           <button
             type="button"
-            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
+            className="brutal-btn brutal-btn-solid w-full min-h-12"
             onClick={() =>
               void copyText(
                 'Bank details',
@@ -217,9 +236,6 @@ export function DonatePage() {
           >
             Copy full bank details
           </button>
-          <p className="text-body-md text-secondary">
-            Clipboard includes full account number and IFSC (not shown above).
-          </p>
         </div>
       )
     }
@@ -234,7 +250,7 @@ export function DonatePage() {
             href={p.githubSponsors}
             target="_blank"
             rel="noreferrer"
-            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
+            className="brutal-btn brutal-btn-solid w-full min-h-12"
           >
             Open GitHub Sponsors
           </a>
@@ -247,14 +263,15 @@ export function DonatePage() {
       return (
         <div className="flex flex-col gap-3">
           <p className="text-body-md text-secondary">
-            Network: <strong className="text-primary">{p.crypto.network}</strong>
+            Network:{' '}
+            <strong className="text-primary">{p.crypto.network}</strong>
           </p>
           <p className="break-all text-mono-code text-primary">
             {p.crypto.address}
           </p>
           <button
             type="button"
-            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
+            className="brutal-btn brutal-btn-solid w-full min-h-12"
             onClick={() => void copyText('Wallet', block)}
           >
             Copy address
@@ -267,46 +284,89 @@ export function DonatePage() {
   }
 
   return (
-    <div className="section-pad flex w-full min-w-0 flex-col gap-10 md:gap-12">
+    <div className="section-pad flex w-full min-w-0 flex-col gap-8 md:gap-12">
       <header className="max-w-2xl">
-        <p className="mb-5 text-mono-label uppercase tracking-[0.14em] text-secondary">
+        <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary md:mb-5">
           Support
         </p>
-        <h1 className="text-display-xl mb-5 text-primary">
+        <h1 className="text-display-xl mb-4 text-primary md:mb-5">
           Free forever. Donate if you can.
         </h1>
         <p className="text-body-lg text-secondary">
           FaultLine is completely free. Optional support goes to{' '}
           {DEVELOPER_NAME}. Students: from{' '}
           <strong className="text-primary">₹50</strong>. Prefer{' '}
-          <strong className="text-primary">0% cut</strong> methods (UPI, bank)
-          so the full amount reaches the developer.
+          <strong className="text-primary">0% cut</strong> (UPI, bank).
         </p>
-        <p className="mt-4 text-body-md text-secondary">{DONATE_THANK_YOU}</p>
+        <p className="mt-3 text-body-md text-secondary md:mt-4">
+          {DONATE_THANK_YOU}
+        </p>
       </header>
 
+      {/* Payment methods — cards on mobile, table on md+ */}
       <section aria-labelledby="methods-title">
-        <h2 id="methods-title" className="mb-4 text-headline-lg text-primary">
+        <h2 id="methods-title" className="mb-3 text-headline-lg text-primary md:mb-4">
           How you can pay
         </h2>
-        <p className="mb-6 max-w-2xl text-body-md text-secondary">
-          Cut = taken before the developer receives funds. Zero-fee methods
-          first.
+        <p className="mb-4 max-w-2xl text-body-md text-secondary md:mb-6">
+          Cut = taken before funds reach the developer. Zero-fee first.
         </p>
-        <div className="w-full min-w-0 overflow-x-auto border border-primary/85">
+
+        {/* Mobile: stacked cards */}
+        <ul className="flex flex-col gap-2 md:hidden" aria-label="Payment methods">
+          {methods.map((m) => {
+            const active = methodId === m.id
+            return (
+              <li key={m.id}>
+                <button
+                  type="button"
+                  className={[
+                    'flex w-full min-h-14 flex-col items-start gap-1 border border-primary/85 px-4 py-3.5 text-left transition-colors',
+                    active
+                      ? 'bg-signal text-white'
+                      : 'bg-background text-primary',
+                  ].join(' ')}
+                  aria-pressed={active}
+                  onClick={() => setMethodId(m.id)}
+                >
+                  <span className="text-body-md font-medium">{m.title}</span>
+                  <span
+                    className={[
+                      'text-mono-label tracking-[0.08em]',
+                      active ? 'text-white/85' : 'text-signal',
+                    ].join(' ')}
+                  >
+                    Cut: {m.cutLabel}
+                  </span>
+                  <span
+                    className={[
+                      'text-body-md',
+                      active ? 'text-white/75' : 'text-secondary',
+                    ].join(' ')}
+                  >
+                    {m.cutDetail}
+                  </span>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+
+        {/* Desktop: table */}
+        <div className="hidden w-full min-w-0 overflow-x-auto border border-primary/85 md:block">
           <table className="w-full min-w-[36rem] border-collapse text-left">
             <thead className="brutal-invert">
               <tr>
-                <th className="border border-primary/85 px-3 py-3 text-mono-label font-medium tracking-[0.08em] md:px-4">
+                <th className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
                   Method
                 </th>
-                <th className="border border-primary/85 px-3 py-3 text-mono-label font-medium tracking-[0.08em] md:px-4">
+                <th className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
                   Cut on what you receive
                 </th>
-                <th className="border border-primary/85 px-3 py-3 text-mono-label font-medium tracking-[0.08em] md:px-4">
+                <th className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
                   Notes
                 </th>
-                <th className="border border-primary/85 px-3 py-3 text-mono-label font-medium tracking-[0.08em] md:px-4">
+                <th className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
                   Select
                 </th>
               </tr>
@@ -319,10 +379,10 @@ export function DonatePage() {
                     key={m.id}
                     className={active ? 'bg-signal-soft' : undefined}
                   >
-                    <td className="border border-primary/85 px-3 py-3 text-body-md text-primary md:px-4">
+                    <td className="border border-primary/85 px-4 py-3 text-body-md text-primary">
                       {m.title}
                     </td>
-                    <td className="border border-primary/85 px-3 py-3 md:px-4">
+                    <td className="border border-primary/85 px-4 py-3">
                       <span
                         className={[
                           'text-mono-label tracking-[0.08em]',
@@ -335,10 +395,10 @@ export function DonatePage() {
                         {m.cutDetail}
                       </span>
                     </td>
-                    <td className="border border-primary/85 px-3 py-3 text-body-md text-secondary md:px-4">
+                    <td className="border border-primary/85 px-4 py-3 text-body-md text-secondary">
                       {m.notes}
                     </td>
-                    <td className="border border-primary/85 px-3 py-3 md:px-4">
+                    <td className="border border-primary/85 px-4 py-3">
                       <button
                         type="button"
                         className={[
@@ -362,8 +422,8 @@ export function DonatePage() {
       </section>
 
       <div className="grid w-full min-w-0 grid-cols-1 gap-0 border border-primary/85 lg:grid-cols-12">
-        <aside className="border-b border-primary/85 p-5 md:p-8 lg:col-span-4 lg:border-r lg:border-b-0">
-          <p className="mb-4 text-mono-label uppercase tracking-[0.12em] text-secondary">
+        <aside className="border-b border-primary/85 p-4 sm:p-5 md:p-8 lg:col-span-4 lg:border-r lg:border-b-0">
+          <p className="mb-3 text-mono-label uppercase tracking-[0.12em] text-secondary md:mb-4">
             Location
           </p>
           {geo.loading ? (
@@ -371,7 +431,7 @@ export function DonatePage() {
               Detecting region…
             </p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2">
               <p className="text-body-md text-primary">
                 {geo.countryName ?? 'Unknown region'}
                 {geo.countryCode ? (
@@ -385,11 +445,15 @@ export function DonatePage() {
             </div>
           )}
 
-          <div className="mt-8">
+          <div className="mt-6 md:mt-8">
             <p className="mb-3 text-mono-label uppercase tracking-[0.12em] text-secondary">
               Currency
             </p>
-            <div className="flex flex-wrap gap-2" role="group" aria-label="Currency">
+            <div
+              className="flex flex-wrap gap-2"
+              role="group"
+              aria-label="Currency"
+            >
               {currencyChoices.map((code) => (
                 <button
                   key={code}
@@ -413,7 +477,7 @@ export function DonatePage() {
             </div>
           </div>
 
-          <div className="mt-10 border border-primary/85 p-4">
+          <div className="mt-6 border border-primary/85 p-3 md:mt-10 md:p-4">
             <p className="mb-2 text-mono-label uppercase tracking-[0.12em] text-secondary">
               Active method
             </p>
@@ -423,7 +487,7 @@ export function DonatePage() {
             </p>
           </div>
 
-          <p className="mt-8 text-body-md text-secondary">
+          <p className="mt-6 break-all text-body-md text-secondary md:mt-8">
             Questions?{' '}
             <a
               className="text-signal underline underline-offset-2"
@@ -434,8 +498,8 @@ export function DonatePage() {
           </p>
         </aside>
 
-        <div className="min-w-0 p-5 md:p-8 lg:col-span-8">
-          <p className="mb-4 text-mono-label uppercase tracking-[0.12em] text-secondary">
+        <div className="min-w-0 p-4 sm:p-5 md:p-8 lg:col-span-8">
+          <p className="mb-3 text-mono-label uppercase tracking-[0.12em] text-secondary md:mb-4">
             Choose an amount
           </p>
 
@@ -490,7 +554,7 @@ export function DonatePage() {
             })}
           </div>
 
-          <div className="mt-8 border border-primary/85 p-4 md:p-5">
+          <div className="mt-6 border border-primary/85 p-4 md:mt-8 md:p-5">
             <label
               htmlFor="custom-amount"
               className="mb-3 block text-mono-label uppercase tracking-[0.12em] text-secondary"
@@ -508,7 +572,13 @@ export function DonatePage() {
                 id="custom-amount"
                 type="number"
                 inputMode="decimal"
-                min={currency === 'INR' ? CUSTOM_MIN_INR : meta.decimals === 0 ? 1 : 0.5}
+                min={
+                  currency === 'INR'
+                    ? CUSTOM_MIN_INR
+                    : meta.decimals === 0
+                      ? 1
+                      : 0.5
+                }
                 step={meta.decimals === 0 ? 1 : 0.01}
                 placeholder={
                   currency === 'INR' ? `min ₹${CUSTOM_MIN_INR}` : 'Any amount'
@@ -525,19 +595,22 @@ export function DonatePage() {
               />
             </div>
             {customError ? (
-              <p id="custom-err" className="mt-3 text-body-md text-fault" role="alert">
+              <p
+                id="custom-err"
+                className="mt-3 text-body-md text-fault"
+                role="alert"
+              >
                 {customError}
               </p>
             ) : (
               <p className="mt-3 text-body-md text-secondary">
-                Custom min ₹{CUSTOM_MIN_INR} in India. Presets start at ₹50 for
-                students.
+                Custom min ₹{CUSTOM_MIN_INR}. Presets from ₹50 for students.
               </p>
             )}
           </div>
 
-          <div className="mt-8 border border-primary/85 bg-surface p-5">
-            <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mt-6 border border-primary/85 bg-surface p-4 md:mt-8 md:p-5">
+            <div className="mb-5 flex flex-col gap-2 sm:mb-6 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-mono-label uppercase tracking-[0.12em] text-secondary">
                   You&apos;re sending
@@ -564,6 +637,20 @@ export function DonatePage() {
             </div>
             {methodActions()}
           </div>
+
+          {/* Sticky-style mobile UPI shortcut when UPI selected */}
+          {methodId === 'upi' && upiHref ? (
+            <div className="mt-4 md:hidden">
+              <a
+                href={upiHref}
+                className="brutal-btn brutal-btn-solid w-full min-h-12"
+              >
+                {selectedInr > 0
+                  ? `Pay via UPI apps · ${formatMoney(selectedInr, 'INR')}`
+                  : 'Pay via UPI apps'}
+              </a>
+            </div>
+          ) : null}
 
           <p className="mt-6 text-body-md text-secondary">
             Donations are voluntary. FaultLine stays free either way.

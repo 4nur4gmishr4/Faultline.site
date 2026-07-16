@@ -262,14 +262,23 @@ export function formatMoney(
   }
 }
 
-export function buildUpiHref(amountInr: number): string | null {
+/**
+ * Standard UPI intent — opens PhonePe / GPay / Paytm / BHIM / bank apps
+ * with the same VPA and optional amount (INR).
+ */
+export function buildUpiHref(amountInr?: number): string | null {
   const upiId = DEVELOPER_PAYMENTS.upiId
-  if (!upiId || !DEVELOPER_PAYMENTS.upiDeepLink || amountInr <= 0) return null
-  const am = encodeURIComponent(String(Math.round(amountInr)))
+  if (!upiId || !DEVELOPER_PAYMENTS.upiDeepLink) return null
   const pa = encodeURIComponent(upiId)
   const tn = encodeURIComponent('FaultLine support')
-  const pn = encodeURIComponent(DEVELOPER_PAYMENTS.upiDisplayName || DEVELOPER_NAME)
-  return `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}`
+  const pn = encodeURIComponent(
+    DEVELOPER_PAYMENTS.upiDisplayName || DEVELOPER_NAME
+  )
+  const parts = [`pa=${pa}`, `pn=${pn}`, 'cu=INR', `tn=${tn}`]
+  if (amountInr != null && amountInr > 0) {
+    parts.push(`am=${encodeURIComponent(String(Math.round(amountInr)))}`)
+  }
+  return `upi://pay?${parts.join('&')}`
 }
 
 /** Mask account numbers for on-page display (full value only via copy). */
