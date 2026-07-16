@@ -1,40 +1,45 @@
 @import 'tailwindcss';
 
+/**
+ * Palette aligned to official VS Code workbench colors
+ * (Dark+ / Light+ defaults from code.visualstudio.com theme system).
+ * Ref: editor.background, sideBar.*, button.*, focusBorder, editorError/Warning
+ */
 @theme {
-  /* Near-black base with cool ink — not pure void */
-  --color-background: #0a0c10;
-  --color-surface: #0e1118;
-  --color-surface-dim: #0c0f14;
-  --color-surface-bright: #2a3140;
-  --color-surface-container-lowest: #07090d;
-  --color-surface-container-low: #12161f;
-  --color-surface-container: #161b26;
-  --color-surface-container-high: #1c2230;
-  --color-surface-container-highest: #252c3a;
-  --color-surface-variant: #141922;
-  --color-on-surface: #f2f4f8;
-  --color-on-surface-variant: #9aa3b2;
-  --color-primary: #ffffff;
-  --color-on-primary: #0a0c10;
-  --color-primary-fixed-dim: #b8c0ce;
-  --color-secondary: #a0a9b8;
-  --color-outline: #5c6575;
-  --color-outline-variant: #2e3544;
-  /* Semantic accents — used sparingly */
-  --color-fault: #ff6b6b;
-  --color-fault-dim: #c44b4b;
-  --color-fault-soft: #2a1418;
-  --color-warn: #f0b429;
-  --color-warn-dim: #b8860b;
-  --color-safe: #3dd68c;
-  --color-safe-dim: #2a9d65;
-  --color-safe-soft: #0f241c;
-  --color-signal: #6cb6ff;
-  --color-signal-dim: #4a90d9;
-  --color-signal-soft: #121c2a;
+  /* Dark+ defaults (editor.background #1e1e1e) */
+  --color-background: #1e1e1e;
+  --color-surface: #252526;
+  --color-surface-dim: #181818;
+  --color-surface-bright: #3c3c3c;
+  --color-surface-container-lowest: #181818;
+  --color-surface-container-low: #252526;
+  --color-surface-container: #2d2d2d;
+  --color-surface-container-high: #333333;
+  --color-surface-container-highest: #3c3c3c;
+  --color-surface-variant: #2d2d2d;
+  --color-on-surface: #cccccc;
+  --color-on-surface-variant: #9d9d9d;
+  --color-primary: #cccccc;
+  --color-on-primary: #1e1e1e;
+  --color-primary-fixed-dim: #9d9d9d;
+  --color-secondary: #9d9d9d;
+  --color-outline: #3c3c3c;
+  --color-outline-variant: #474747;
+  /* VS Code semantic: error / warning / git added / button.background */
+  --color-fault: #f14c4c;
+  --color-fault-dim: #c72e0f;
+  --color-fault-soft: #5a1d1d;
+  --color-warn: #cca700;
+  --color-warn-dim: #bf8803;
+  --color-safe: #89d185;
+  --color-safe-dim: #487e02;
+  --color-safe-soft: #1b3a1b;
+  --color-signal: #0078d4;
+  --color-signal-dim: #0e639c;
+  --color-signal-soft: #094771;
   --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
   --radius-none: 0;
   --radius-sm: 0;
   --radius-md: 0;
@@ -51,8 +56,8 @@
 }
 
 ::selection {
-  background: #6cb6ff;
-  color: #0a0c10;
+  background: var(--color-signal);
+  color: #ffffff;
 }
 
 html {
@@ -123,48 +128,78 @@ body {
 
 :root,
 [data-theme='dark'] {
-  --scroll-thumb: #3a4558;
+  /* VS Code Dark+ workbench */
   color-scheme: dark;
+  --scroll-thumb: #424242;
+  --color-background: #1e1e1e;
+  --color-surface: #252526;
+  --color-surface-dim: #181818;
+  --color-surface-bright: #3c3c3c;
+  --color-surface-container-lowest: #181818;
+  --color-surface-container-low: #252526;
+  --color-surface-container: #2d2d2d;
+  --color-surface-container-high: #333333;
+  --color-surface-container-highest: #3c3c3c;
+  --color-surface-variant: #2d2d2d;
+  --color-on-surface: #cccccc;
+  --color-on-surface-variant: #9d9d9d;
+  --color-primary: #cccccc;
+  --color-on-primary: #1e1e1e;
+  --color-primary-fixed-dim: #9d9d9d;
+  --color-secondary: #9d9d9d;
+  --color-outline: #3c3c3c;
+  --color-outline-variant: #474747;
+  --color-fault: #f14c4c;
+  --color-fault-dim: #c72e0f;
+  --color-fault-soft: #5a1d1d;
+  --color-warn: #cca700;
+  --color-warn-dim: #bf8803;
+  --color-safe: #89d185;
+  --color-safe-dim: #487e02;
+  --color-safe-soft: #1b3a1b;
+  --color-signal: #0078d4;
+  --color-signal-dim: #0e639c;
+  --color-signal-soft: #094771;
 }
 
-/* Light mode — same brutalist language, inverted ink */
+/* VS Code Light+ workbench */
 [data-theme='light'] {
   color-scheme: light;
-  --color-background: #f4f6f9;
-  --color-surface: #ffffff;
-  --color-surface-dim: #eef1f6;
-  --color-surface-bright: #d8dee8;
+  --scroll-thumb: #c1c1c1;
+  --color-background: #ffffff;
+  --color-surface: #f3f3f3;
+  --color-surface-dim: #f8f8f8;
+  --color-surface-bright: #e7e7e7;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #eef1f6;
-  --color-surface-container: #e6ebf3;
-  --color-surface-container-high: #dde3ee;
-  --color-surface-container-highest: #d0d7e4;
-  --color-surface-variant: #e8ecf3;
-  --color-on-surface: #0a0c10;
-  --color-on-surface-variant: #4a5568;
-  --color-primary: #0a0c10;
-  --color-on-primary: #f4f6f9;
-  --color-primary-fixed-dim: #4a5568;
-  --color-secondary: #5a6578;
-  --color-outline: #8b93a3;
-  --color-outline-variant: #c8d0dc;
-  --color-fault: #d94444;
-  --color-fault-dim: #b83333;
-  --color-fault-soft: #fdecec;
-  --color-warn: #c48a00;
-  --color-warn-dim: #a07200;
-  --color-safe: #1f9d5c;
-  --color-safe-dim: #17804a;
-  --color-safe-soft: #e6f7ef;
-  --color-signal: #2563eb;
-  --color-signal-dim: #1d4ed8;
-  --color-signal-soft: #e8f0fe;
-  --scroll-thumb: #c8d0dc;
+  --color-surface-container-low: #f3f3f3;
+  --color-surface-container: #ececec;
+  --color-surface-container-high: #e7e7e7;
+  --color-surface-container-highest: #e0e0e0;
+  --color-surface-variant: #ececec;
+  --color-on-surface: #3b3b3b;
+  --color-on-surface-variant: #616161;
+  --color-primary: #3b3b3b;
+  --color-on-primary: #ffffff;
+  --color-primary-fixed-dim: #616161;
+  --color-secondary: #616161;
+  --color-outline: #cecece;
+  --color-outline-variant: #e5e5e5;
+  --color-fault: #e51400;
+  --color-fault-dim: #a1260d;
+  --color-fault-soft: #fcebeb;
+  --color-warn: #bf8803;
+  --color-warn-dim: #a67a00;
+  --color-safe: #388a34;
+  --color-safe-dim: #2d6e2a;
+  --color-safe-soft: #e9f5e9;
+  --color-signal: #0078d4;
+  --color-signal-dim: #005a9e;
+  --color-signal-soft: #e5f1fb;
 }
 
 :focus-visible {
-  outline: 2px solid #6cb6ff;
-  outline-offset: 3px;
+  outline: 1px solid var(--color-signal);
+  outline-offset: 2px;
 }
 
 .skip-link {
@@ -313,15 +348,16 @@ body {
 }
 
 .brutal-btn-solid {
+  /* VS Code button.background / button.foreground */
   background: var(--color-signal);
   border-color: var(--color-signal);
-  color: #0a0c10;
+  color: #ffffff;
 }
 
 .brutal-btn-solid:hover {
-  background: transparent;
-  color: var(--color-signal);
-  border-color: var(--color-signal);
+  background: var(--color-signal-dim);
+  border-color: var(--color-signal-dim);
+  color: #ffffff;
 }
 
 /* Semantic text helpers */

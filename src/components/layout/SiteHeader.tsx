@@ -29,11 +29,11 @@ export function SiteHeader() {
       <div className="flex h-12 w-full items-stretch">
         <Link
           to="/"
-          className="flex min-h-11 shrink-0 items-center gap-2 border-r border-primary/85 bg-signal px-5 text-mono-label font-semibold tracking-[0.16em] text-on-primary"
+          className="flex min-h-11 shrink-0 items-center gap-2 border-r border-primary/85 bg-signal px-5 text-mono-label font-semibold tracking-[0.16em] text-white"
         >
           <VscodeIcon alt size={16} />
           FAULTLINE
-          <span className="ml-1 hidden font-normal tracking-[0.08em] opacity-70 sm:inline">
+          <span className="ml-1 hidden font-normal tracking-[0.08em] opacity-80 sm:inline">
             {VERSION}
           </span>
         </Link>
@@ -72,7 +72,7 @@ export function SiteHeader() {
           href={MARKETPLACE_URL}
           target="_blank"
           rel="noreferrer"
-          className="ml-auto hidden h-full min-h-11 items-center gap-2 border-l border-primary/85 bg-signal px-6 text-mono-label font-semibold tracking-[0.14em] text-on-primary transition-opacity duration-200 hover:opacity-90 sm:flex sm:ml-0"
+          className="ml-auto hidden h-full min-h-11 items-center gap-2 border-l border-primary/85 bg-signal px-6 text-mono-label font-semibold tracking-[0.14em] text-white transition-opacity duration-200 hover:opacity-90 sm:flex sm:ml-0"
         >
           <VscodeIcon alt size={15} />
           Install
@@ -137,7 +137,7 @@ export function SiteHeader() {
           </button>
           <a
             href={MARKETPLACE_URL}
-            className="flex min-h-12 items-center gap-2 bg-signal px-5 py-4 text-mono-label font-semibold tracking-[0.14em] text-on-primary"
+            className="flex min-h-12 items-center gap-2 bg-signal px-5 py-4 text-mono-label font-semibold tracking-[0.14em] text-white"
             onClick={() => setOpen(false)}
           >
             <VscodeIcon alt size={16} />
