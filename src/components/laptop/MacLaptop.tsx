@@ -1,7 +1,8 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { useFrame, useThree, useLoader } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js'
 import gsap from 'gsap'
@@ -61,6 +62,11 @@ function computeFitDistance(
   return dist
 }
 
+/** Initial framing: slightly elevated front view at fit distance. */
+function restOffset(dist: number): THREE.Vector3 {
+  return new THREE.Vector3(0, 2.8, dist)
+}
+
 function FitCamera({
   compact = false,
   onDistance,
@@ -73,25 +79,131 @@ function FitCamera({
   useLayoutEffect(() => {
     const dist = computeFitDistance(size.width, size.height, compact)
     const cam = camera as THREE.PerspectiveCamera
-    // Slightly wider FOV keeps margins when orbiting
     cam.fov = compact ? 36 : 34
     cam.near = 1
     cam.far = 400
 
     const target = new THREE.Vector3(...LOOK_AT)
-    const offset = new THREE.Vector3().subVectors(cam.position, target)
-    if (offset.lengthSq() < 0.01) {
-      cam.position.set(0, 2.8, dist)
-    } else {
-      offset.setLength(dist)
-      cam.position.copy(target.clone().add(offset))
-    }
+    cam.position.copy(target).add(restOffset(dist))
     cam.lookAt(target)
     cam.updateProjectionMatrix()
     onDistance(dist)
   }, [camera, size.width, size.height, compact, onDistance])
 
   return null
+}
+
+/**
+ * Free orbit (no angle clamps). On pointer release, ease camera back to rest.
+ */
+function RestoringOrbitControls({
+  fitDist,
+  enabled,
+}: {
+  fitDist: number
+  enabled: boolean
+}) {
+  const { camera } = useThree()
+  const controlsRef = useRef<OrbitControlsImpl>(null)
+  const restSpherical = useRef(new THREE.Spherical())
+  const tweenRef = useRef<gsap.core.Tween | null>(null)
+  const dragging = useRef(false)
+
+  const captureRest = useCallback((dist: number) => {
+    restSpherical.current.setFromVector3(restOffset(dist))
+    restSpherical.current.radius = dist
+  }, [])
+
+  useEffect(() => {
+    captureRest(fitDist)
+  }, [fitDist, captureRest])
+
+  useEffect(() => {
+    return () => {
+      tweenRef.current?.kill()
+    }
+  }, [])
+
+  const returnToRest = useCallback(() => {
+    const controls = controlsRef.current
+    if (!controls || dragging.current) return
+
+    const target = controls.target
+    const current = new THREE.Spherical().setFromVector3(
+      camera.position.clone().sub(target)
+    )
+    const rest = restSpherical.current.clone()
+    rest.radius = fitDist
+
+    // Shortest yaw path when fully rotated
+    let dTheta = rest.theta - current.theta
+    while (dTheta > Math.PI) dTheta -= Math.PI * 2
+    while (dTheta < -Math.PI) dTheta += Math.PI * 2
+    const endTheta = current.theta + dTheta
+
+    const delta =
+      Math.abs(dTheta) +
+      Math.abs(rest.phi - current.phi) +
+      Math.abs(rest.radius - current.radius)
+    if (delta < 0.004) return
+
+    tweenRef.current?.kill()
+    const state = {
+      theta: current.theta,
+      phi: current.phi,
+      radius: current.radius,
+    }
+
+    tweenRef.current = gsap.to(state, {
+      theta: endTheta,
+      phi: rest.phi,
+      radius: rest.radius,
+      duration: 0.9,
+      ease: 'power3.out',
+      onUpdate: () => {
+        const offset = new THREE.Vector3().setFromSpherical(
+          new THREE.Spherical(state.radius, state.phi, state.theta)
+        )
+        camera.position.copy(target).add(offset)
+        camera.lookAt(target)
+        controls.update()
+      },
+    })
+  }, [camera, fitDist])
+
+  if (!enabled) return null
+
+  return (
+    <OrbitControls
+      ref={controlsRef}
+      makeDefault
+      enablePan={false}
+      enableZoom={false}
+      enableRotate
+      enableDamping
+      dampingFactor={0.08}
+      rotateSpeed={0.65}
+      autoRotate={false}
+      minDistance={fitDist}
+      maxDistance={fitDist}
+      // Full sphere — leave a tiny pole margin to avoid flip glitches
+      minPolarAngle={0.05}
+      maxPolarAngle={Math.PI - 0.05}
+      // unrestricted azimuth
+      minAzimuthAngle={-Infinity}
+      maxAzimuthAngle={Infinity}
+      target={LOOK_AT}
+      onStart={() => {
+        dragging.current = true
+        tweenRef.current?.kill()
+      }}
+      onEnd={() => {
+        dragging.current = false
+        // Let damping settle one frame, then home
+        window.requestAnimationFrame(() => returnToRest())
+      }}
+    />
+  )
 }
 
 /**
@@ -244,25 +356,7 @@ export function MacLaptop({
         <directionalLight color={0xdfe6f0} intensity={0.14} position={[12, 4, -6]} />
       </group>
 
-      {!reducedMotion && (
-        <OrbitControls
-          makeDefault
-          enablePan={false}
-          enableZoom={false}
-          enableRotate
-          enableDamping
-          dampingFactor={0.055}
-          rotateSpeed={0.5}
-          autoRotate={false}
-          minDistance={fitDist}
-          maxDistance={fitDist}
-          minPolarAngle={Math.PI * 0.36}
-          maxPolarAngle={Math.PI * 0.46}
-          minAzimuthAngle={-Math.PI * 0.32}
-          maxAzimuthAngle={Math.PI * 0.32}
-          target={LOOK_AT}
-        />
-      )}
+      <RestoringOrbitControls fitDist={fitDist} enabled={!reducedMotion} />
 
       <group ref={macGroup}>
         <group ref={lidGroup}>
