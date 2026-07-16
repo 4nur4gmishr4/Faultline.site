@@ -28,6 +28,14 @@ function env(key: string): string {
   return typeof v === 'string' && v.trim() ? v.trim() : ''
 }
 
+/** public/ paths must include Vite base (e.g. /Faultline.site/ on GH Pages). */
+function publicAsset(path: string): string {
+  const base =
+    (typeof import.meta !== 'undefined' && import.meta.env?.BASE_URL) || '/'
+  const clean = path.replace(/^\//, '')
+  return `${base.endsWith('/') ? base : `${base}/`}${clean}`
+}
+
 /**
  * Payout details (public on /donate).
  * Env wins when set; otherwise defaults from developer form.
@@ -35,7 +43,10 @@ function env(key: string): string {
 export const DEVELOPER_PAYMENTS = {
   upiId: env('VITE_DONATE_UPI') || 'anuragmishrasnag06082004@ybl',
   upiDisplayName: 'Anurag Mishra',
-  upiQrSrc: env('VITE_DONATE_UPI_QR') || '/donate/upi-qr.png',
+  /** Relative to site base — not root-absolute `/donate/...` */
+  upiQrSrc: env('VITE_DONATE_UPI_QR')
+    ? publicAsset(env('VITE_DONATE_UPI_QR').replace(/^\//, ''))
+    : publicAsset('donate/upi-qr.png'),
   upiDeepLink: true,
 
   bank: {

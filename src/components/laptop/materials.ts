@@ -141,5 +141,12 @@ export function createLaptopMaterials(videoEl: HTMLVideoElement): LaptopMaterial
 }
 
 /** Prefer local public model; fall back to remote CDN. */
-export const MODEL_URL_LOCAL = '/models/mac-noUv.glb'
+function publicAsset(path: string): string {
+  const base =
+    (typeof import.meta !== 'undefined' && import.meta.env?.BASE_URL) || '/'
+  const clean = path.replace(/^\//, '')
+  return `${base.endsWith('/') ? base : `${base}/`}${clean}`
+}
+
+export const MODEL_URL_LOCAL = publicAsset('models/mac-noUv.glb')
 export const MODEL_URL_REMOTE = 'https://ksenia-k.com/models/mac-noUv.glb'

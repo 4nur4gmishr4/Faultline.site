@@ -136,6 +136,12 @@ export function DonatePage() {
                 width={176}
                 height={176}
                 className="h-44 w-44 border border-primary/85 bg-white p-2"
+                loading="eager"
+                decoding="async"
+                onError={(e) => {
+                  // Hide broken image if path still wrong
+                  e.currentTarget.style.display = 'none'
+                }}
               />
             </div>
           ) : null}
