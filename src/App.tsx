@@ -7,7 +7,7 @@ import { CreditsPage } from './pages/CreditsPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 
 /**
- * Site routes: home + documentation (embedded structured content).
+ * Site routes: home + embedded docs + credits (embedded structured content).
  */
 /** Vite BASE_URL is `/` or `/faultline-showcase/` — Router basename has no trailing slash. */
 const routerBasename =
