@@ -23,14 +23,14 @@ const LID_CLOSED = Math.PI / 2
 const LID_OPEN = LID_CLOSED - (LID_OPEN_DEGREES * Math.PI) / 180
 
 /**
- * Product framing — laptop stays fully inside the stage with breathing room.
- * Larger distance + smaller scale = no overflow of the container.
+ * Product framing — fill the wide stage; small margin only so orbit never clips.
+ * Closer distance + larger scale = full-width presence in the hero.
  */
-const CAMERA_DISTANCE = 62
-const MODEL_SCALE = 0.72
-const LOOK_AT: [number, number, number] = [0, 1.6, 0]
-const REST_POS = { x: 0, y: -2.4, z: 0 }
-const REST_ROT = { x: 0.022 * Math.PI, y: -0.05 * Math.PI, z: 0 }
+const CAMERA_DISTANCE = 48
+const MODEL_SCALE = 0.9
+const LOOK_AT: [number, number, number] = [0, 1.55, 0]
+const REST_POS = { x: 0, y: -2.2, z: 0 }
+const REST_ROT = { x: 0.02 * Math.PI, y: -0.04 * Math.PI, z: 0 }
 
 export type MacLaptopProps = {
   /** 0 = closed, 1 = fully open at 95° */
@@ -52,12 +52,12 @@ function computeFitDistance(
   compact: boolean
 ): number {
   const aspect = width / Math.max(height, 1)
-  // Pull back further so chassis never kisses the stage edges
-  let dist = compact ? CAMERA_DISTANCE + 8 : CAMERA_DISTANCE
-  if (aspect < 0.85) dist *= 1.18
-  else if (aspect < 1.05) dist *= 1.1
-  else if (aspect > 1.55) dist *= 1.02
-  else dist *= 1.04
+  // Wide stages get closer; only tall/narrow viewports pull back
+  let dist = compact ? CAMERA_DISTANCE + 6 : CAMERA_DISTANCE
+  if (aspect < 0.85) dist *= 1.12
+  else if (aspect < 1.05) dist *= 1.04
+  else if (aspect > 1.4) dist *= 0.92
+  else dist *= 0.96
   return dist
 }
 
@@ -74,14 +74,14 @@ function FitCamera({
     const dist = computeFitDistance(size.width, size.height, compact)
     const cam = camera as THREE.PerspectiveCamera
     // Slightly wider FOV keeps margins when orbiting
-    cam.fov = compact ? 36 : 34
+    cam.fov = compact ? 34 : 32
     cam.near = 1
     cam.far = 400
 
     const target = new THREE.Vector3(...LOOK_AT)
     const offset = new THREE.Vector3().subVectors(cam.position, target)
     if (offset.lengthSq() < 0.01) {
-      cam.position.set(0, 2.8, dist)
+      cam.position.set(0, 2.5, dist)
     } else {
       offset.setLength(dist)
       cam.position.copy(target.clone().add(offset))
@@ -256,10 +256,10 @@ export function MacLaptop({
           autoRotate={false}
           minDistance={fitDist}
           maxDistance={fitDist}
-          minPolarAngle={Math.PI * 0.36}
-          maxPolarAngle={Math.PI * 0.46}
-          minAzimuthAngle={-Math.PI * 0.32}
-          maxAzimuthAngle={Math.PI * 0.32}
+          minPolarAngle={Math.PI * 0.38}
+          maxPolarAngle={Math.PI * 0.48}
+          minAzimuthAngle={-Math.PI * 0.28}
+          maxAzimuthAngle={Math.PI * 0.28}
           target={LOOK_AT}
         />
       )}
@@ -302,11 +302,11 @@ export function MacLaptop({
       </group>
 
       <ContactShadows
-        position={[0, -3.9, 0]}
-        opacity={0.42}
-        scale={36}
-        blur={2.4}
-        far={14}
+        position={[0, -3.6, 0]}
+        opacity={0.4}
+        scale={42}
+        blur={2.2}
+        far={16}
         color="#000000"
         resolution={512}
       />

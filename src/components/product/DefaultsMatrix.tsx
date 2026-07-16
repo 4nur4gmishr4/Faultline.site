@@ -35,7 +35,7 @@ export function DefaultsMatrix() {
       className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
       aria-labelledby="defaults-title"
     >
-      <div className="mb-8 max-w-lg">
+      <div className="mb-8 w-full">
         <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
           Defaults
         </p>
@@ -50,19 +50,19 @@ export function DefaultsMatrix() {
             <tr>
               <th
                 scope="col"
-                className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]"
+                className="border border-primary/85 px-4 py-3.5 text-mono-label font-medium tracking-[0.08em] md:w-[32%] md:px-6"
               >
                 Feature
               </th>
               <th
                 scope="col"
-                className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]"
+                className="border border-primary/85 px-4 py-3.5 text-mono-label font-medium tracking-[0.08em] md:w-[22%] md:px-6"
               >
                 Default
               </th>
               <th
                 scope="col"
-                className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]"
+                className="border border-primary/85 px-4 py-3.5 text-mono-label font-medium tracking-[0.08em] md:px-6"
               >
                 Why
               </th>
@@ -71,13 +71,13 @@ export function DefaultsMatrix() {
           <tbody>
             {ROWS.map((row) => (
               <tr key={row.feature}>
-                <td className="border border-primary/85 px-4 py-3 text-body-md text-primary">
+                <td className="border border-primary/85 px-4 py-3.5 text-body-md text-primary md:px-6">
                   {row.feature}
                 </td>
-                <td className="border border-primary/85 px-4 py-3">
+                <td className="border border-primary/85 px-4 py-3.5 md:px-6">
                   <span className="mono-chip">{row.defaultValue}</span>
                 </td>
-                <td className="border border-primary/85 px-4 py-3 text-body-md text-secondary">
+                <td className="border border-primary/85 px-4 py-3.5 text-body-md text-secondary md:px-6">
                   {row.why}
                 </td>
               </tr>

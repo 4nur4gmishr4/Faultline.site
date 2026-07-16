@@ -183,10 +183,10 @@ export function LaptopScene({
               }}
               dpr={dpr}
               camera={{
-                fov: compact ? 36 : mobile ? 36 : 34,
+                fov: compact ? 34 : mobile ? 34 : 32,
                 near: 1,
                 far: 400,
-                position: [0, 2.8, compact ? 70 : mobile ? 68 : 62],
+                position: [0, 2.5, compact ? 56 : mobile ? 54 : 48],
               }}
               style={{ background: 'var(--color-background)' }}
               frameloop={inView && !reducedMotion ? 'always' : 'demand'}
