@@ -4,7 +4,7 @@
 export function FaultSample() {
   return (
     <section
-      className="border-b border-white"
+      className="border-b border-white/85"
       aria-labelledby="fault-sample-title"
     >
       <div className="grid w-full grid-cols-1 lg:grid-cols-12">
