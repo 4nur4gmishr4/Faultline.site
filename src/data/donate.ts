@@ -271,3 +271,42 @@ export function buildUpiHref(amountInr: number): string | null {
   const pn = encodeURIComponent(DEVELOPER_PAYMENTS.upiDisplayName || DEVELOPER_NAME)
   return `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}`
 }
+
+/** Mask account numbers for on-page display (full value only via copy). */
+export function maskAccountNumber(num: string): string {
+  const d = num.replace(/\s/g, '')
+  if (d.length <= 4) return '••••'
+  const last4 = d.slice(-4)
+  const hidden = '•'.repeat(Math.max(d.length - 4, 4))
+  // Group like •••• •••• 6938
+  const chunks: string[] = []
+  for (let i = 0; i < hidden.length; i += 4) {
+    chunks.push(hidden.slice(i, i + 4))
+  }
+  return `${chunks.join(' ')} ${last4}`
+}
+
+/** Mask IFSC: bank code visible, branch digits crossed. */
+export function maskIfsc(ifsc: string): string {
+  const s = ifsc.replace(/\s/g, '').toUpperCase()
+  if (s.length < 5) return '•••••••••••'
+  // e.g. SBIN0010170 → SBIN••••170
+  return `${s.slice(0, 4)}${'•'.repeat(Math.max(s.length - 7, 4))}${s.slice(-3)}`
+}
+
+/** Full bank block for clipboard only. */
+export function bankDetailsForCopy(amountInr?: number): string {
+  const b = DEVELOPER_PAYMENTS.bank
+  const lines = [
+    `Account name: ${b.accountName}`,
+    `Account number: ${b.accountNumber}`,
+    `IFSC: ${b.ifsc}`,
+    `Bank: ${b.bankName}`,
+    `Type: ${b.accountType}`,
+  ]
+  if (amountInr && amountInr > 0) {
+    lines.push(`Amount: ₹${Math.round(amountInr)}`)
+  }
+  lines.push('Note: FaultLine support')
+  return lines.join('\n')
+}

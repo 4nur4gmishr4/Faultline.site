@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
+  bankDetailsForCopy,
   buildUpiHref,
   CURRENCIES,
   type CurrencyCode,
@@ -12,6 +13,8 @@ import {
   formatMoney,
   getPaymentMethods,
   INR_PRESETS,
+  maskAccountNumber,
+  maskIfsc,
   type PaymentMethodId,
   roundDonateAmount,
 } from '../data/donate'
@@ -164,21 +167,12 @@ export function DonatePage() {
     }
 
     if (methodId === 'bank') {
-      const block = [
-        `Account name: ${p.bank.accountName}`,
-        `Account number: ${p.bank.accountNumber}`,
-        `IFSC: ${p.bank.ifsc}`,
-        `Bank: ${p.bank.bankName}`,
-        `Type: ${p.bank.accountType}`,
-        selectedInr > 0
-          ? `Amount: ${formatMoney(selectedInr, 'INR')}`
-          : '',
-        'Note: FaultLine support',
-      ]
-        .filter(Boolean)
-        .join('\n')
       return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
+          <p className="text-body-md text-secondary">
+            Account numbers are hidden on the page. Use the button to copy full
+            bank details for IMPS / NEFT.
+          </p>
           <dl className="space-y-2 text-body-md">
             <div>
               <dt className="text-secondary">Account name</dt>
@@ -186,13 +180,21 @@ export function DonatePage() {
             </div>
             <div>
               <dt className="text-secondary">Account number</dt>
-              <dd className="text-mono-code text-primary">
-                {p.bank.accountNumber}
+              <dd
+                className="text-mono-code text-primary tracking-wider"
+                aria-label="Account number masked"
+              >
+                {maskAccountNumber(p.bank.accountNumber)}
               </dd>
             </div>
             <div>
               <dt className="text-secondary">IFSC</dt>
-              <dd className="text-mono-code text-primary">{p.bank.ifsc}</dd>
+              <dd
+                className="text-mono-code text-primary tracking-wider"
+                aria-label="IFSC masked"
+              >
+                {maskIfsc(p.bank.ifsc)}
+              </dd>
             </div>
             <div>
               <dt className="text-secondary">Bank</dt>
@@ -206,10 +208,18 @@ export function DonatePage() {
           <button
             type="button"
             className="brutal-btn brutal-btn-solid w-full sm:w-auto"
-            onClick={() => void copyText('Bank details', block)}
+            onClick={() =>
+              void copyText(
+                'Bank details',
+                bankDetailsForCopy(selectedInr > 0 ? selectedInr : undefined)
+              )
+            }
           >
-            Copy bank details
+            Copy full bank details
           </button>
+          <p className="text-body-md text-secondary">
+            Clipboard includes full account number and IFSC (not shown above).
+          </p>
         </div>
       )
     }
