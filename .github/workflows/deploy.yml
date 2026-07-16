@@ -28,7 +28,9 @@ jobs:
         run: npm ci
       - name: Build for GitHub Pages
         env:
-          VITE_BASE: /faultline-showcase/
+          # Project Pages path matches the repo name (case-sensitive)
+          VITE_BASE: /Faultline.site/
+          VITE_SITE_URL: https://4nur4gmishr4.github.io/Faultline.site
         run: npm run build
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -3,7 +3,7 @@
 Marketing + docs site for **FaultLine** (`4nur4gmishr4.fahh`).
 
 **Repo:** [4nur4gmishr4/Faultline.site](https://github.com/4nur4gmishr4/Faultline.site)  
-**Intended live URL:** https://4nur4gmishr4.github.io/Faultline.site/ (or custom domain)
+**Live URL:** https://4nur4gmishr4.github.io/Faultline.site/
 
 ## Stack
 
@@ -22,9 +22,10 @@ Requires Node ≥ 20.
 
 ## Deploy (GitHub Pages)
 
-1. Repo/Pages source: this site (or monorepo `showcase` branch / `docs` folder — your choice)
-2. Build with `VITE_BASE=/faultline-showcase/` for project Pages
-3. CI: `.github/workflows/deploy.yml`
+1. Repo **Settings → Pages → Source: GitHub Actions**
+2. Push to `main` runs `.github/workflows/deploy.yml`
+3. Build uses `VITE_BASE=/Faultline.site/` (project site path)
+4. Optional custom domain later → set `VITE_BASE=/` and update `SITE_ORIGIN`
 
 ## Design
 

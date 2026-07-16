@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 /**
  * base:
  * - `/` for custom domain / local / root user pages
- * - `/faultline-showcase/` for GitHub project pages (set via VITE_BASE in CI)
+ * - `/Faultline.site/` for GitHub project pages (set via VITE_BASE in CI)
  */
 const base = process.env.VITE_BASE || '/'
 
