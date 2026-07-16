@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>FaultLine</title>
+    <script>
+      // SPA fallback for static hosts (GitHub Pages)
+      ;(function () {
+        var path = location.pathname + location.search + location.hash
+        sessionStorage.setItem('fl_spa_redirect', path)
+        // Preserve project-pages base (/faultline-showcase/) when present
+        var segs = location.pathname.split('/').filter(Boolean)
+        var base =
+          segs.length && segs[0] === 'faultline-showcase'
+            ? '/faultline-showcase/'
+            : '/'
+        location.replace(location.origin + base)
+      })()
+    </script>
+    <meta http-equiv="refresh" content="0;url=/" />
+  </head>
+  <body style="background:#000;color:#fff;font-family:monospace;padding:2rem">
+    Redirecting…
+  </body>
+</html>
