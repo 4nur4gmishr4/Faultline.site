@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://4nur4gmishr4.github.io/faultline-showcase/sitemap.xml
