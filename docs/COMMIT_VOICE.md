@@ -7,3 +7,4 @@ Examples:
 - palette filter clear escape
 - never push without asking
 - soft borders white 85 not pure void
+- install path marketplace vs vsix
