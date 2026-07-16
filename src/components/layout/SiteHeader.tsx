@@ -1,6 +1,8 @@
 import { NavLink, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { MARKETPLACE_URL, VERSION } from '../../data/commands'
+import { useTheme } from '../../hooks/useTheme'
+import { VscodeIcon } from '../brand/VscodeIcon'
 
 /** ≤5 primary items (skill: nav hierarchy). */
 const topNav: { to: string; label: string; end?: boolean }[] = [
@@ -11,6 +13,7 @@ const topNav: { to: string; label: string; end?: boolean }[] = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
+  const { theme, toggle } = useTheme()
 
   useEffect(() => {
     if (!open) return
@@ -22,14 +25,15 @@ export function SiteHeader() {
   }, [open])
 
   return (
-    <header className="z-50 w-full shrink-0 border-b border-white/85 bg-background/92 backdrop-blur-xl">
+    <header className="z-50 w-full shrink-0 border-b border-primary/85 bg-background/92 backdrop-blur-xl">
       <div className="flex h-12 w-full items-stretch">
         <Link
           to="/"
-          className="flex min-h-11 shrink-0 items-center border-r border-white/85 bg-signal px-5 text-mono-label font-semibold tracking-[0.16em] text-on-primary"
+          className="flex min-h-11 shrink-0 items-center gap-2 border-r border-primary/85 bg-signal px-5 text-mono-label font-semibold tracking-[0.16em] text-on-primary"
         >
+          <VscodeIcon alt size={16} />
           FAULTLINE
-          <span className="ml-2.5 hidden font-normal tracking-[0.08em] opacity-70 sm:inline">
+          <span className="ml-1 hidden font-normal tracking-[0.08em] opacity-70 sm:inline">
             {VERSION}
           </span>
         </Link>
@@ -42,10 +46,10 @@ export function SiteHeader() {
               end={item.end}
               className={({ isActive }) =>
                 [
-                  'nav-link flex h-full min-h-11 items-center border-r border-white/85 px-5 text-mono-label uppercase tracking-[0.12em]',
+                  'nav-link flex h-full min-h-11 items-center border-r border-primary/85 px-5 text-mono-label uppercase tracking-[0.12em]',
                   isActive
                     ? 'bg-primary text-on-primary'
-                    : 'text-primary hover:bg-white hover:text-black',
+                    : 'text-primary hover:bg-primary hover:text-on-primary',
                 ].join(' ')
               }
             >
@@ -54,18 +58,29 @@ export function SiteHeader() {
           ))}
         </nav>
 
+        <button
+          type="button"
+          className="theme-toggle hidden sm:inline-flex"
+          onClick={toggle}
+          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+        >
+          {theme === 'dark' ? 'Light' : 'Dark'}
+        </button>
+
         <a
           href={MARKETPLACE_URL}
           target="_blank"
           rel="noreferrer"
-          className="ml-auto hidden h-full min-h-11 items-center border-l border-white/85 bg-signal px-7 text-mono-label font-semibold tracking-[0.14em] text-on-primary transition-opacity duration-200 hover:opacity-90 sm:flex"
+          className="ml-auto hidden h-full min-h-11 items-center gap-2 border-l border-primary/85 bg-signal px-6 text-mono-label font-semibold tracking-[0.14em] text-on-primary transition-opacity duration-200 hover:opacity-90 sm:flex sm:ml-0"
         >
+          <VscodeIcon alt size={15} />
           Install
         </a>
 
         <button
           type="button"
-          className="ml-auto flex h-full min-h-11 min-w-12 items-center justify-center border-l border-white/85 px-5 text-mono-label tracking-[0.12em] text-primary md:hidden sm:ml-0"
+          className="ml-auto flex h-full min-h-11 min-w-12 items-center justify-center border-l border-primary/85 px-5 text-mono-label tracking-[0.12em] text-primary md:hidden sm:ml-0"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-nav"
@@ -78,7 +93,7 @@ export function SiteHeader() {
       {open && (
         <div
           id="mobile-nav"
-          className="flex max-h-[min(70dvh,28rem)] flex-col overflow-y-auto border-t border-white/85 md:hidden"
+          className="flex max-h-[min(70dvh,28rem)] flex-col overflow-y-auto border-t border-primary/85 md:hidden"
         >
           {topNav.map((item) => (
             <NavLink
@@ -88,7 +103,7 @@ export function SiteHeader() {
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
                 [
-                  'flex min-h-12 items-center border-b border-white/85 px-5 py-4 text-mono-label uppercase tracking-[0.12em]',
+                  'flex min-h-12 items-center border-b border-primary/85 px-5 py-4 text-mono-label uppercase tracking-[0.12em]',
                   isActive ? 'bg-primary text-on-primary' : 'text-primary',
                 ].join(' ')
               }
@@ -99,22 +114,33 @@ export function SiteHeader() {
           <NavLink
             to="/docs/changelog"
             onClick={() => setOpen(false)}
-            className="flex min-h-12 items-center border-b border-white/85 px-5 py-4 text-mono-label uppercase tracking-[0.12em] text-primary"
+            className="flex min-h-12 items-center border-b border-primary/85 px-5 py-4 text-mono-label uppercase tracking-[0.12em] text-primary"
           >
             Changelog
           </NavLink>
           <NavLink
             to="/credits"
             onClick={() => setOpen(false)}
-            className="flex min-h-12 items-center border-b border-white/85 px-5 py-4 text-mono-label uppercase tracking-[0.12em] text-primary"
+            className="flex min-h-12 items-center border-b border-primary/85 px-5 py-4 text-mono-label uppercase tracking-[0.12em] text-primary"
           >
             Credits
           </NavLink>
+          <button
+            type="button"
+            className="flex min-h-12 w-full items-center border-b border-primary/85 px-5 py-4 text-left text-mono-label uppercase tracking-[0.12em] text-primary"
+            onClick={() => {
+              toggle()
+              setOpen(false)
+            }}
+          >
+            {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          </button>
           <a
             href={MARKETPLACE_URL}
-            className="flex min-h-12 items-center bg-signal px-5 py-4 text-mono-label font-semibold tracking-[0.14em] text-on-primary"
+            className="flex min-h-12 items-center gap-2 bg-signal px-5 py-4 text-mono-label font-semibold tracking-[0.14em] text-on-primary"
             onClick={() => setOpen(false)}
           >
+            <VscodeIcon alt size={16} />
             Install
           </a>
         </div>

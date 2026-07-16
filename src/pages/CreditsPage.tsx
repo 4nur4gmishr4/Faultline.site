@@ -8,8 +8,8 @@ export function CreditsPage() {
         <h1 className="text-display-xl mb-4 text-primary">Credits</h1>
       </section>
 
-      <div className="grid grid-cols-1 gap-0 border border-white md:grid-cols-2">
-        <div className="border-b border-white p-6 md:border-r md:border-b-0">
+      <div className="grid grid-cols-1 gap-0 border border-primary/85 md:grid-cols-2">
+        <div className="border-b border-primary/85 p-6 md:border-r md:border-b-0">
           <h2 className="text-headline-md mb-3 uppercase text-primary">FaultLine</h2>
           <p className="text-body-md text-secondary">
             VS Code extension by{' '}
@@ -22,7 +22,7 @@ export function CreditsPage() {
           <p className="text-body-md text-secondary">
             Interactive laptop scene adapted from{' '}
             <a
-              className="text-primary underline"
+              className="text-signal underline underline-offset-2"
               href="https://codepen.io/ksenia-k/pen/gOEgyaj"
               target="_blank"
               rel="noreferrer"
@@ -34,11 +34,28 @@ export function CreditsPage() {
         </div>
       </div>
 
-      <div className="border border-white p-6">
+      <div className="border border-primary/85 p-6">
         <h2 className="text-headline-md mb-3 uppercase text-primary">Stack</h2>
         <p className="text-mono-code text-secondary">
           Vite · React · TypeScript · Tailwind · React Three Fiber · GSAP · React
-          Router
+          Router · Playwright
+        </p>
+      </div>
+
+      <div className="border border-primary/85 p-6">
+        <h2 className="text-headline-md mb-3 uppercase text-primary">VS Code mark</h2>
+        <p className="text-body-md text-secondary">
+          Visual Studio Code icon is a trademark of Microsoft Corporation. Used
+          under{' '}
+          <a
+            className="text-signal underline underline-offset-2"
+            href="https://code.visualstudio.com/brand"
+            target="_blank"
+            rel="noreferrer"
+          >
+            VS Code branding guidelines
+          </a>
+          .
         </p>
       </div>
     </div>

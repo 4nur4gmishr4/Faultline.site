@@ -1,6 +1,10 @@
 import { useEffect, useState, type RefObject } from 'react'
 
-export function useInView(ref: RefObject<Element | null>, rootMargin = '80px' // early mount for laptop): boolean {
+/** Early mount margin for laptop stage. */
+export function useInView(
+  ref: RefObject<Element | null>,
+  rootMargin = '80px'
+): boolean {
   const [inView, setInView] = useState(true)
 
   useEffect(() => {

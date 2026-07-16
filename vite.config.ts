@@ -13,7 +13,8 @@ export default defineConfig({
   base,
   plugins: [react(), tailwindcss()],
   build: {
-    chunkSizeWarningLimit: 1800 // three is heavy,
+    // three is heavy
+    chunkSizeWarningLimit: 1800,
     rollupOptions: {
       output: {
         manualChunks(id) {

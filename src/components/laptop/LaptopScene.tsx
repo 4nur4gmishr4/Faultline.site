@@ -188,18 +188,31 @@ export function LaptopScene({
                 far: 400,
                 position: [0, 2.8, compact ? 70 : mobile ? 68 : 62],
               }}
-              style={{ background: '#0a0c10' }}
+              style={{ background: 'var(--color-background)' }}
               frameloop={inView && !reducedMotion ? 'always' : 'demand'}
-              onCreated={({ gl }) => {
+              onCreated={({ gl, scene }) => {
                 gl.toneMapping = THREE.ACESFilmicToneMapping
                 gl.toneMappingExposure = 1.06
                 gl.outputColorSpace = THREE.SRGBColorSpace
                 gl.domElement.style.touchAction = 'none'
                 gl.domElement.setAttribute('aria-hidden', 'true')
+                const syncBg = () => {
+                  const raw = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--color-background')
+                    .trim()
+                  if (raw) scene.background = new THREE.Color(raw)
+                }
+                syncBg()
+                const mo = new MutationObserver(syncBg)
+                mo.observe(document.documentElement, {
+                  attributes: true,
+                  attributeFilter: ['data-theme'],
+                })
                 gl.domElement.addEventListener(
                   'webglcontextlost',
                   (e) => {
                     e.preventDefault()
+                    mo.disconnect()
                     setFailMsg(
                       'Graphics context was lost. Reload to restore the preview.'
                     )

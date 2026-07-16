@@ -4,11 +4,11 @@
 export function FaultSample() {
   return (
     <section
-      className="border-b border-white/85"
+      className="border-b border-primary/85"
       aria-labelledby="fault-sample-title"
     >
       <div className="grid w-full grid-cols-1 lg:grid-cols-12">
-        <div className="border-b border-white bg-signal-soft/40 px-6 py-12 md:px-12 lg:col-span-4 lg:border-r lg:border-b-0 lg:px-16 lg:py-16">
+        <div className="border-b border-primary/85 bg-signal-soft/40 px-6 py-12 md:px-12 lg:col-span-4 lg:border-r lg:border-b-0 lg:px-16 lg:py-16">
           <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-signal">
             Last failure
           </p>
@@ -50,11 +50,11 @@ export function FaultSample() {
                 <span className="text-safe">&gt; autoShow: OFF</span>
               </code>
             </pre>
-            <div className="flex flex-wrap items-stretch border-t border-white">
-              <div className="border-b border-white bg-signal-soft px-4 py-3 text-mono-label tracking-[0.1em] text-signal sm:border-b-0 sm:border-r">
+            <div className="flex flex-wrap items-stretch border-t border-primary/85">
+              <div className="border-b border-primary/85 bg-signal-soft px-4 py-3 text-mono-label tracking-[0.1em] text-signal sm:border-b-0 sm:border-r">
                 Analyze Last Failure
               </div>
-              <div className="border-b border-white px-4 py-3 text-mono-label tracking-[0.1em] text-secondary sm:border-b-0 sm:border-r">
+              <div className="border-b border-primary/85 px-4 py-3 text-mono-label tracking-[0.1em] text-secondary sm:border-b-0 sm:border-r">
                 Explain? <span className="text-safe">[Y]</span> /{' '}
                 <span className="text-fault">[N]</span>
               </div>

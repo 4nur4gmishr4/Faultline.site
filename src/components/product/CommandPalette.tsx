@@ -44,7 +44,7 @@ export function CommandPalette() {
 
   return (
     <section
-      className="border-b border-white px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
       aria-labelledby="palette-title"
     >
       <div className="mb-8 max-w-lg">
@@ -82,7 +82,7 @@ export function CommandPalette() {
           {q ? (
             <button
               type="button"
-              className="min-h-12 min-w-12 border-l border-white/90 px-4 text-mono-label tracking-[0.1em] text-secondary hover:bg-white hover:text-black"
+              className="min-h-12 min-w-12 border-l border-primary/85/90 px-4 text-mono-label tracking-[0.1em] text-secondary hover:bg-primary hover:text-on-primary"
               onClick={() => {
                 setQ('')
                 inputRef.current?.focus()
@@ -129,7 +129,7 @@ export function CommandPalette() {
           )}
         </ul>
 
-        <div className="border-t border-white/90 px-4 py-2.5 text-mono-label tracking-[0.1em] text-secondary">
+        <div className="border-t border-primary/85/90 px-4 py-2.5 text-mono-label tracking-[0.1em] text-secondary">
           Category · FaultLine · {items.length} shown
         </div>
       </div>

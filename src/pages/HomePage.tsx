@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { LaptopSceneLazy } from '../components/laptop/LaptopSceneLazy'
+import { VscodeIcon } from '../components/brand/VscodeIcon'
 import {
   CommandPalette,
   DefaultsMatrix,
@@ -17,10 +18,11 @@ const DOC_TEASER = DOCS.slice(0, 6)
 export function HomePage() {
   return (
     <div className="flex w-full flex-col">
-      <section className="grid min-h-[calc(100dvh-3rem)] w-full grid-cols-1 border-b border-white/85 max-[720px]:min-h-0 md:grid-cols-12">
-        <div className="order-1 flex flex-col justify-center border-b border-white/85 px-6 py-14 md:col-span-5 md:border-r md:border-b-0 md:px-12 md:py-20 lg:px-16 xl:px-20">
+      <section className="grid min-h-[calc(100dvh-3rem)] w-full grid-cols-1 border-b border-primary/85 max-[720px]:min-h-0 md:grid-cols-12">
+        <div className="order-1 flex flex-col justify-center border-b border-primary/85 px-6 py-14 md:col-span-5 md:border-r md:border-b-0 md:px-12 md:py-20 lg:px-16 xl:px-20">
           <div className="max-w-[22rem]">
-            <p className="mb-7 text-mono-label uppercase tracking-[0.16em] text-signal">
+            <p className="icon-inline mb-7 text-mono-label uppercase tracking-[0.16em] text-signal">
+              <VscodeIcon size={16} />
               VS Code extension
             </p>
             <h1 className="text-display-xl mb-7 text-primary">
@@ -77,7 +79,7 @@ export function HomePage() {
       <InstallPath />
       <CommandPalette />
 
-      <section className="border-b border-white/85 px-6 py-16 md:px-12 md:py-24 lg:px-16">
+      <section className="border-b border-primary/85 px-6 py-16 md:px-12 md:py-24 lg:px-16">
         <div className="mb-10 flex flex-col gap-4 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-lg">
             <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-signal">
@@ -95,7 +97,7 @@ export function HomePage() {
             All documentation
           </Link>
         </div>
-        <div className="grid grid-cols-1 border border-white/85 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 border border-primary/85 sm:grid-cols-2 lg:grid-cols-3">
           {DOC_TEASER.map((d, i) => {
             const col = i % 3
             const isLastRow =
@@ -107,7 +109,7 @@ export function HomePage() {
                 key={d.id}
                 to={`/docs/${d.id}`}
                 className={[
-                  'group block min-h-[7.5rem] border-white/85 p-7 no-underline transition-colors duration-200 hover:bg-white hover:text-black',
+                  'group block min-h-[7.5rem] border-primary/85 p-7 no-underline transition-colors duration-200 hover:bg-primary hover:text-on-primary',
                   col < 2 ? 'lg:border-r' : '',
                   i % 2 === 0 ? 'sm:border-r lg:border-r' : '',
                   !isLastRow || i < DOC_TEASER.length - 1 ? 'border-b' : '',
@@ -118,10 +120,10 @@ export function HomePage() {
                   .filter(Boolean)
                   .join(' ')}
               >
-                <h3 className="text-headline-md mb-2 text-primary group-hover:text-black">
+                <h3 className="text-headline-md mb-2 text-primary group-hover:text-on-primary">
                   {d.title}
                 </h3>
-                <p className="text-body-md text-secondary group-hover:text-black/65">
+                <p className="text-body-md text-secondary group-hover:text-on-primary/65">
                   {d.description}
                 </p>
               </Link>

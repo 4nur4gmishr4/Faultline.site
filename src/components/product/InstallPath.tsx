@@ -1,16 +1,18 @@
 import { MARKETPLACE_URL, RELEASES_URL } from '../../data/commands'
+import { VscodeIcon } from '../brand/VscodeIcon'
 
 /**
- * Two-step install path (Marketplace preferred) — Marketplace preferred, VSIX fallback.
+ * Two-step install path (Marketplace preferred).
  */
 export function InstallPath() {
   return (
     <section
-      className="border-b border-white/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
       aria-labelledby="install-path-title"
     >
       <div className="mb-8 max-w-lg">
-        <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-signal">
+        <p className="icon-inline mb-4 text-mono-label uppercase tracking-[0.14em] text-signal">
+          <VscodeIcon size={15} />
           Install
         </p>
         <h2 id="install-path-title" className="text-headline-lg mb-3 text-primary">
@@ -22,13 +24,16 @@ export function InstallPath() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 border border-white md:grid-cols-2">
-        <div className="border-b border-white/85 p-6 md:border-r md:border-b-0 md:p-8">
-          <p className="mb-3 text-mono-label tracking-[0.12em] text-signal">01 · Preferred</p>
+      <div className="grid grid-cols-1 border border-primary/85 md:grid-cols-2">
+        <div className="border-b border-primary/85 p-6 md:border-r md:border-b-0 md:p-8">
+          <p className="mb-3 text-mono-label tracking-[0.12em] text-signal">
+            01 · Preferred
+          </p>
           <h3 className="text-headline-md mb-3 text-primary">Marketplace</h3>
           <p className="mb-6 text-body-md text-secondary">
-            Extensions → search <strong className="text-primary">FaultLine</strong> →
-            Install. Id stays <code className="text-mono-code text-signal">4nur4gmishr4.fahh</code>.
+            Extensions → search <strong className="text-primary">FaultLine</strong>{' '}
+            → Install. Id stays{' '}
+            <code className="text-mono-code text-signal">4nur4gmishr4.fahh</code>.
           </p>
           <a
             href={MARKETPLACE_URL}
@@ -36,6 +41,7 @@ export function InstallPath() {
             rel="noreferrer"
             className="brutal-btn brutal-btn-solid"
           >
+            <VscodeIcon size={16} />
             Open Marketplace
           </a>
         </div>
@@ -43,8 +49,8 @@ export function InstallPath() {
           <p className="mb-3 text-mono-label tracking-[0.12em] text-warn">02 · Direct</p>
           <h3 className="text-headline-md mb-3 text-primary">GitHub VSIX</h3>
           <p className="mb-6 text-body-md text-secondary">
-            Download <code className="text-mono-code text-primary">fahh-3.5.0.vsix</code>, then
-            Extensions → Install from VSIX… Reload the window after install.
+            Download <code className="text-mono-code text-primary">fahh-3.5.0.vsix</code>
+            , then Extensions → Install from VSIX… Reload the window after install.
           </p>
           <a
             href={RELEASES_URL}
@@ -52,6 +58,7 @@ export function InstallPath() {
             rel="noreferrer"
             className="brutal-btn"
           >
+            <VscodeIcon size={16} />
             Releases v3.5.0
           </a>
         </div>

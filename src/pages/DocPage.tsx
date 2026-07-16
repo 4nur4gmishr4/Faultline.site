@@ -23,14 +23,14 @@ export function DocPage() {
 
   return (
     <div className="flex w-full flex-col lg:flex-row">
-      <aside className="w-full shrink-0 border-b border-white/85 lg:w-64 lg:border-r lg:border-b-0">
+      <aside className="w-full shrink-0 border-b border-primary/85 lg:w-64 lg:border-r lg:border-b-0">
         <div className="lg:sticky lg:top-0 lg:max-h-[calc(100dvh-3rem)] lg:overflow-y-auto">
           <div className="p-5 md:p-6">
             <p className="mb-5 text-mono-label uppercase tracking-[0.14em] text-signal">
               Documentation
             </p>
             <nav
-              className="flex flex-row flex-wrap gap-0 border border-white/85 lg:flex-col"
+              className="flex flex-row flex-wrap gap-0 border border-primary/85 lg:flex-col"
               aria-label="Docs"
             >
               {DOCS.map((d) => (
@@ -38,7 +38,7 @@ export function DocPage() {
                   key={d.id}
                   to={`/docs/${d.id}`}
                   className={[
-                    'flex min-h-11 items-center border-white/85 px-3.5 py-3 text-mono-label uppercase tracking-[0.1em] no-underline transition-colors duration-150',
+                    'flex min-h-11 items-center border-primary/85 px-3.5 py-3 text-mono-label uppercase tracking-[0.1em] no-underline transition-colors duration-150',
                     'border-r lg:border-r-0 lg:border-b last:lg:border-b-0',
                     d.id === doc.id
                       ? 'bg-primary text-on-primary'

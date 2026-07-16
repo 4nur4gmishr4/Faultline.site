@@ -234,7 +234,7 @@ export function MacLaptop({
   return (
     <>
       <FitCamera compact={compact} onDistance={setFitDist} />
-      <color attach="background" args={['#0a0c10']} />
+      {/* background color driven by theme via LaptopScene canvas */}
       <ambientLight intensity={0.32} />
       <hemisphereLight args={['#e8f0ff', '#0a0c10', 0.4]} />
       <group ref={lightHolder}>

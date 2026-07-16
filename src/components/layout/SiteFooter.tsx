@@ -19,7 +19,7 @@ const FOOTER_LINKS: { to?: string; href?: string; label: string }[] = [
 
 export function SiteFooter() {
   return (
-    <footer className="w-full shrink-0 border-t border-white/85 bg-background">
+    <footer className="w-full shrink-0 border-t border-primary/85 bg-background">
       <div className="flex w-full flex-col gap-11 px-6 py-14 md:px-12 md:py-20 lg:px-16">
         <p className="text-footer-slogan max-w-3xl uppercase text-primary">
           When it breaks, <span className="text-fault">keep the fault</span>.
@@ -50,7 +50,7 @@ export function SiteFooter() {
             )
           )}
         </nav>
-        <div className="flex flex-col gap-3 border-t border-white/15 pt-9 text-mono-code text-secondary md:flex-row md:items-start md:justify-between">
+        <div className="flex flex-col gap-3 border-t border-primary/15 pt-9 text-mono-code text-secondary md:flex-row md:items-start md:justify-between">
           <span>Anurag Mishra</span>
           <span className="max-w-md md:text-right">
             {EXTENSION_ID} · MIT ·{' '}

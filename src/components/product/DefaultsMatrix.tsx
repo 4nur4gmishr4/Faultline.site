@@ -58,7 +58,7 @@ function ToneChip({
 export function DefaultsMatrix() {
   return (
     <section
-      className="border-b border-white px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
       aria-labelledby="defaults-title"
     >
       <div className="mb-8 max-w-lg">
@@ -74,17 +74,17 @@ export function DefaultsMatrix() {
         </p>
       </div>
 
-      <div className="w-full overflow-x-auto border border-white/85">
+      <div className="w-full overflow-x-auto border border-primary/85">
         <table className="w-full min-w-[520px] border-collapse text-left">
           <thead className="brutal-invert">
             <tr>
-              <th className="border border-white px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
+              <th className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
                 Feature
               </th>
-              <th className="border border-white px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
+              <th className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
                 Default
               </th>
-              <th className="border border-white px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
+              <th className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]">
                 Why
               </th>
             </tr>
@@ -92,13 +92,13 @@ export function DefaultsMatrix() {
           <tbody>
             {ROWS.map((row) => (
               <tr key={row.feature} className="bg-surface/40">
-                <td className="border border-white px-4 py-3 text-body-md text-primary">
+                <td className="border border-primary/85 px-4 py-3 text-body-md text-primary">
                   {row.feature}
                 </td>
-                <td className="border border-white px-4 py-3">
+                <td className="border border-primary/85 px-4 py-3">
                   <ToneChip tone={row.tone}>{row.defaultValue}</ToneChip>
                 </td>
-                <td className="border border-white px-4 py-3 text-body-md text-secondary">
+                <td className="border border-primary/85 px-4 py-3 text-body-md text-secondary">
                   {row.why}
                 </td>
               </tr>

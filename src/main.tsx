@@ -2,6 +2,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
+import { initThemeFromStorage } from './hooks/useTheme'
+
+// Theme before paint (light/dark)
+initThemeFromStorage()
 
 // GitHub Pages SPA: 404.html stashes path then lands on base
 const spaRedirect = sessionStorage.getItem('fl_spa_redirect')

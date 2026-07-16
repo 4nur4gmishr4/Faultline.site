@@ -14,13 +14,13 @@ export function DocsIndexPage() {
           files.
         </p>
       </div>
-      <div className="grid grid-cols-1 border border-white md:grid-cols-2">
+      <div className="grid grid-cols-1 border border-primary/85 md:grid-cols-2">
         {DOCS.map((d, i) => (
           <Link
             key={d.id}
             to={`/docs/${d.id}`}
             className={[
-              'group block border-white p-7 no-underline transition-colors duration-200 hover:bg-white',
+              'group block border-white p-7 no-underline transition-colors duration-200 hover:bg-primary',
               i % 2 === 0 ? 'md:border-r' : '',
               i < DOCS.length - 2
                 ? 'border-b'
@@ -32,10 +32,10 @@ export function DocsIndexPage() {
               .filter(Boolean)
               .join(' ')}
           >
-            <h2 className="text-headline-md mb-2 text-primary group-hover:text-black">
+            <h2 className="text-headline-md mb-2 text-primary group-hover:text-on-primary">
               {d.title}
             </h2>
-            <p className="text-body-md text-secondary group-hover:text-black/65">
+            <p className="text-body-md text-secondary group-hover:text-on-primary/65">
               {d.description}
             </p>
           </Link>

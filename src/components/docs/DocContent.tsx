@@ -30,7 +30,7 @@ function Block({ block }: { block: DocBlock }) {
       )
     case 'h2':
       return (
-        <h2 className="text-headline-lg mb-4 mt-12 border-b border-white/15 pb-3 text-primary first:mt-0">
+        <h2 className="text-headline-lg mb-4 mt-12 border-b border-primary/15 pb-3 text-primary first:mt-0">
           {block.text}
         </h2>
       )
@@ -60,7 +60,7 @@ function Block({ block }: { block: DocBlock }) {
       )
     case 'table':
       return (
-        <div className="mb-6 w-full max-w-full overflow-x-auto border border-white/85">
+        <div className="mb-6 w-full max-w-full overflow-x-auto border border-primary/85">
           <table className="w-full min-w-[420px] border-collapse text-left text-body-md">
             <thead className="brutal-invert">
               <tr>
@@ -68,7 +68,7 @@ function Block({ block }: { block: DocBlock }) {
                   <th
                     key={h || 'empty'}
                     scope="col"
-                    className="border border-white/85 px-3 py-2.5 text-mono-label font-medium tracking-[0.06em] text-inherit"
+                    className="border border-primary/85 px-3 py-2.5 text-mono-label font-medium tracking-[0.06em] text-inherit"
                   >
                     {h}
                   </th>
@@ -81,7 +81,7 @@ function Block({ block }: { block: DocBlock }) {
                   {row.map((cell, ci) => (
                     <td
                       key={ci}
-                      className="border border-white/85 px-3 py-2.5 align-top text-secondary"
+                      className="border border-primary/85 px-3 py-2.5 align-top text-secondary"
                     >
                       {linkifyUrls(cell)}
                     </td>
@@ -94,18 +94,18 @@ function Block({ block }: { block: DocBlock }) {
       )
     case 'code':
       return (
-        <pre className="mb-5 overflow-x-auto border border-white bg-surface-container-lowest p-4 text-mono-code text-primary whitespace-pre-wrap">
+        <pre className="mb-5 overflow-x-auto border border-primary/85 bg-surface-container-lowest p-4 text-mono-code text-primary whitespace-pre-wrap">
           {block.text}
         </pre>
       )
     case 'callout':
       return (
-        <aside className="my-5 border border-white border-l-2 bg-surface-container-low px-4 py-3 text-body-md text-secondary">
+        <aside className="my-5 border border-primary/85 border-l-2 bg-surface-container-low px-4 py-3 text-body-md text-secondary">
           {linkifyUrls(block.text)}
         </aside>
       )
     case 'divider':
-      return <hr className="my-10 border-0 border-t border-white/25" />
+      return <hr className="my-10 border-0 border-t border-primary/25" />
     default:
       return null
   }
@@ -121,7 +121,7 @@ export function DocContent({
 }) {
   return (
     <article className="doc-prose">
-      <h1 className="text-display-xl mb-8 mt-0 border-b border-white/25 pb-6 text-primary">
+      <h1 className="text-display-xl mb-8 mt-0 border-b border-primary/25 pb-6 text-primary">
         {title}
       </h1>
       {blocks.map((block, i) => (

@@ -14,5 +14,8 @@ playwright/.cache
 *.log
 .vite
 
-visual-studio-code-icons/
+
+
+
+# keep source icons; public/brand is what we serve
 
