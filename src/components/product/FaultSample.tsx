@@ -1,5 +1,5 @@
 /**
- * Captured-failure panel — product artifact with semantic color for errors.
+ * Captured-failure panel (semantic colors for error/safe) — product artifact with semantic color for errors.
  */
 export function FaultSample() {
   return (
