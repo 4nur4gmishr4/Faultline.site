@@ -8,7 +8,7 @@ export function LaptopSceneLazy(props: ComponentProps<typeof LaptopScene>) {
     <Suspense
       fallback={
         <div className="laptop-stage flex items-center justify-center bg-black">
-          <span className="text-mono-label tracking-[0.14em] text-secondary">Loading</span>
+          <span className="text-mono-label tracking-[0.14em] text-secondary">Loading preview</span>
         </div>
       }
     >
