@@ -13,3 +13,6 @@ playwright/.cache
 .env.*
 *.log
 .vite
+
+visual-studio-code-icons/
+
