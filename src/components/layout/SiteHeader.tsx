@@ -3,12 +3,16 @@ import { useEffect, useState } from 'react'
 import { MARKETPLACE_URL } from '../../data/commands'
 import { useTheme } from '../../hooks/useTheme'
 import { VscodeIcon } from '../brand/VscodeIcon'
+import { MoonIcon, SunIcon } from '../brand/ThemeIcons'
 
-/** ≤5 primary items (skill: nav hierarchy). Version lives only in SpecBar. */
+/**
+ * Primary nav = only what matters for product entry:
+ * Home · Docs (+ Install CTA + theme).
+ * Security / Changelog / Credits / GitHub live in the footer.
+ */
 const topNav: { to: string; label: string; end?: boolean }[] = [
   { to: '/', label: 'Home', end: true },
   { to: '/docs', label: 'Docs' },
-  { to: '/docs/security', label: 'Security' },
 ]
 
 export function SiteHeader() {
@@ -24,18 +28,21 @@ export function SiteHeader() {
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
+  const themeLabel =
+    theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+
   return (
-    <header className="z-50 w-full shrink-0 border-b border-primary/85 bg-background/92 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
-      <div className="flex h-12 w-full min-h-12 items-stretch">
+    <header className="site-header z-50 w-full shrink-0 border-b border-primary/85 bg-background/92 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+      <div className="flex h-[var(--header-h)] w-full min-h-[var(--header-h)] items-stretch">
         <Link
           to="/"
-          className="flex min-h-12 shrink-0 items-center gap-2 border-r border-primary/85 px-4 text-mono-label font-semibold tracking-[0.16em] text-primary sm:px-5"
+          className="flex min-h-[var(--header-h)] shrink-0 items-center gap-2 border-r border-primary/85 px-4 text-mono-label font-semibold tracking-[0.16em] text-primary sm:px-5"
         >
           <VscodeIcon size={16} />
           FAULTLINE
         </Link>
 
-        <nav className="hidden flex-1 md:flex" aria-label="Primary">
+        <nav className="hidden min-w-0 flex-1 md:flex" aria-label="Primary">
           {topNav.map((item) => (
             <NavLink
               key={item.to}
@@ -43,7 +50,7 @@ export function SiteHeader() {
               end={item.end}
               className={({ isActive }) =>
                 [
-                  'nav-link flex h-full min-h-12 items-center border-r border-primary/85 px-5 text-mono-label uppercase tracking-[0.12em]',
+                  'nav-link flex h-full min-h-[var(--header-h)] items-center border-r border-primary/85 px-5 text-mono-label uppercase tracking-[0.12em]',
                   isActive
                     ? 'bg-primary text-on-primary'
                     : 'text-primary hover:bg-primary hover:text-on-primary',
@@ -57,19 +64,19 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="theme-toggle hidden sm:inline-flex"
+          className="theme-toggle ml-auto inline-flex sm:ml-0"
           onClick={toggle}
-          aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          aria-label={themeLabel}
+          title={themeLabel}
         >
-          {theme === 'dark' ? 'Light' : 'Dark'}
+          {theme === 'dark' ? <SunIcon size={18} /> : <MoonIcon size={18} />}
         </button>
 
         <a
           href={MARKETPLACE_URL}
           target="_blank"
           rel="noreferrer"
-          className="ml-auto hidden h-full min-h-12 items-center gap-2 border-l border-primary/85 bg-signal px-5 text-mono-label font-semibold tracking-[0.14em] text-white transition-opacity duration-200 hover:opacity-90 sm:flex sm:ml-0 sm:px-6"
+          className="hidden h-full min-h-[var(--header-h)] items-center gap-2 border-l border-primary/85 bg-signal px-5 text-mono-label font-semibold tracking-[0.14em] text-white transition-opacity duration-200 hover:opacity-90 sm:flex sm:px-6"
         >
           <VscodeIcon alt size={15} />
           Install
@@ -77,7 +84,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="ml-auto flex h-full min-h-12 min-w-12 items-center justify-center border-l border-primary/85 px-5 text-mono-label tracking-[0.12em] text-primary md:hidden sm:ml-0"
+          className="flex h-full min-h-[var(--header-h)] min-w-12 items-center justify-center border-l border-primary/85 px-4 text-mono-label tracking-[0.12em] text-primary md:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-nav"
@@ -108,30 +115,6 @@ export function SiteHeader() {
               {item.label}
             </NavLink>
           ))}
-          <NavLink
-            to="/docs/changelog"
-            onClick={() => setOpen(false)}
-            className="flex min-h-12 items-center border-b border-primary/85 px-5 py-4 text-mono-label uppercase tracking-[0.12em] text-primary"
-          >
-            Changelog
-          </NavLink>
-          <NavLink
-            to="/credits"
-            onClick={() => setOpen(false)}
-            className="flex min-h-12 items-center border-b border-primary/85 px-5 py-4 text-mono-label uppercase tracking-[0.12em] text-primary"
-          >
-            Credits
-          </NavLink>
-          <button
-            type="button"
-            className="flex min-h-12 w-full items-center border-b border-primary/85 px-5 py-4 text-left text-mono-label uppercase tracking-[0.12em] text-primary"
-            onClick={() => {
-              toggle()
-              setOpen(false)
-            }}
-          >
-            {theme === 'dark' ? 'Light mode' : 'Dark mode'}
-          </button>
           <a
             href={MARKETPLACE_URL}
             className="flex min-h-12 items-center gap-2 bg-signal px-5 py-4 text-mono-label font-semibold tracking-[0.14em] text-white"

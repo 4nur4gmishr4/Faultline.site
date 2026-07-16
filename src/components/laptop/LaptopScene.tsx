@@ -163,7 +163,7 @@ export function LaptopScene({
       ref={stageRef}
       className={`laptop-stage ${compact ? 'laptop-stage--compact' : ''} ${className}`}
       role="img"
-      aria-label="Interactive 3D laptop preview. Drag to rotate. Zoom is disabled. Lid opens to 95 degrees."
+      aria-label="Interactive 3D laptop preview. Drag to rotate. Zoom is disabled."
     >
       <div className="h-full w-full">
         {allowMount ? (

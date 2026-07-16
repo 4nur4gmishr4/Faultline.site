@@ -20,10 +20,10 @@ import { MARKETPLACE_URL } from '../data/commands'
  */
 export function HomePage() {
   return (
-    <div className="flex w-full flex-col">
-      <section className="grid min-h-[calc(100dvh-3rem)] w-full grid-cols-1 border-b border-primary/85 max-[720px]:min-h-0 md:grid-cols-12">
-        <div className="order-1 flex flex-col justify-center border-b border-primary/85 px-6 py-14 md:col-span-5 md:border-r md:border-b-0 md:px-12 md:py-20 lg:px-16 xl:px-20">
-          <div className="max-w-[22rem]">
+    <div className="flex w-full min-w-0 flex-col">
+      <section className="grid min-h-0 w-full min-w-0 grid-cols-1 border-b border-primary/85 md:min-h-[calc(100dvh-var(--header-h))] md:grid-cols-12">
+        <div className="order-1 flex min-w-0 flex-col justify-center border-b border-primary/85 px-6 py-14 md:col-span-5 md:border-r md:border-b-0 md:px-12 md:py-20 lg:px-16 xl:px-20">
+          <div className="w-full max-w-[22rem] min-w-0">
             <p className="icon-inline mb-7 text-mono-label uppercase tracking-[0.16em] text-secondary">
               <VscodeIcon size={16} />
               VS Code extension
@@ -54,13 +54,13 @@ export function HomePage() {
           </div>
         </div>
 
-        <div className="order-2 relative flex min-h-[min(52dvh,480px)] flex-col md:col-span-7 md:min-h-[calc(100dvh-3rem)]">
+        <div className="order-2 relative flex min-h-[min(52dvh,480px)] min-w-0 flex-col md:col-span-7 md:min-h-[calc(100dvh-var(--header-h))]">
           <LaptopSceneLazy
             scrollLinked
-            className="!min-h-full !h-full !border-0"
+            className="!min-h-full !h-full !w-full !max-w-full !border-0"
           />
           <p className="pointer-events-none absolute bottom-3 left-3 z-10 max-w-[calc(100%-1.5rem)] text-mono-label tracking-[0.1em] text-secondary md:bottom-4 md:left-4">
-            Drag to rotate · lid opens 95°
+            Drag to rotate
           </p>
         </div>
       </section>

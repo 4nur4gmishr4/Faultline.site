@@ -56,9 +56,10 @@ Future `/ui-ux-pro-max` work must follow this file.
 
 ## Navigation
 
-- Primary: Home · Docs · Security (≤5)
-- Install: header solid signal + hero + end CTA + install section detail
-- Mobile: menu drawer; Install in drawer on small screens
+- Primary (header only): **Home · Docs** (+ Install CTA + sun/moon theme)
+- Secondary (footer only): Security · Changelog · Credits · Marketplace · GitHub · License
+- No lid-angle / 95° marketing copy on the site surface
+- Mobile drawer mirrors primary only (+ Install)
 
 ## Interaction / a11y
 

@@ -44,7 +44,7 @@ export function CommandPalette() {
 
   return (
     <section
-      className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="w-full min-w-0 max-w-full border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
       aria-labelledby="palette-title"
     >
       <div className="mb-8 w-full max-w-2xl">

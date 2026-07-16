@@ -82,12 +82,22 @@ test.describe('FaultLine showcase', () => {
     expect(ct).toMatch(/image\/(png|jpeg|jpg)/i)
   })
 
-  test('primary nav has Home Docs Security', async ({ page }) => {
+  test('primary nav has Home Docs only', async ({ page }) => {
     await page.goto('/')
     const nav = page.getByRole('navigation', { name: 'Primary' })
     await expect(nav.getByRole('link', { name: 'Home' })).toBeVisible()
     await expect(nav.getByRole('link', { name: 'Docs' })).toBeVisible()
-    await expect(nav.getByRole('link', { name: 'Security' })).toBeVisible()
+    await expect(nav.getByRole('link', { name: 'Security' })).toHaveCount(0)
+    // secondary stays in footer
+    const footer = page.getByRole('navigation', { name: 'Footer' })
+    await expect(footer.getByRole('link', { name: 'Security' })).toBeVisible()
+    await expect(footer.getByRole('link', { name: 'Credits' })).toBeVisible()
+  })
+
+  test('no lid angle marketing copy on home', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.getByText(/lid opens|95°|95 degrees/i)).toHaveCount(0)
+    await expect(page.getByText('Drag to rotate')).toBeVisible()
   })
 
   test('end install CTA without re-pitch body', async ({ page }) => {

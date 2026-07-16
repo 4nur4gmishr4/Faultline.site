@@ -5,11 +5,11 @@
 export function FaultSample() {
   return (
     <section
-      className="border-b border-primary/85"
+      className="w-full min-w-0 max-w-full border-b border-primary/85"
       aria-labelledby="fault-sample-title"
     >
-      <div className="grid w-full grid-cols-1 lg:grid-cols-12">
-        <div className="border-b border-primary/85 px-6 py-12 md:px-10 lg:col-span-3 lg:border-r lg:border-b-0 lg:px-12 lg:py-16">
+      <div className="grid w-full min-w-0 grid-cols-1 lg:grid-cols-12">
+        <div className="min-w-0 border-b border-primary/85 px-6 py-12 md:px-10 lg:col-span-3 lg:border-r lg:border-b-0 lg:px-12 lg:py-16">
           <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
             Capture
           </p>

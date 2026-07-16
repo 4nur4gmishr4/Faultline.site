@@ -24,7 +24,7 @@ export function DocPage() {
   return (
     <div className="flex w-full flex-col lg:flex-row">
       <aside className="w-full shrink-0 border-b border-primary/85 lg:w-64 lg:border-r lg:border-b-0">
-        <div className="lg:sticky lg:top-0 lg:max-h-[calc(100dvh-3rem)] lg:overflow-y-auto">
+        <div className="lg:sticky lg:top-0 lg:max-h-[calc(100dvh-var(--header-h))] lg:overflow-y-auto">
           <div className="p-5 md:p-6">
             <p className="mb-5 text-mono-label uppercase tracking-[0.14em] text-secondary">
               Documentation

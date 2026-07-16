@@ -7,7 +7,7 @@ import { VscodeIcon } from '../brand/VscodeIcon'
 export function InstallPath() {
   return (
     <section
-      className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="w-full min-w-0 max-w-full border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
       aria-labelledby="install-path-title"
     >
       <div className="mb-8 w-full">

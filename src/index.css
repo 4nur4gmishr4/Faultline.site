@@ -7,6 +7,11 @@
  * fault = error line in capture sample only.
  * secondary tuned for ≥4.5:1 in light and dark.
  */
+:root {
+  /* single source for shell + hero viewport math */
+  --header-h: 3rem;
+}
+
 @theme {
   --color-background: #000000;
   --color-surface: #0a0a0a;
@@ -458,9 +463,13 @@ button:not(:disabled),
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  min-height: 44px;
-  min-width: 44px;
-  padding: 0 1rem;
+  min-height: var(--header-h);
+  min-width: var(--header-h);
+  height: 100%;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
@@ -492,6 +501,8 @@ button:not(:disabled),
 .laptop-stage {
   position: relative;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: min(62dvh, 640px);
   height: 100%;
   background: var(--color-background);
