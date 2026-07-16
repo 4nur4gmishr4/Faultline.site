@@ -66,7 +66,7 @@ export function HomePage() {
             className="!min-h-full !h-full !border-0"
           />
           <p className="pointer-events-none absolute bottom-3 left-3 z-10 text-mono-label tracking-[0.1em] text-secondary md:bottom-4 md:left-4">
-            Drag to rotate · lid opens to 95°
+            Drag to rotate · lid opens 95°
           </p>
         </div>
       </section>
