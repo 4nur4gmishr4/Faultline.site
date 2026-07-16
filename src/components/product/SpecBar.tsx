@@ -1,7 +1,7 @@
 import { EXTENSION_ID, VERSION } from '../../data/commands'
 
 /**
- * Static identity strip with light semantic accents.
+ * Static identity strip (never a marquee) with light semantic accents.
  */
 export function SpecBar() {
   return (
