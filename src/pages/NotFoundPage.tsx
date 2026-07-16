@@ -8,7 +8,7 @@ export function NotFoundPage() {
       </p>
       <h1 className="text-display-xl text-primary">Page not found</h1>
       <p className="text-body-lg max-w-md text-secondary">
-        That path is not part of this site. Try the home page or documentation
+        That path is not part of this site. No cap. Try the home page or documentation
         index.
       </p>
       <div className="flex flex-wrap gap-3">
