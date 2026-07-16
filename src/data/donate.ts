@@ -1,8 +1,8 @@
 /**
- * Donation config — free product, optional support for the developer.
+ * Donation config — free product, optional support for Anurag Mishra.
  * Presets in INR (student floor ₹50). Other currencies convert from INR.
  *
- * Fill DEVELOPER_PAYMENTS below (or VITE_DONATE_* env) for live details.
+ * Live details from DONATE_DETAILS form. Override any field with VITE_DONATE_*.
  */
 
 /** Student-friendly INR ladder. */
@@ -10,67 +10,53 @@ export const INR_PRESETS = [50, 100, 200, 500, 1000] as const
 
 export type InrPreset = (typeof INR_PRESETS)[number]
 
+/** Default selected preset (₹100 coffee). */
+export const DEFAULT_PRESET_INR = 100
+
+/** Soft floor for custom INR entry (typo guard; still student-friendly). */
+export const CUSTOM_MIN_INR = 10
+
 export const DEVELOPER_NAME = 'Anurag Mishra'
+export const DEVELOPER_EMAIL = 'anuragmishrasnag06082004@gmail.com'
+
+export const DONATE_THANK_YOU =
+  'Thank you for supporting FaultLine. Every contribution helps keep the project free, improves debugging for thousands of developers, and funds future releases.'
+
+function env(key: string): string {
+  if (typeof import.meta === 'undefined') return ''
+  const v = import.meta.env?.[key]
+  return typeof v === 'string' && v.trim() ? v.trim() : ''
+}
 
 /**
- * Your payout details — prefer env in production; paste here for local.
- * Leave empty strings until you share them (we ask one by one).
+ * Payout details (public on /donate).
+ * Env wins when set; otherwise defaults from developer form.
  */
 export const DEVELOPER_PAYMENTS = {
-  /** e.g. name@oksbi */
-  upiId:
-    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_DONATE_UPI) ||
-    '',
-  /** Optional public UPI QR image under /public, e.g. /donate/upi-qr.png */
-  upiQrSrc:
-    (typeof import.meta !== 'undefined' && import.meta.env?.VITE_DONATE_UPI_QR) ||
-    '',
+  upiId: env('VITE_DONATE_UPI') || 'anuragmishrasnag06082004@ybl',
+  upiDisplayName: 'Anurag Mishra',
+  upiQrSrc: env('VITE_DONATE_UPI_QR') || '/donate/upi-qr.png',
+  upiDeepLink: true,
 
   bank: {
-    accountName:
-      (typeof import.meta !== 'undefined' &&
-        import.meta.env?.VITE_DONATE_BANK_NAME) ||
-      '',
-    accountNumber:
-      (typeof import.meta !== 'undefined' &&
-        import.meta.env?.VITE_DONATE_BANK_ACCOUNT) ||
-      '',
-    ifsc:
-      (typeof import.meta !== 'undefined' &&
-        import.meta.env?.VITE_DONATE_BANK_IFSC) ||
-      '',
-    bankName:
-      (typeof import.meta !== 'undefined' &&
-        import.meta.env?.VITE_DONATE_BANK_BANK) ||
-      '',
+    accountName: env('VITE_DONATE_BANK_NAME') || 'ANURAG MISHRA',
+    accountNumber: env('VITE_DONATE_BANK_ACCOUNT') || '41259966938',
+    ifsc: env('VITE_DONATE_BANK_IFSC') || 'SBIN0010170',
+    bankName: env('VITE_DONATE_BANK_BANK') || 'State Bank of India (SBI)',
+    accountType: 'Savings',
   },
 
   crypto: {
-    /** e.g. BTC, ETH, USDT */
-    network:
-      (typeof import.meta !== 'undefined' &&
-        import.meta.env?.VITE_DONATE_CRYPTO_NETWORK) ||
-      '',
-    address:
-      (typeof import.meta !== 'undefined' &&
-        import.meta.env?.VITE_DONATE_CRYPTO_ADDRESS) ||
-      '',
+    network: env('VITE_DONATE_CRYPTO_NETWORK') || '',
+    address: env('VITE_DONATE_CRYPTO_ADDRESS') || '',
   },
 
   githubSponsors:
-    (typeof import.meta !== 'undefined' &&
-      import.meta.env?.VITE_DONATE_GITHUB_SPONSORS) ||
+    env('VITE_DONATE_GITHUB_SPONSORS') ||
     'https://github.com/sponsors/4nur4gmishr4',
 
-  /** Payment-link URL when you create one (optional). */
-  razorpayLink:
-    (typeof import.meta !== 'undefined' &&
-      import.meta.env?.VITE_DONATE_RAZORPAY) ||
-    '',
-  stripeLink:
-    (typeof import.meta !== 'undefined' &&
-      import.meta.env?.VITE_DONATE_STRIPE) ||
-    '',
+  razorpayLink: env('VITE_DONATE_RAZORPAY') || '',
+  stripeLink: env('VITE_DONATE_STRIPE') || '',
 } as const
 
 /** @deprecated use DEVELOPER_PAYMENTS */
@@ -92,16 +78,14 @@ export type PaymentMethodId =
 export type PaymentMethod = {
   id: PaymentMethodId
   title: string
-  /** What is cut from what you receive */
   cutLabel: string
   cutDetail: string
-  /** Prefer for India / zero-fee */
   tier: 'zero' | 'low' | 'gateway'
   notes: string
-  /** False until required fields are set */
   configured: boolean
 }
 
+/** Zero-fee first; gateway/crypto only if configured. */
 export function getPaymentMethods(): PaymentMethod[] {
   const p = DEVELOPER_PAYMENTS
   const bankOk = Boolean(
@@ -109,7 +93,7 @@ export function getPaymentMethods(): PaymentMethod[] {
   )
   const cryptoOk = Boolean(p.crypto.address && p.crypto.network)
 
-  return [
+  const all: PaymentMethod[] = [
     {
       id: 'upi',
       title: 'UPI (VPA / QR)',
@@ -125,7 +109,7 @@ export function getPaymentMethods(): PaymentMethod[] {
       cutLabel: '0%',
       cutDetail: 'No app commission',
       tier: 'zero',
-      notes: 'Account name, number, IFSC. Full amount (bank rules may apply).',
+      notes: 'SBI · Savings. Full amount (bank rules may apply).',
       configured: bankOk,
     },
     {
@@ -141,7 +125,7 @@ export function getPaymentMethods(): PaymentMethod[] {
       id: 'github',
       title: 'GitHub Sponsors (person → you)',
       cutLabel: '0% GitHub fee',
-      cutDetail: 'Personal sponsors — best “product” option abroad',
+      cutDetail: 'Personal sponsors — best product option abroad',
       tier: 'low',
       notes: 'Org sponsors may pay up to ~6%. Payout setup required.',
       configured: Boolean(p.githubSponsors),
@@ -165,6 +149,14 @@ export function getPaymentMethods(): PaymentMethod[] {
       configured: Boolean(p.stripeLink),
     },
   ]
+
+  // Prefer zero-fee: hide unconfigured optional methods (crypto / gateways)
+  return all.filter((m) => {
+    if (m.id === 'crypto' || m.id === 'razorpay' || m.id === 'stripe') {
+      return m.configured
+    }
+    return true
+  })
 }
 
 export type CurrencyCode =
@@ -272,9 +264,10 @@ export function formatMoney(
 
 export function buildUpiHref(amountInr: number): string | null {
   const upiId = DEVELOPER_PAYMENTS.upiId
-  if (!upiId || amountInr <= 0) return null
+  if (!upiId || !DEVELOPER_PAYMENTS.upiDeepLink || amountInr <= 0) return null
   const am = encodeURIComponent(String(Math.round(amountInr)))
   const pa = encodeURIComponent(upiId)
   const tn = encodeURIComponent('FaultLine support')
-  return `upi://pay?pa=${pa}&am=${am}&cu=INR&tn=${tn}`
+  const pn = encodeURIComponent(DEVELOPER_PAYMENTS.upiDisplayName || DEVELOPER_NAME)
+  return `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}`
 }

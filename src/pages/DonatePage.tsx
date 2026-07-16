@@ -3,8 +3,12 @@ import {
   buildUpiHref,
   CURRENCIES,
   type CurrencyCode,
+  CUSTOM_MIN_INR,
+  DEFAULT_PRESET_INR,
+  DEVELOPER_EMAIL,
   DEVELOPER_NAME,
   DEVELOPER_PAYMENTS,
+  DONATE_THANK_YOU,
   formatMoney,
   getPaymentMethods,
   INR_PRESETS,
@@ -20,7 +24,7 @@ export function DonatePage() {
   const methods = useMemo(() => getPaymentMethods(), [])
   const [currency, setCurrency] = useState<CurrencyCode>('INR')
   const [mode, setMode] = useState<Mode>('preset')
-  const [presetInr, setPresetInr] = useState<number>(100)
+  const [presetInr, setPresetInr] = useState<number>(DEFAULT_PRESET_INR)
   const [customRaw, setCustomRaw] = useState('')
   const [methodId, setMethodId] = useState<PaymentMethodId>('upi')
   const [copyMsg, setCopyMsg] = useState<string | null>(null)
@@ -29,10 +33,11 @@ export function DonatePage() {
     if (!geo.loading) setCurrency(geo.suggestedCurrency)
   }, [geo.loading, geo.suggestedCurrency])
 
-  // Prefer a configured zero-fee method first
   useEffect(() => {
-    const preferred: PaymentMethodId[] = ['upi', 'bank', 'crypto', 'github']
-    const hit = preferred.find((id) => methods.find((m) => m.id === id)?.configured)
+    const preferred: PaymentMethodId[] = ['upi', 'bank', 'github', 'crypto']
+    const hit = preferred.find((id) =>
+      methods.find((m) => m.id === id && m.configured)
+    )
     if (hit) setMethodId(hit)
   }, [methods])
 
@@ -48,14 +53,25 @@ export function DonatePage() {
     [rate, meta.decimals]
   )
 
+  const customError = useMemo(() => {
+    if (mode !== 'custom' || !customRaw.trim()) return null
+    const n = Number.parseFloat(customRaw.replace(/,/g, ''))
+    if (!Number.isFinite(n) || n <= 0) return 'Enter a valid amount.'
+    if (currency === 'INR' && n < CUSTOM_MIN_INR) {
+      return `Minimum custom amount is ₹${CUSTOM_MIN_INR} (or pick a preset).`
+    }
+    return null
+  }, [mode, customRaw, currency])
+
   const selectedAmount = useMemo(() => {
     if (mode === 'custom') {
       const n = Number.parseFloat(customRaw.replace(/,/g, ''))
       if (!Number.isFinite(n) || n <= 0) return 0
+      if (currency === 'INR' && n < CUSTOM_MIN_INR) return 0
       return roundDonateAmount(n, meta.decimals)
     }
     return presetsLocal.find((p) => p.inr === presetInr)?.local ?? 0
-  }, [mode, customRaw, presetInr, presetsLocal, meta.decimals])
+  }, [mode, customRaw, presetInr, presetsLocal, meta.decimals, currency])
 
   const selectedInr = useMemo(() => {
     if (currency === 'INR') return selectedAmount
@@ -89,11 +105,10 @@ export function DonatePage() {
 
   function methodActions() {
     const p = DEVELOPER_PAYMENTS
-    if (!activeMethod.configured) {
+    if (!activeMethod?.configured) {
       return (
         <p className="text-body-md text-secondary">
-          This method is listed for transparency. Details not published yet —
-          pick another method or check back soon.
+          This method is not available yet. Choose UPI, bank, or GitHub Sponsors.
         </p>
       )
     }
@@ -101,16 +116,21 @@ export function DonatePage() {
     if (methodId === 'upi') {
       const href = buildUpiHref(selectedInr > 0 ? selectedInr : 0)
       return (
-        <div className="flex flex-col gap-3">
-          <p className="text-body-md text-primary">
-            UPI ID:{' '}
-            <code className="text-mono-code">{p.upiId}</code>
-          </p>
+        <div className="flex flex-col gap-4">
+          <div>
+            <p className="text-body-md text-secondary">Pay to</p>
+            <p className="text-body-md text-primary">{p.upiDisplayName}</p>
+            <p className="mt-1">
+              <code className="text-mono-code text-primary">{p.upiId}</code>
+            </p>
+          </div>
           {p.upiQrSrc ? (
             <img
               src={p.upiQrSrc}
-              alt="UPI QR code"
-              className="max-w-[12rem] border border-primary/85"
+              alt="UPI QR code for Anurag Mishra"
+              width={192}
+              height={192}
+              className="max-w-[12rem] border border-primary/85 bg-white p-2"
             />
           ) : null}
           <div className="flex flex-col gap-2 sm:flex-row">
@@ -128,7 +148,7 @@ export function DonatePage() {
               onClick={() =>
                 void copyText(
                   'UPI',
-                  `UPI: ${p.upiId}\nAmount: ${
+                  `UPI: ${p.upiId}\nName: ${p.upiDisplayName}\nAmount: ${
                     selectedInr > 0
                       ? formatMoney(selectedInr, 'INR')
                       : '(choose amount)'
@@ -148,7 +168,8 @@ export function DonatePage() {
         `Account name: ${p.bank.accountName}`,
         `Account number: ${p.bank.accountNumber}`,
         `IFSC: ${p.bank.ifsc}`,
-        p.bank.bankName ? `Bank: ${p.bank.bankName}` : '',
+        `Bank: ${p.bank.bankName}`,
+        `Type: ${p.bank.accountType}`,
         selectedInr > 0
           ? `Amount: ${formatMoney(selectedInr, 'INR')}`
           : '',
@@ -173,12 +194,14 @@ export function DonatePage() {
               <dt className="text-secondary">IFSC</dt>
               <dd className="text-mono-code text-primary">{p.bank.ifsc}</dd>
             </div>
-            {p.bank.bankName ? (
-              <div>
-                <dt className="text-secondary">Bank</dt>
-                <dd className="text-primary">{p.bank.bankName}</dd>
-              </div>
-            ) : null}
+            <div>
+              <dt className="text-secondary">Bank</dt>
+              <dd className="text-primary">{p.bank.bankName}</dd>
+            </div>
+            <div>
+              <dt className="text-secondary">Type</dt>
+              <dd className="text-primary">{p.bank.accountType}</dd>
+            </div>
           </dl>
           <button
             type="button"
@@ -191,37 +214,11 @@ export function DonatePage() {
       )
     }
 
-    if (methodId === 'crypto') {
-      const block = `${p.crypto.network}\n${p.crypto.address}`
-      return (
-        <div className="flex flex-col gap-3">
-          <p className="text-body-md text-secondary">
-            Network:{' '}
-            <strong className="text-primary">{p.crypto.network}</strong>
-          </p>
-          <p className="break-all text-mono-code text-primary">
-            {p.crypto.address}
-          </p>
-          <p className="text-body-md text-secondary">
-            Only network fees apply for the sender — 0% platform cut.
-          </p>
-          <button
-            type="button"
-            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
-            onClick={() => void copyText('Wallet', block)}
-          >
-            Copy address
-          </button>
-        </div>
-      )
-    }
-
     if (methodId === 'github') {
       return (
         <div className="flex flex-col gap-3">
           <p className="text-body-md text-secondary">
-            Personal GitHub accounts: 0% GitHub fee. Org sponsors may pay up to
-            ~6%.
+            Personal GitHub accounts: 0% GitHub fee. Best option outside India.
           </p>
           <a
             href={p.githubSponsors}
@@ -235,38 +232,23 @@ export function DonatePage() {
       )
     }
 
-    if (methodId === 'razorpay' && p.razorpayLink) {
+    if (methodId === 'crypto' && p.crypto.address) {
+      const block = `${p.crypto.network}\n${p.crypto.address}`
       return (
         <div className="flex flex-col gap-3">
           <p className="text-body-md text-secondary">
-            Gateway fees apply (~2% + GST on fee). Prefer UPI for 0% cut.
+            Network: <strong className="text-primary">{p.crypto.network}</strong>
           </p>
-          <a
-            href={p.razorpayLink}
-            target="_blank"
-            rel="noreferrer"
-            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
-          >
-            Pay via Razorpay
-          </a>
-        </div>
-      )
-    }
-
-    if (methodId === 'stripe' && p.stripeLink) {
-      return (
-        <div className="flex flex-col gap-3">
-          <p className="text-body-md text-secondary">
-            Card processing (~2.9% + fixed, country-dependent).
+          <p className="break-all text-mono-code text-primary">
+            {p.crypto.address}
           </p>
-          <a
-            href={p.stripeLink}
-            target="_blank"
-            rel="noreferrer"
+          <button
+            type="button"
             className="brutal-btn brutal-btn-solid w-full sm:w-auto"
+            onClick={() => void copyText('Wallet', block)}
           >
-            Pay via Stripe
-          </a>
+            Copy address
+          </button>
         </div>
       )
     }
@@ -287,22 +269,19 @@ export function DonatePage() {
           FaultLine is completely free. Optional support goes to{' '}
           {DEVELOPER_NAME}. Students: from{' '}
           <strong className="text-primary">₹50</strong>. Prefer{' '}
-          <strong className="text-primary">0% cut</strong> methods (UPI, bank,
-          crypto) so the full amount reaches the developer.
+          <strong className="text-primary">0% cut</strong> methods (UPI, bank)
+          so the full amount reaches the developer.
         </p>
+        <p className="mt-4 text-body-md text-secondary">{DONATE_THANK_YOU}</p>
       </header>
 
-      {/* Fee-transparent method table */}
       <section aria-labelledby="methods-title">
-        <h2
-          id="methods-title"
-          className="mb-4 text-headline-lg text-primary"
-        >
+        <h2 id="methods-title" className="mb-4 text-headline-lg text-primary">
           How you can pay
         </h2>
         <p className="mb-6 max-w-2xl text-body-md text-secondary">
-          Cut = what is taken from the amount before it reaches the developer.
-          Pick a method, then choose an amount.
+          Cut = taken before the developer receives funds. Zero-fee methods
+          first.
         </p>
         <div className="w-full min-w-0 overflow-x-auto border border-primary/85">
           <table className="w-full min-w-[36rem] border-collapse text-left">
@@ -332,21 +311,12 @@ export function DonatePage() {
                   >
                     <td className="border border-primary/85 px-3 py-3 text-body-md text-primary md:px-4">
                       {m.title}
-                      {!m.configured ? (
-                        <span className="mt-1 block text-mono-label tracking-[0.08em] text-secondary">
-                          Details pending
-                        </span>
-                      ) : null}
                     </td>
                     <td className="border border-primary/85 px-3 py-3 md:px-4">
                       <span
                         className={[
                           'text-mono-label tracking-[0.08em]',
-                          m.tier === 'zero'
-                            ? 'text-signal'
-                            : m.tier === 'low'
-                              ? 'text-primary'
-                              : 'text-secondary',
+                          m.tier === 'zero' ? 'text-signal' : 'text-primary',
                         ].join(' ')}
                       >
                         {m.cutLabel}
@@ -400,7 +370,7 @@ export function DonatePage() {
               </p>
               <p className="text-body-md text-secondary">
                 Amounts in <strong className="text-primary">{meta.name}</strong>
-                . Ladder anchored to ₹50–₹1000.
+                . Ladder ₹50–₹1000.
               </p>
             </div>
           )}
@@ -437,11 +407,21 @@ export function DonatePage() {
             <p className="mb-2 text-mono-label uppercase tracking-[0.12em] text-secondary">
               Active method
             </p>
-            <p className="text-body-md text-primary">{activeMethod.title}</p>
+            <p className="text-body-md text-primary">{activeMethod?.title}</p>
             <p className="mt-1 text-mono-label tracking-[0.08em] text-signal">
-              Cut: {activeMethod.cutLabel}
+              Cut: {activeMethod?.cutLabel}
             </p>
           </div>
+
+          <p className="mt-8 text-body-md text-secondary">
+            Questions?{' '}
+            <a
+              className="text-signal underline underline-offset-2"
+              href={`mailto:${DEVELOPER_EMAIL}?subject=FaultLine%20support`}
+            >
+              {DEVELOPER_EMAIL}
+            </a>
+          </p>
         </aside>
 
         <div className="min-w-0 p-5 md:p-8 lg:col-span-8">
@@ -518,9 +498,11 @@ export function DonatePage() {
                 id="custom-amount"
                 type="number"
                 inputMode="decimal"
-                min={meta.decimals === 0 ? 1 : 0.5}
+                min={currency === 'INR' ? CUSTOM_MIN_INR : meta.decimals === 0 ? 1 : 0.5}
                 step={meta.decimals === 0 ? 1 : 0.01}
-                placeholder={currency === 'INR' ? 'e.g. 75' : 'Any amount'}
+                placeholder={
+                  currency === 'INR' ? `min ₹${CUSTOM_MIN_INR}` : 'Any amount'
+                }
                 value={mode === 'custom' ? customRaw : ''}
                 onChange={(e) => {
                   setMode('custom')
@@ -528,8 +510,20 @@ export function DonatePage() {
                 }}
                 onFocus={() => setMode('custom')}
                 className="w-full min-w-0 border-0 bg-transparent px-3 text-body-md text-primary outline-none placeholder:text-secondary"
+                aria-invalid={Boolean(customError)}
+                aria-describedby={customError ? 'custom-err' : undefined}
               />
             </div>
+            {customError ? (
+              <p id="custom-err" className="mt-3 text-body-md text-fault" role="alert">
+                {customError}
+              </p>
+            ) : (
+              <p className="mt-3 text-body-md text-secondary">
+                Custom min ₹{CUSTOM_MIN_INR} in India. Presets start at ₹50 for
+                students.
+              </p>
+            )}
           </div>
 
           <div className="mt-8 border border-primary/85 bg-surface p-5">
@@ -550,7 +544,10 @@ export function DonatePage() {
                 ) : null}
               </div>
               {copyMsg ? (
-                <p className="text-mono-label tracking-[0.1em] text-signal" role="status">
+                <p
+                  className="text-mono-label tracking-[0.1em] text-signal"
+                  role="status"
+                >
                   {copyMsg}
                 </p>
               ) : null}
