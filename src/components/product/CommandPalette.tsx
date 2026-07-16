@@ -44,10 +44,10 @@ export function CommandPalette() {
 
   return (
     <section
-      className="w-full min-w-0 max-w-full border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
       aria-labelledby="palette-title"
     >
-      <div className="mb-8 w-full max-w-2xl">
+      <div className="mb-8 max-w-lg">
         <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
           Command palette
         </p>
@@ -60,7 +60,7 @@ export function CommandPalette() {
         </p>
       </div>
 
-      <div className="w-full border border-primary/85 bg-surface">
+      <div className="mx-auto max-w-3xl border border-primary/85 bg-surface">
         <div className="flex items-stretch border-b border-primary/85">
           <label className="flex min-h-12 flex-1 items-center">
             <span className="sr-only">Filter commands</span>

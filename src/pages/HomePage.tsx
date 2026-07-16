@@ -54,10 +54,10 @@ export function HomePage() {
           </div>
         </div>
 
-        <div className="order-2 relative flex min-h-[min(52dvh,480px)] min-w-0 flex-col md:col-span-7 md:min-h-[calc(100dvh-var(--header-h))]">
+        <div className="order-2 relative flex min-h-[min(52dvh,480px)] flex-col md:col-span-7 md:min-h-[calc(100dvh-var(--header-h))]">
           <LaptopSceneLazy
             scrollLinked
-            className="!min-h-full !h-full !w-full !max-w-full !border-0"
+            className="!min-h-full !h-full !border-0"
           />
           <p className="pointer-events-none absolute bottom-3 left-3 z-10 max-w-[calc(100%-1.5rem)] text-mono-label tracking-[0.1em] text-secondary md:bottom-4 md:left-4">
             Drag to rotate

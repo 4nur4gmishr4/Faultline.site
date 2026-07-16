@@ -32,10 +32,10 @@ const ROWS: { feature: string; defaultValue: string; why: string }[] = [
 export function DefaultsMatrix() {
   return (
     <section
-      className="w-full min-w-0 max-w-full border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
       aria-labelledby="defaults-title"
     >
-      <div className="mb-8 w-full min-w-0">
+      <div className="mb-8 max-w-lg">
         <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
           Defaults
         </p>
@@ -44,25 +44,25 @@ export function DefaultsMatrix() {
         </h2>
       </div>
 
-      <div className="w-full max-w-full min-w-0 overflow-x-auto border border-primary/85">
-        <table className="w-full min-w-[min(100%,480px)] border-collapse text-left">
+      <div className="w-full overflow-x-auto border border-primary/85">
+        <table className="w-full min-w-[480px] border-collapse text-left">
           <thead className="brutal-invert">
             <tr>
               <th
                 scope="col"
-                className="border border-primary/85 px-4 py-3.5 text-mono-label font-medium tracking-[0.08em] md:w-[32%] md:px-6"
+                className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]"
               >
                 Feature
               </th>
               <th
                 scope="col"
-                className="border border-primary/85 px-4 py-3.5 text-mono-label font-medium tracking-[0.08em] md:w-[22%] md:px-6"
+                className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]"
               >
                 Default
               </th>
               <th
                 scope="col"
-                className="border border-primary/85 px-4 py-3.5 text-mono-label font-medium tracking-[0.08em] md:px-6"
+                className="border border-primary/85 px-4 py-3 text-mono-label font-medium tracking-[0.08em]"
               >
                 Why
               </th>
@@ -71,13 +71,13 @@ export function DefaultsMatrix() {
           <tbody>
             {ROWS.map((row) => (
               <tr key={row.feature}>
-                <td className="border border-primary/85 px-4 py-3.5 text-body-md text-primary md:px-6">
+                <td className="border border-primary/85 px-4 py-3 text-body-md text-primary">
                   {row.feature}
                 </td>
-                <td className="border border-primary/85 px-4 py-3.5 md:px-6">
+                <td className="border border-primary/85 px-4 py-3">
                   <span className="mono-chip">{row.defaultValue}</span>
                 </td>
-                <td className="border border-primary/85 px-4 py-3.5 text-body-md text-secondary md:px-6">
+                <td className="border border-primary/85 px-4 py-3 text-body-md text-secondary">
                   {row.why}
                 </td>
               </tr>
