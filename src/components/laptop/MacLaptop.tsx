@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { useFrame, useThree, useLoader } from '@react-three/fiber'
-import { ContactShadows, OrbitControls } from '@react-three/drei'
+import { OrbitControls } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js'
 import gsap from 'gsap'
@@ -300,16 +300,6 @@ export function MacLaptop({
           ))}
         </group>
       </group>
-
-      <ContactShadows
-        position={[0, -3.9, 0]}
-        opacity={0.42}
-        scale={36}
-        blur={2.4}
-        far={14}
-        color="#000000"
-        resolution={512}
-      />
     </>
   )
 }
