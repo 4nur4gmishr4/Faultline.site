@@ -242,6 +242,7 @@ export function MacLaptop({
         top.push(child)
         child.traverse((mesh) => {
           if (!(mesh instanceof THREE.Mesh)) return
+          // Lid exterior = same Space Gray unibody as palm rest / trackpad deck
           if (mesh.name === 'lid') mesh.material = materials.baseMetal
           else if (mesh.name === 'logo') mesh.material = materials.logo
           else if (mesh.name === 'screen-frame') mesh.material = materials.darkPlastic
@@ -251,10 +252,11 @@ export function MacLaptop({
         bottom.push(child)
         child.traverse((mesh) => {
           if (!(mesh instanceof THREE.Mesh)) return
+          // Base + inner (trackpad deck) + legs share chassis metal
           if (mesh.name === 'base') mesh.material = materials.baseMetal
-          else if (mesh.name === 'legs') mesh.material = materials.darkPlastic
+          else if (mesh.name === 'legs') mesh.material = materials.baseMetal
           else if (mesh.name === 'keyboard') mesh.material = materials.keyboard
-          else if (mesh.name === 'inner') mesh.material = materials.darkPlastic
+          else if (mesh.name === 'inner') mesh.material = materials.baseMetal
         })
       }
     })
@@ -385,6 +387,14 @@ export function MacLaptop({
             material={materials.darkPlastic}
           >
             <planeGeometry args={[SCREEN_SIZE[0], SCREEN_SIZE[1]]} />
+          </mesh>
+          {/* Product wordmark centered on the lower display bezel */}
+          <mesh
+            position={[0, 0.42, -0.108]}
+            rotation={[Math.PI, 0, 0]}
+            material={materials.bezelLabel}
+          >
+            <planeGeometry args={[11.2, 1.35]} />
           </mesh>
         </group>
 

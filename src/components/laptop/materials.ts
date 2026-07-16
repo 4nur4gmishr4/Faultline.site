@@ -3,13 +3,17 @@ import * as THREE from 'three'
 export const SCREEN_SIZE: [number, number] = [29.4, 20]
 
 export interface LaptopMaterials {
+  /** Display bezel (black). */
   darkPlastic: THREE.MeshStandardMaterial
   camera: THREE.MeshBasicMaterial
+  /** Unibody chassis — lid, base, palm rest / trackpad deck (same Space Gray). */
   baseMetal: THREE.MeshStandardMaterial
   logo: THREE.MeshBasicMaterial
   screen: THREE.MeshBasicMaterial
   /** GLB model keycaps — solid black chiclet color, no overlay plane. */
   keyboard: THREE.MeshStandardMaterial
+  /** “MacBook Pro” mark under the display glass (original product lettering). */
+  bezelLabel: THREE.MeshBasicMaterial
   screenImageTexture: THREE.Texture
   screenCameraTexture: THREE.VideoTexture
   videoEl: HTMLVideoElement
@@ -89,6 +93,48 @@ export function createFaultLineScreenTexture(): THREE.CanvasTexture {
   return tex
 }
 
+/**
+ * Product wordmark as on a real MacBook Pro — thin, centered under the glass.
+ */
+export function createMacBookProBezelTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas')
+  canvas.width = 1024
+  canvas.height = 160
+  const ctx = canvas.getContext('2d')!
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+  // Soft silver emboss on dark bezel (Apple-style)
+  const text = 'MacBook Pro'
+  ctx.font = '300 52px "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillStyle = '#8e8e93'
+  // Slight letter-spacing via manual draw
+  const letters = text.split('')
+  const spacing = 6
+  let total = 0
+  const widths = letters.map((ch) => {
+    const w = ctx.measureText(ch).width
+    total += w
+    return w
+  })
+  total += spacing * (letters.length - 1)
+  let x = canvas.width / 2 - total / 2
+  const y = canvas.height / 2
+  for (let i = 0; i < letters.length; i++) {
+    ctx.fillText(letters[i], x + widths[i] / 2, y)
+    x += widths[i] + spacing
+  }
+
+  const tex = new THREE.CanvasTexture(canvas)
+  tex.flipY = false
+  tex.colorSpace = THREE.SRGBColorSpace
+  tex.anisotropy = 8
+  tex.needsUpdate = true
+  return tex
+}
+
 export function createLaptopMaterials(videoEl: HTMLVideoElement): LaptopMaterials {
   const screenImageTexture = createFaultLineScreenTexture()
   screenImageTexture.wrapS = THREE.ClampToEdgeWrapping
@@ -97,6 +143,8 @@ export function createLaptopMaterials(videoEl: HTMLVideoElement): LaptopMaterial
   const screenCameraTexture = new THREE.VideoTexture(videoEl)
   screenCameraTexture.flipY = false
 
+  const bezelLabelMap = createMacBookProBezelTexture()
+
   const screen = new THREE.MeshBasicMaterial({
     map: screenImageTexture,
     transparent: true,
@@ -104,30 +152,40 @@ export function createLaptopMaterials(videoEl: HTMLVideoElement): LaptopMaterial
     side: THREE.BackSide,
   })
 
+  // One chassis tone for lid + base + palm/trackpad deck (no env map → lower metalness
+  // so it never collapses to pure black).
+  const chassis = new THREE.MeshStandardMaterial({
+    color: 0xc5c6cb,
+    roughness: 0.48,
+    metalness: 0.42,
+    envMapIntensity: 0.55,
+  })
+
   return {
-    // Palm rest / bezel / trackpad well — deep black plastic
+    // Display bezel only — deep black around the glass
     darkPlastic: new THREE.MeshStandardMaterial({
-      color: 0x1a1a1c,
-      roughness: 0.82,
-      metalness: 0.12,
+      color: 0x1c1c1e,
+      roughness: 0.88,
+      metalness: 0.08,
     }),
     // Webcam pinhole
     camera: new THREE.MeshBasicMaterial({ color: 0x0a0a0a }),
-    // Space Gray aluminum unibody
-    baseMetal: new THREE.MeshStandardMaterial({
-      color: 0xa8a9ae,
-      roughness: 0.38,
-      metalness: 0.92,
-      envMapIntensity: 1.05,
-    }),
+    baseMetal: chassis,
     // Laser-etched lid logo — soft silver
-    logo: new THREE.MeshBasicMaterial({ color: 0xd8d8dc }),
+    logo: new THREE.MeshBasicMaterial({ color: 0xe8e8ed }),
     screen,
     // GLB model keycaps only — matte black chiclet plastic
     keyboard: new THREE.MeshStandardMaterial({
       color: 0x0a0a0a,
       roughness: 0.88,
       metalness: 0.04,
+    }),
+    bezelLabel: new THREE.MeshBasicMaterial({
+      map: bezelLabelMap,
+      transparent: true,
+      opacity: 1,
+      side: THREE.BackSide,
+      depthWrite: false,
     }),
     screenImageTexture,
     screenCameraTexture,
