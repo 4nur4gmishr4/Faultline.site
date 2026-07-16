@@ -148,8 +148,9 @@ test.describe('FaultLine showcase', () => {
     await expect(
       page.getByRole('heading', { name: /Free forever/i })
     ).toBeVisible()
-    await expect(page.getByText(/completely free/i).first()).toBeVisible()
-    // INR presets render (geo may flip currency; force INR)
+    await expect(page.getByRole('heading', { name: /How you can pay/i })).toBeVisible()
+    await expect(page.getByText(/UPI \(VPA/i).first()).toBeVisible()
+    await expect(page.getByText('0%').first()).toBeVisible()
     await page.getByRole('button', { name: 'INR', exact: true }).click()
     await expect(page.getByRole('option', { name: /₹50|₹\s*50/i }).first()).toBeVisible()
     await expect(page.getByLabel(/Custom amount/i)).toBeVisible()

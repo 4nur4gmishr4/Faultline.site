@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
-  buildDonateHref,
+  buildUpiHref,
   CURRENCIES,
   type CurrencyCode,
   DEVELOPER_NAME,
-  DONATE_LINKS,
+  DEVELOPER_PAYMENTS,
   formatMoney,
+  getPaymentMethods,
   INR_PRESETS,
+  type PaymentMethodId,
   roundDonateAmount,
 } from '../data/donate'
 import { useGeoCurrency } from '../hooks/useGeoCurrency'
@@ -15,18 +17,24 @@ type Mode = 'preset' | 'custom'
 
 export function DonatePage() {
   const geo = useGeoCurrency()
+  const methods = useMemo(() => getPaymentMethods(), [])
   const [currency, setCurrency] = useState<CurrencyCode>('INR')
   const [mode, setMode] = useState<Mode>('preset')
   const [presetInr, setPresetInr] = useState<number>(100)
   const [customRaw, setCustomRaw] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [methodId, setMethodId] = useState<PaymentMethodId>('upi')
+  const [copyMsg, setCopyMsg] = useState<string | null>(null)
 
-  // Apply geo-suggested currency once loaded
   useEffect(() => {
-    if (!geo.loading) {
-      setCurrency(geo.suggestedCurrency)
-    }
+    if (!geo.loading) setCurrency(geo.suggestedCurrency)
   }, [geo.loading, geo.suggestedCurrency])
+
+  // Prefer a configured zero-fee method first
+  useEffect(() => {
+    const preferred: PaymentMethodId[] = ['upi', 'bank', 'crypto', 'github']
+    const hit = preferred.find((id) => methods.find((m) => m.id === id)?.configured)
+    if (hit) setMethodId(hit)
+  }, [methods])
 
   const rate = geo.ratesFromInr[currency] ?? (currency === 'INR' ? 1 : 0.012)
   const meta = CURRENCIES[currency]
@@ -46,17 +54,16 @@ export function DonatePage() {
       if (!Number.isFinite(n) || n <= 0) return 0
       return roundDonateAmount(n, meta.decimals)
     }
-    const hit = presetsLocal.find((p) => p.inr === presetInr)
-    return hit?.local ?? 0
+    return presetsLocal.find((p) => p.inr === presetInr)?.local ?? 0
   }, [mode, customRaw, presetInr, presetsLocal, meta.decimals])
 
-  const selectedInrApprox = useMemo(() => {
+  const selectedInr = useMemo(() => {
     if (currency === 'INR') return selectedAmount
     if (rate <= 0) return 0
     return Math.round(selectedAmount / rate)
   }, [selectedAmount, currency, rate])
 
-  const pay = selectedAmount > 0 ? buildDonateHref(selectedAmount, currency) : null
+  const activeMethod = methods.find((m) => m.id === methodId) ?? methods[0]
 
   const currencyChoices = useMemo(() => {
     const base: CurrencyCode[] = ['INR', 'USD']
@@ -70,16 +77,201 @@ export function DonatePage() {
     return base
   }, [geo.suggestedCurrency])
 
-  async function copyUpi() {
-    if (!DONATE_LINKS.upiId) return
-    const text = `UPI: ${DONATE_LINKS.upiId}\nAmount: ${formatMoney(selectedAmount, 'INR')}`
+  async function copyText(label: string, text: string) {
     try {
       await navigator.clipboard.writeText(text)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 2000)
+      setCopyMsg(`${label} copied`)
+      window.setTimeout(() => setCopyMsg(null), 2000)
     } catch {
-      setCopied(false)
+      setCopyMsg('Could not copy')
     }
+  }
+
+  function methodActions() {
+    const p = DEVELOPER_PAYMENTS
+    if (!activeMethod.configured) {
+      return (
+        <p className="text-body-md text-secondary">
+          This method is listed for transparency. Details not published yet —
+          pick another method or check back soon.
+        </p>
+      )
+    }
+
+    if (methodId === 'upi') {
+      const href = buildUpiHref(selectedInr > 0 ? selectedInr : 0)
+      return (
+        <div className="flex flex-col gap-3">
+          <p className="text-body-md text-primary">
+            UPI ID:{' '}
+            <code className="text-mono-code">{p.upiId}</code>
+          </p>
+          {p.upiQrSrc ? (
+            <img
+              src={p.upiQrSrc}
+              alt="UPI QR code"
+              className="max-w-[12rem] border border-primary/85"
+            />
+          ) : null}
+          <div className="flex flex-col gap-2 sm:flex-row">
+            {href && selectedInr > 0 ? (
+              <a
+                href={href}
+                className="brutal-btn brutal-btn-solid w-full sm:w-auto"
+              >
+                Open UPI · {formatMoney(selectedInr, 'INR')}
+              </a>
+            ) : null}
+            <button
+              type="button"
+              className="brutal-btn w-full sm:w-auto"
+              onClick={() =>
+                void copyText(
+                  'UPI',
+                  `UPI: ${p.upiId}\nAmount: ${
+                    selectedInr > 0
+                      ? formatMoney(selectedInr, 'INR')
+                      : '(choose amount)'
+                  }\nNote: FaultLine support`
+                )
+              }
+            >
+              Copy UPI details
+            </button>
+          </div>
+        </div>
+      )
+    }
+
+    if (methodId === 'bank') {
+      const block = [
+        `Account name: ${p.bank.accountName}`,
+        `Account number: ${p.bank.accountNumber}`,
+        `IFSC: ${p.bank.ifsc}`,
+        p.bank.bankName ? `Bank: ${p.bank.bankName}` : '',
+        selectedInr > 0
+          ? `Amount: ${formatMoney(selectedInr, 'INR')}`
+          : '',
+        'Note: FaultLine support',
+      ]
+        .filter(Boolean)
+        .join('\n')
+      return (
+        <div className="flex flex-col gap-3">
+          <dl className="space-y-2 text-body-md">
+            <div>
+              <dt className="text-secondary">Account name</dt>
+              <dd className="text-primary">{p.bank.accountName}</dd>
+            </div>
+            <div>
+              <dt className="text-secondary">Account number</dt>
+              <dd className="text-mono-code text-primary">
+                {p.bank.accountNumber}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-secondary">IFSC</dt>
+              <dd className="text-mono-code text-primary">{p.bank.ifsc}</dd>
+            </div>
+            {p.bank.bankName ? (
+              <div>
+                <dt className="text-secondary">Bank</dt>
+                <dd className="text-primary">{p.bank.bankName}</dd>
+              </div>
+            ) : null}
+          </dl>
+          <button
+            type="button"
+            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
+            onClick={() => void copyText('Bank details', block)}
+          >
+            Copy bank details
+          </button>
+        </div>
+      )
+    }
+
+    if (methodId === 'crypto') {
+      const block = `${p.crypto.network}\n${p.crypto.address}`
+      return (
+        <div className="flex flex-col gap-3">
+          <p className="text-body-md text-secondary">
+            Network:{' '}
+            <strong className="text-primary">{p.crypto.network}</strong>
+          </p>
+          <p className="break-all text-mono-code text-primary">
+            {p.crypto.address}
+          </p>
+          <p className="text-body-md text-secondary">
+            Only network fees apply for the sender — 0% platform cut.
+          </p>
+          <button
+            type="button"
+            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
+            onClick={() => void copyText('Wallet', block)}
+          >
+            Copy address
+          </button>
+        </div>
+      )
+    }
+
+    if (methodId === 'github') {
+      return (
+        <div className="flex flex-col gap-3">
+          <p className="text-body-md text-secondary">
+            Personal GitHub accounts: 0% GitHub fee. Org sponsors may pay up to
+            ~6%.
+          </p>
+          <a
+            href={p.githubSponsors}
+            target="_blank"
+            rel="noreferrer"
+            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
+          >
+            Open GitHub Sponsors
+          </a>
+        </div>
+      )
+    }
+
+    if (methodId === 'razorpay' && p.razorpayLink) {
+      return (
+        <div className="flex flex-col gap-3">
+          <p className="text-body-md text-secondary">
+            Gateway fees apply (~2% + GST on fee). Prefer UPI for 0% cut.
+          </p>
+          <a
+            href={p.razorpayLink}
+            target="_blank"
+            rel="noreferrer"
+            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
+          >
+            Pay via Razorpay
+          </a>
+        </div>
+      )
+    }
+
+    if (methodId === 'stripe' && p.stripeLink) {
+      return (
+        <div className="flex flex-col gap-3">
+          <p className="text-body-md text-secondary">
+            Card processing (~2.9% + fixed, country-dependent).
+          </p>
+          <a
+            href={p.stripeLink}
+            target="_blank"
+            rel="noreferrer"
+            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
+          >
+            Pay via Stripe
+          </a>
+        </div>
+      )
+    }
+
+    return null
   }
 
   return (
@@ -92,16 +284,104 @@ export function DonatePage() {
           Free forever. Donate if you can.
         </h1>
         <p className="text-body-lg text-secondary">
-          FaultLine is completely free — no paywall, no premium tier. If it
-          helped you debug a bad night, you can send {DEVELOPER_NAME} a small
-          thank-you. Students: start at{' '}
-          <strong className="text-primary">₹50</strong> (or the local
-          equivalent). Any amount is appreciated; nothing is required.
+          FaultLine is completely free. Optional support goes to{' '}
+          {DEVELOPER_NAME}. Students: from{' '}
+          <strong className="text-primary">₹50</strong>. Prefer{' '}
+          <strong className="text-primary">0% cut</strong> methods (UPI, bank,
+          crypto) so the full amount reaches the developer.
         </p>
       </header>
 
+      {/* Fee-transparent method table */}
+      <section aria-labelledby="methods-title">
+        <h2
+          id="methods-title"
+          className="mb-4 text-headline-lg text-primary"
+        >
+          How you can pay
+        </h2>
+        <p className="mb-6 max-w-2xl text-body-md text-secondary">
+          Cut = what is taken from the amount before it reaches the developer.
+          Pick a method, then choose an amount.
+        </p>
+        <div className="w-full min-w-0 overflow-x-auto border border-primary/85">
+          <table className="w-full min-w-[36rem] border-collapse text-left">
+            <thead className="brutal-invert">
+              <tr>
+                <th className="border border-primary/85 px-3 py-3 text-mono-label font-medium tracking-[0.08em] md:px-4">
+                  Method
+                </th>
+                <th className="border border-primary/85 px-3 py-3 text-mono-label font-medium tracking-[0.08em] md:px-4">
+                  Cut on what you receive
+                </th>
+                <th className="border border-primary/85 px-3 py-3 text-mono-label font-medium tracking-[0.08em] md:px-4">
+                  Notes
+                </th>
+                <th className="border border-primary/85 px-3 py-3 text-mono-label font-medium tracking-[0.08em] md:px-4">
+                  Select
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {methods.map((m) => {
+                const active = methodId === m.id
+                return (
+                  <tr
+                    key={m.id}
+                    className={active ? 'bg-signal-soft' : undefined}
+                  >
+                    <td className="border border-primary/85 px-3 py-3 text-body-md text-primary md:px-4">
+                      {m.title}
+                      {!m.configured ? (
+                        <span className="mt-1 block text-mono-label tracking-[0.08em] text-secondary">
+                          Details pending
+                        </span>
+                      ) : null}
+                    </td>
+                    <td className="border border-primary/85 px-3 py-3 md:px-4">
+                      <span
+                        className={[
+                          'text-mono-label tracking-[0.08em]',
+                          m.tier === 'zero'
+                            ? 'text-signal'
+                            : m.tier === 'low'
+                              ? 'text-primary'
+                              : 'text-secondary',
+                        ].join(' ')}
+                      >
+                        {m.cutLabel}
+                      </span>
+                      <span className="mt-1 block text-body-md text-secondary">
+                        {m.cutDetail}
+                      </span>
+                    </td>
+                    <td className="border border-primary/85 px-3 py-3 text-body-md text-secondary md:px-4">
+                      {m.notes}
+                    </td>
+                    <td className="border border-primary/85 px-3 py-3 md:px-4">
+                      <button
+                        type="button"
+                        className={[
+                          'brutal-btn !min-h-11 !px-4 !py-2',
+                          active ? 'brutal-btn-solid' : '',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                        aria-pressed={active}
+                        onClick={() => setMethodId(m.id)}
+                      >
+                        {active ? 'Selected' : 'Use'}
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <div className="grid w-full min-w-0 grid-cols-1 gap-0 border border-primary/85 lg:grid-cols-12">
-        {/* Context column */}
         <aside className="border-b border-primary/85 p-5 md:p-8 lg:col-span-4 lg:border-r lg:border-b-0">
           <p className="mb-4 text-mono-label uppercase tracking-[0.12em] text-secondary">
             Location
@@ -119,15 +399,9 @@ export function DonatePage() {
                 ) : null}
               </p>
               <p className="text-body-md text-secondary">
-                Showing amounts in{' '}
-                <strong className="text-primary">{meta.name}</strong>. Presets are
-                anchored to ₹50–₹1000 and converted for your currency.
+                Amounts in <strong className="text-primary">{meta.name}</strong>
+                . Ladder anchored to ₹50–₹1000.
               </p>
-              {geo.error ? (
-                <p className="text-body-md text-secondary" role="status">
-                  {geo.error}
-                </p>
-              ) : null}
             </div>
           )}
 
@@ -135,11 +409,7 @@ export function DonatePage() {
             <p className="mb-3 text-mono-label uppercase tracking-[0.12em] text-secondary">
               Currency
             </p>
-            <div
-              className="flex flex-wrap gap-2"
-              role="group"
-              aria-label="Currency"
-            >
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Currency">
               {currencyChoices.map((code) => (
                 <button
                   key={code}
@@ -163,14 +433,17 @@ export function DonatePage() {
             </div>
           </div>
 
-          <ul className="mt-10 space-y-2 text-body-md text-secondary">
-            <li>· MIT licensed · no ads</li>
-            <li>· Student-friendly floor (₹50 ladder)</li>
-            <li>· Custom amount anytime</li>
-          </ul>
+          <div className="mt-10 border border-primary/85 p-4">
+            <p className="mb-2 text-mono-label uppercase tracking-[0.12em] text-secondary">
+              Active method
+            </p>
+            <p className="text-body-md text-primary">{activeMethod.title}</p>
+            <p className="mt-1 text-mono-label tracking-[0.08em] text-signal">
+              Cut: {activeMethod.cutLabel}
+            </p>
+          </div>
         </aside>
 
-        {/* Amount picker */}
         <div className="min-w-0 p-5 md:p-8 lg:col-span-8">
           <p className="mb-4 text-mono-label uppercase tracking-[0.12em] text-secondary">
             Choose an amount
@@ -204,23 +477,15 @@ export function DonatePage() {
                   <span className="text-headline-md tabular-nums">
                     {formatMoney(local, currency)}
                   </span>
-                  {currency !== 'INR' ? (
-                    <span
-                      className={[
-                        'mt-1 text-mono-label tracking-[0.08em]',
-                        active ? 'text-white/80' : 'text-secondary',
-                      ].join(' ')}
-                    >
-                      ≈ ₹{inr}
-                    </span>
-                  ) : (
-                    <span
-                      className={[
-                        'mt-1 text-mono-label tracking-[0.08em]',
-                        active ? 'text-white/80' : 'text-secondary',
-                      ].join(' ')}
-                    >
-                      {inr === 50
+                  <span
+                    className={[
+                      'mt-1 text-mono-label tracking-[0.08em]',
+                      active ? 'text-white/80' : 'text-secondary',
+                    ].join(' ')}
+                  >
+                    {currency !== 'INR'
+                      ? `≈ ₹${inr}`
+                      : inr === 50
                         ? 'Student'
                         : inr === 100
                           ? 'Coffee'
@@ -229,8 +494,7 @@ export function DonatePage() {
                             : inr === 500
                               ? 'Lunch'
                               : 'Hero'}
-                    </span>
-                  )}
+                  </span>
                 </button>
               )
             })}
@@ -243,101 +507,59 @@ export function DonatePage() {
             >
               Custom amount ({meta.symbol} {currency})
             </label>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
-              <div className="flex min-h-12 flex-1 items-stretch border border-primary/85">
-                <span
-                  className="flex min-w-12 items-center justify-center border-r border-primary/85 px-3 text-mono-code text-secondary"
-                  aria-hidden
-                >
-                  {meta.symbol}
-                </span>
-                <input
-                  id="custom-amount"
-                  type="number"
-                  inputMode="decimal"
-                  min={meta.decimals === 0 ? 1 : 0.5}
-                  step={meta.decimals === 0 ? 1 : 0.01}
-                  placeholder={
-                    currency === 'INR'
-                      ? 'e.g. 75'
-                      : currency === 'USD'
-                        ? 'e.g. 3'
-                        : 'Any amount'
-                  }
-                  value={mode === 'custom' ? customRaw : ''}
-                  onChange={(e) => {
-                    setMode('custom')
-                    setCustomRaw(e.target.value)
-                  }}
-                  onFocus={() => setMode('custom')}
-                  className="w-full min-w-0 border-0 bg-transparent px-3 text-body-md text-primary outline-none placeholder:text-secondary"
-                  aria-describedby="custom-hint"
-                />
-              </div>
+            <div className="flex min-h-12 flex-1 items-stretch border border-primary/85">
+              <span
+                className="flex min-w-12 items-center justify-center border-r border-primary/85 px-3 text-mono-code text-secondary"
+                aria-hidden
+              >
+                {meta.symbol}
+              </span>
+              <input
+                id="custom-amount"
+                type="number"
+                inputMode="decimal"
+                min={meta.decimals === 0 ? 1 : 0.5}
+                step={meta.decimals === 0 ? 1 : 0.01}
+                placeholder={currency === 'INR' ? 'e.g. 75' : 'Any amount'}
+                value={mode === 'custom' ? customRaw : ''}
+                onChange={(e) => {
+                  setMode('custom')
+                  setCustomRaw(e.target.value)
+                }}
+                onFocus={() => setMode('custom')}
+                className="w-full min-w-0 border-0 bg-transparent px-3 text-body-md text-primary outline-none placeholder:text-secondary"
+              />
             </div>
-            <p id="custom-hint" className="mt-3 text-body-md text-secondary">
-              Type any amount — including less than the presets if that fits your
-              budget.
-            </p>
           </div>
 
-          <div className="mt-8 flex flex-col gap-4 border border-primary/85 bg-surface p-5 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-mono-label uppercase tracking-[0.12em] text-secondary">
-                You&apos;re sending
-              </p>
-              <p className="mt-2 text-headline-lg text-primary tabular-nums">
-                {selectedAmount > 0
-                  ? formatMoney(selectedAmount, currency)
-                  : '—'}
-              </p>
-              {selectedAmount > 0 && currency !== 'INR' ? (
-                <p className="mt-1 text-body-md text-secondary">
-                  ≈ ₹{selectedInrApprox.toLocaleString('en-IN')}
+          <div className="mt-8 border border-primary/85 bg-surface p-5">
+            <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-mono-label uppercase tracking-[0.12em] text-secondary">
+                  You&apos;re sending
+                </p>
+                <p className="mt-2 text-headline-lg text-primary tabular-nums">
+                  {selectedAmount > 0
+                    ? formatMoney(selectedAmount, currency)
+                    : '—'}
+                </p>
+                {selectedAmount > 0 && currency !== 'INR' ? (
+                  <p className="mt-1 text-body-md text-secondary">
+                    ≈ ₹{selectedInr.toLocaleString('en-IN')}
+                  </p>
+                ) : null}
+              </div>
+              {copyMsg ? (
+                <p className="text-mono-label tracking-[0.1em] text-signal" role="status">
+                  {copyMsg}
                 </p>
               ) : null}
             </div>
-
-            <div className="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[12rem]">
-              {pay ? (
-                <a
-                  href={pay.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={[
-                    'brutal-btn brutal-btn-solid w-full',
-                    selectedAmount <= 0 ? 'pointer-events-none opacity-40' : '',
-                  ].join(' ')}
-                  aria-disabled={selectedAmount <= 0}
-                >
-                  {pay.label}
-                </a>
-              ) : (
-                <p className="text-body-md text-secondary">
-                  Add payment links via env (
-                  <code className="text-mono-code text-primary">
-                    VITE_DONATE_*
-                  </code>
-                  ) to enable checkout.
-                </p>
-              )}
-
-              {currency === 'INR' && DONATE_LINKS.upiId ? (
-                <button
-                  type="button"
-                  className="brutal-btn w-full"
-                  onClick={() => void copyUpi()}
-                  disabled={selectedAmount <= 0}
-                >
-                  {copied ? 'Copied UPI details' : 'Copy UPI details'}
-                </button>
-              ) : null}
-            </div>
+            {methodActions()}
           </div>
 
           <p className="mt-6 text-body-md text-secondary">
-            Donations are voluntary and go to {DEVELOPER_NAME} for coffee,
-            hosting, and late-night bug hunts. FaultLine stays free either way.
+            Donations are voluntary. FaultLine stays free either way.
           </p>
         </div>
       </div>
