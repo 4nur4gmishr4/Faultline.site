@@ -2,8 +2,8 @@
 
 Marketing + docs site for **FaultLine** (`4nur4gmishr4.fahh`).
 
-**Branch:** `showcase` on [vscode-FaultLine-Extension](https://github.com/4nur4gmishr4/vscode-FaultLine-Extension)  
-**Intended live URL:** https://4nur4gmishr4.github.io/faultline-showcase/
+**Repo:** [4nur4gmishr4/Faultline.site](https://github.com/4nur4gmishr4/Faultline.site)  
+**Intended live URL:** https://4nur4gmishr4.github.io/Faultline.site/ (or custom domain)
 
 ## Stack
 

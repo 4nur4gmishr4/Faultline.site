@@ -4,7 +4,7 @@
 
 - Never push unless the user explicitly asks.
 - Prefer small local commits after meaningful changes.
-- This work lives on branch **`showcase`** (extension repo remote).
+- Site repo: **https://github.com/4nur4gmishr4/Faultline.site** (`main`).
 
 ## Design
 
