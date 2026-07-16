@@ -58,7 +58,7 @@ export function SiteFooter() {
               Credits
             </Link>
             {' · '}
-            3D laptop by Ksenia Kondrashova (MIT)
+            3D laptop: Ksenia Kondrashova (MIT)
           </span>
         </div>
       </div>
