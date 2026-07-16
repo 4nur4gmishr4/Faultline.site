@@ -1,4 +1,4 @@
-/** Structured doc content — real text from FaultLine docs, not raw markdown files. */
+/** Structured doc content (embedded, no fetch) — real text from FaultLine docs, not raw markdown files. */
 
 export type DocBlock =
   | { type: 'lead'; text: string }
