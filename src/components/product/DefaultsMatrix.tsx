@@ -74,7 +74,7 @@ export function DefaultsMatrix() {
         </p>
       </div>
 
-      <div className="w-full overflow-x-auto border border-white">
+      <div className="w-full overflow-x-auto border border-white/85">
         <table className="w-full min-w-[520px] border-collapse text-left">
           <thead className="brutal-invert">
             <tr>
