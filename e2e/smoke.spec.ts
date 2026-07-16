@@ -1,3 +1,4 @@
+// Playwright smoke suite for showcase
 import { test, expect } from '@playwright/test'
 
 test.describe('FaultLine showcase', () => {
