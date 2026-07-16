@@ -565,9 +565,20 @@ button:not(:disabled),
 
 /* secondary tuned for ink bg contrast */
 
-/* hero typewriter caret — blink; disabled under reduced-motion above */
+/* hero typewriter — fixed box via invisible sizer; caret is zero-flow paint only */
+.typewriter-line {
+  /* inherit display typography from h1; no extra line-height jump */
+  line-height: inherit;
+  letter-spacing: inherit;
+}
+
 .type-caret {
-  height: 0.85em;
+  display: inline-block;
+  width: 0.08em;
+  height: 0.82em;
+  margin-left: 0.04em;
+  vertical-align: -0.05em;
+  background: currentColor;
   animation: type-caret-blink 1s steps(1, end) infinite;
 }
 

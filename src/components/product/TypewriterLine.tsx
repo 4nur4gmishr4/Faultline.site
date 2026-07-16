@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 
-const HERO_LINE = 'Debugger and fault explainer for VS Code.'
+/** No trailing full stop — matches static hero pitch. */
+const HERO_LINE = 'Debugger and fault explainer for VS Code'
 
 const TYPE_MS = 42
 const COOLDOWN_MS = 3000
 
 /**
  * Loops: type full line → hold 3s → reset → type again.
- * Reduced motion: static full text, no cursor.
+ * Invisible full text locks the box; typed layer is absolute (no reflow).
+ * Reduced motion: static full text, no caret.
  */
 export function TypewriterLine({
   text = HERO_LINE,
@@ -47,7 +49,6 @@ export function TypewriterLine({
         schedule(typeNext, TYPE_MS)
         return
       }
-      // full line — cooldown then restart
       schedule(() => {
         if (cancelled) return
         i = 0
@@ -65,20 +66,24 @@ export function TypewriterLine({
     }
   }, [text, reduced])
 
+  if (reduced) {
+    return <span className={className || undefined}>{text}</span>
+  }
+
   return (
-    <span className={['inline grid w-full', className].filter(Boolean).join(' ')}>
-      {/* reserve full line height so typing never reflows the hero */}
-      <span className="invisible col-start-1 row-start-1" aria-hidden>
+    <span
+      className={['typewriter-line relative block w-full', className]
+        .filter(Boolean)
+        .join(' ')}
+    >
+      {/* Sizer: full copy, same wrap as static headline — layout never moves */}
+      <span className="invisible block" aria-hidden>
         {text}
       </span>
-      <span className="col-start-1 row-start-1" aria-hidden={!reduced}>
+      {/* Paint layer: types inside the reserved box only */}
+      <span className="pointer-events-none absolute inset-0 block overflow-hidden" aria-hidden>
         {shown}
-        {!reduced ? (
-          <span
-            className="type-caret ml-[0.06em] inline-block w-[0.55ch] translate-y-[0.05em] bg-primary align-baseline"
-            aria-hidden
-          />
-        ) : null}
+        <span className="type-caret" aria-hidden />
       </span>
     </span>
   )
