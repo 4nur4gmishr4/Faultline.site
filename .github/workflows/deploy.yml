@@ -1,3 +1,4 @@
+# Deploy FaultLine showcase to GitHub Pages
 name: Deploy site
 
 on:
