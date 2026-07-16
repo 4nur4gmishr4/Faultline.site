@@ -60,8 +60,8 @@ export function CommandPalette() {
         </p>
       </div>
 
-      <div className="mx-auto max-w-3xl border border-white/90 bg-surface">
-        <div className="flex items-stretch border-b border-white/90 bg-signal-soft">
+      <div className="mx-auto max-w-3xl border border-primary/85 bg-surface">
+        <div className="flex items-stretch border-b border-primary/85 bg-signal-soft">
           <label className="flex min-h-12 flex-1 items-center">
             <span className="sr-only">Filter commands</span>
             <span className="px-4 text-mono-label text-signal" aria-hidden>
@@ -109,7 +109,7 @@ export function CommandPalette() {
               <li
                 key={cmd.id}
                 className={[
-                  'min-h-14 border-white/90 px-4 py-3.5',
+                  'min-h-14 border-primary/85 px-4 py-3.5',
                   i < items.length - 1 ? 'border-b' : '',
                 ]
                   .filter(Boolean)

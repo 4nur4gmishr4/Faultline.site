@@ -20,7 +20,7 @@ export function DocsIndexPage() {
             key={d.id}
             to={`/docs/${d.id}`}
             className={[
-              'group block border-white p-7 no-underline transition-colors duration-200 hover:bg-primary',
+              'group block border-primary/85 p-7 no-underline transition-colors duration-200 hover:bg-primary',
               i % 2 === 0 ? 'md:border-r' : '',
               i < DOCS.length - 2
                 ? 'border-b'

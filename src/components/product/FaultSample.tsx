@@ -22,7 +22,7 @@ export function FaultSample() {
         </div>
 
         <div className="lg:col-span-8">
-          <div className="panel-fault border-b border-white">
+          <div className="panel-fault border-b border-primary/85">
             <div className="flex items-center justify-between border-b border-fault/40 bg-fault-soft px-4 py-3 md:px-6">
               <span className="text-mono-label tracking-[0.12em] text-fault">
                 FAULTLINE · CAPTURE
