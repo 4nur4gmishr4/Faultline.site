@@ -12,7 +12,7 @@ function linkifyUrls(text: string): ReactNode[] {
           href={part}
           target="_blank"
           rel="noreferrer"
-          className="text-primary underline underline-offset-2 hover:opacity-80"
+          className="text-signal underline underline-offset-2 hover:opacity-80"
         >
           {part}
         </a>
