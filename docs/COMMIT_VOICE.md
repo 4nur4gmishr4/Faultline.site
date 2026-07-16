@@ -6,3 +6,4 @@ Examples:
 - lid 95 no zoom only rotate
 - palette filter clear escape
 - never push without asking
+- soft borders white 85 not pure void
