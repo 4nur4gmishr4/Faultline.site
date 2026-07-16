@@ -26,7 +26,7 @@ export function SiteHeader() {
       <div className="flex h-12 w-full items-stretch">
         <Link
           to="/"
-          className="flex min-h-11 shrink-0 items-center border-r border-white/85 bg-signal px-5 text-mono-label font-semibold tracking-[0.14em] text-on-primary"
+          className="flex min-h-11 shrink-0 items-center border-r border-white/85 bg-signal px-5 text-mono-label font-semibold tracking-[0.16em] text-on-primary"
         >
           FAULTLINE
           <span className="ml-2.5 hidden font-normal tracking-[0.08em] opacity-70 sm:inline">
