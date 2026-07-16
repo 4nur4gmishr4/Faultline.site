@@ -4,3 +4,5 @@ export const SITE_ORIGIN =
   'https://4nur4gmishr4.github.io/faultline-showcase'
 
 export const SITE_NAME = 'FaultLine'
+
+// update when custom domain ships
