@@ -96,7 +96,7 @@ function FitCamera({
 
 /**
  * Port of minimal-three-js-laptop-template (MIT).
- * Lid 95°. Contained fit. Rotate only. Real laptop key / metal colors.
+ * Lid 95°. Contained fit. MIT laptop source credited. Rotate only. Real laptop key / metal colors.
  */
 export function MacLaptop({
   scrollProgress = 1,
