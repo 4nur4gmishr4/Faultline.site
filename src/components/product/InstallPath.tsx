@@ -6,7 +6,7 @@ import { MARKETPLACE_URL, RELEASES_URL } from '../../data/commands'
 export function InstallPath() {
   return (
     <section
-      className="border-b border-white px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="border-b border-white/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
       aria-labelledby="install-path-title"
     >
       <div className="mb-8 max-w-lg">
@@ -23,7 +23,7 @@ export function InstallPath() {
       </div>
 
       <div className="grid grid-cols-1 border border-white md:grid-cols-2">
-        <div className="border-b border-white p-6 md:border-r md:border-b-0 md:p-8">
+        <div className="border-b border-white/85 p-6 md:border-r md:border-b-0 md:p-8">
           <p className="mb-3 text-mono-label tracking-[0.12em] text-signal">01 · Preferred</p>
           <h3 className="text-headline-md mb-3 text-primary">Marketplace</h3>
           <p className="mb-6 text-body-md text-secondary">
