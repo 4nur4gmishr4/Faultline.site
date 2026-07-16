@@ -3,7 +3,7 @@ import { SiteHeader } from './SiteHeader'
 import { SiteFooter } from './SiteFooter'
 
 /**
- * Full-viewport shell: header fixed, main + footer scroll as one document.
+ * Full-viewport shell (header fixed, main scrolls): header fixed, main + footer scroll as one document.
  * Footer only appears after content (end of page), not pinned over the hero.
  */
 export function SiteShell() {
