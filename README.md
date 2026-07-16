@@ -22,10 +22,16 @@ Requires Node ≥ 20.
 
 ## Deploy (GitHub Pages)
 
-1. Repo **Settings → Pages → Source: GitHub Actions**
-2. Push to `main` runs `.github/workflows/deploy.yml`
-3. Build uses `VITE_BASE=/Faultline.site/` (project site path)
-4. Optional custom domain later → set `VITE_BASE=/` and update `SITE_ORIGIN`
+**Live:** https://4nur4gmishr4.github.io/Faultline.site/
+
+### One-time setup (required if deploy fails with 404)
+1. Open https://github.com/4nur4gmishr4/Faultline.site/settings/pages  
+2. **Build and deployment → Source → GitHub Actions**  
+3. Re-run **Actions → Deploy site**
+
+Push to `main` runs `.github/workflows/deploy.yml` with `VITE_BASE=/Faultline.site/`.
+
+The workflow tries to create the Pages site via API if missing; org policies may still require the Settings click above.
 
 ## Design
 

@@ -32,6 +32,11 @@ jobs:
           VITE_BASE: /Faultline.site/
           VITE_SITE_URL: https://4nur4gmishr4.github.io/Faultline.site
         run: npm run build
+      - name: Verify dist output
+        run: |
+          test -f dist/index.html
+          test -d dist/assets
+          ls -la dist | head -40
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -44,5 +49,49 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Ensure GitHub Pages is enabled (Actions source)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          API="https://api.github.com/repos/${{ github.repository }}/pages"
+          AUTH=(-H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
+
+          code=$(curl -sS -o /tmp/pages.json -w "%{http_code}" "${AUTH[@]}" "$API" || true)
+          echo "GET /pages → HTTP $code"
+          cat /tmp/pages.json || true
+
+          if [ "$code" = "404" ]; then
+            echo "Pages not configured — creating site with build_type=workflow…"
+            create_code=$(curl -sS -o /tmp/pages-create.json -w "%{http_code}" \
+              -X POST "${AUTH[@]}" \
+              -H "Content-Type: application/json" \
+              "$API" \
+              -d '{"build_type":"workflow"}' || true)
+            echo "POST /pages → HTTP $create_code"
+            cat /tmp/pages-create.json || true
+            if [ "$create_code" != "201" ] && [ "$create_code" != "409" ]; then
+              echo "::error::Could not enable GitHub Pages (HTTP $create_code)."
+              echo "Open https://github.com/${{ github.repository }}/settings/pages"
+              echo "Set Build and deployment → Source → GitHub Actions, then re-run this workflow."
+              exit 1
+            fi
+          elif [ "$code" != "200" ]; then
+            echo "::error::Unexpected Pages API status $code"
+            exit 1
+          fi
+
+          # Prefer Actions as the build source when API allows updates
+          build_type=$(python3 -c "import json;print(json.load(open('/tmp/pages.json')).get('build_type',''))" 2>/dev/null || true)
+          if [ -n "$build_type" ] && [ "$build_type" != "workflow" ]; then
+            echo "Current build_type=$build_type — switching to workflow…"
+            curl -sS -o /tmp/pages-put.json -w "PUT /pages → %{http_code}\n" \
+              -X PUT "${AUTH[@]}" \
+              -H "Content-Type: application/json" \
+              "$API" \
+              -d '{"build_type":"workflow"}' || true
+            cat /tmp/pages-put.json || true
+          fi
+
       - id: deployment
         uses: actions/deploy-pages@v4
