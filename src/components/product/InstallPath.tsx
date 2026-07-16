@@ -1,7 +1,7 @@
 import { MARKETPLACE_URL, RELEASES_URL } from '../../data/commands'
 
 /**
- * Two-step install path — Marketplace preferred, VSIX fallback.
+ * Two-step install path (Marketplace preferred) — Marketplace preferred, VSIX fallback.
  */
 export function InstallPath() {
   return (
