@@ -8,6 +8,7 @@ import {
   InstallPath,
   SpecBar,
 } from '../components/product'
+import { HERO_LINE, TypewriterLine } from '../components/product/TypewriterLine'
 import { DOCS } from '../content/docs'
 import { MARKETPLACE_URL } from '../data/commands'
 
@@ -27,8 +28,11 @@ export function HomePage() {
               <VscodeIcon size={16} />
               VS Code extension
             </p>
-            <h1 className="text-display-xl mb-7 text-primary">
-              Debugger and fault explainer for VS Code.
+            <h1
+              className="text-display-xl mb-7 text-primary"
+              aria-label={HERO_LINE}
+            >
+              <TypewriterLine text={HERO_LINE} />
             </h1>
             <p className="text-body-lg mb-10 max-w-md text-secondary">
               Understand terminal and task failures first. Optional sounds and
