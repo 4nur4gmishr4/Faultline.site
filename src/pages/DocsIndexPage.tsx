@@ -5,7 +5,7 @@ export function DocsIndexPage() {
   return (
     <div className="w-full px-6 py-14 md:px-12 md:py-20 lg:px-16">
       <div className="mb-12 max-w-xl">
-        <p className="mb-5 text-mono-label uppercase tracking-[0.14em] text-secondary">
+        <p className="mb-5 text-mono-label uppercase tracking-[0.14em] text-signal">
           Reference
         </p>
         <h1 className="text-display-xl mb-5 text-primary">Documentation</h1>
