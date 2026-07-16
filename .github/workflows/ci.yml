@@ -1,3 +1,4 @@
+# CI: typecheck/build + playwright smoke
 name: Showcase CI
 
 on:
