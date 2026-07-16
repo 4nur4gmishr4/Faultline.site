@@ -2,7 +2,7 @@ export function CreditsPage() {
   return (
     <div className="flex w-full flex-col gap-10 px-6 py-14 md:px-12 md:py-20 lg:px-16">
       <section>
-        <p className="mb-5 text-mono-label uppercase tracking-[0.14em] text-secondary">
+        <p className="mb-5 text-mono-label uppercase tracking-[0.14em] text-signal">
           Attribution
         </p>
         <h1 className="text-display-xl mb-4 text-primary">Credits</h1>
