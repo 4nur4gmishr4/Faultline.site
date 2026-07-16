@@ -15,7 +15,7 @@ import { MARKETPLACE_URL } from '../data/commands'
  * Home ownership map (no duplicated copy):
  * hero = pitch only · SpecBar = id/version · Capture = transcript ·
  * Defaults = privacy table · Install = paths · Palette = commands ·
- * Docs strip = titles only (descriptions live on /docs)
+ * Docs strip = titles only · End CTA = action only (no re-pitch)
  */
 export function HomePage() {
   return (
@@ -50,12 +50,12 @@ export function HomePage() {
           </div>
         </div>
 
-        <div className="order-2 relative flex min-h-[min(58dvh,560px)] flex-col md:col-span-7 md:min-h-[calc(100dvh-3rem)]">
+        <div className="order-2 relative flex min-h-[min(52dvh,480px)] flex-col md:col-span-7 md:min-h-[calc(100dvh-3rem)]">
           <LaptopSceneLazy
             scrollLinked
             className="!min-h-full !h-full !border-0"
           />
-          <p className="pointer-events-none absolute bottom-3 left-3 z-10 text-mono-label tracking-[0.1em] text-secondary md:bottom-4 md:left-4">
+          <p className="pointer-events-none absolute bottom-3 left-3 z-10 max-w-[calc(100%-1.5rem)] text-mono-label tracking-[0.1em] text-secondary md:bottom-4 md:left-4">
             Drag to rotate · lid opens 95°
           </p>
         </div>
@@ -76,19 +76,45 @@ export function HomePage() {
             <h2 className="text-headline-lg text-primary">Full reference</h2>
           </div>
           <nav
-            className="flex flex-wrap gap-x-6 gap-y-3"
+            className="flex flex-wrap gap-x-4 gap-y-2"
             aria-label="Documentation links"
           >
             {DOCS.map((d) => (
               <Link
                 key={d.id}
                 to={`/docs/${d.id}`}
-                className="text-mono-label uppercase tracking-[0.1em] text-secondary transition-colors hover:text-signal"
+                className="inline-flex min-h-11 items-center text-mono-label uppercase tracking-[0.1em] text-secondary transition-colors hover:text-signal"
               >
                 {d.title}
               </Link>
             ))}
           </nav>
+        </div>
+      </section>
+
+      {/* Closing install only — no marketing copy (hero owns the pitch) */}
+      <section
+        className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-16 lg:px-16"
+        aria-labelledby="end-cta-title"
+      >
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <h2 id="end-cta-title" className="text-headline-lg text-primary">
+            Install FaultLine
+          </h2>
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a
+              href={MARKETPLACE_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="brutal-btn brutal-btn-solid"
+            >
+              <VscodeIcon size={16} />
+              Install
+            </a>
+            <Link to="/docs" className="brutal-btn">
+              Documentation
+            </Link>
+          </div>
         </div>
       </section>
     </div>

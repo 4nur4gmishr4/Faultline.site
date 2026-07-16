@@ -8,14 +8,14 @@ import { SiteFooter } from './SiteFooter'
  */
 export function SiteShell() {
   return (
-    <div className="flex h-dvh min-h-dvh w-full flex-col bg-background text-on-surface">
+    <div className="flex h-dvh min-h-dvh w-full flex-col overflow-x-hidden bg-background text-on-surface">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
       <SiteHeader />
       <div
         id="main"
-        className="min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden"
+        className="min-h-0 w-full flex-1 overflow-y-auto overflow-x-hidden overscroll-y-contain"
         tabIndex={-1}
         role="main"
       >

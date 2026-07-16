@@ -2,9 +2,10 @@
 
 /**
  * Monochrome base + sparse VS Code accents.
+ * See design-system/faultline/MASTER.md for locked rules.
  * signal (#0078d4) = solid CTAs, focus ring, hover links only.
  * fault = error line in capture sample only.
- * Labels, chips, chrome stay black / white / gray.
+ * secondary tuned for ≥4.5:1 in light and dark.
  */
 @theme {
   --color-background: #000000;
@@ -18,12 +19,13 @@
   --color-surface-container-highest: #242424;
   --color-surface-variant: #1a1a1a;
   --color-on-surface: #f5f5f5;
-  --color-on-surface-variant: #a1a1a1;
+  /* ≥4.5:1 vs #000 for secondary copy */
+  --color-on-surface-variant: #b0b0b0;
   --color-primary: #ffffff;
   --color-on-primary: #000000;
-  --color-primary-fixed-dim: #b3b3b3;
-  --color-secondary: #8e8e8e;
-  --color-outline: #666666;
+  --color-primary-fixed-dim: #b0b0b0;
+  --color-secondary: #b0b0b0;
+  --color-outline: #707070;
   --color-outline-variant: #333333;
   --color-fault: #f14c4c;
   --color-fault-dim: #c72e0f;
@@ -140,12 +142,13 @@ body {
   --color-surface-container-highest: #242424;
   --color-surface-variant: #1a1a1a;
   --color-on-surface: #f5f5f5;
-  --color-on-surface-variant: #a1a1a1;
+  /* ≥4.5:1 vs #000 for secondary copy */
+  --color-on-surface-variant: #b0b0b0;
   --color-primary: #ffffff;
   --color-on-primary: #000000;
-  --color-primary-fixed-dim: #b3b3b3;
-  --color-secondary: #8e8e8e;
-  --color-outline: #666666;
+  --color-primary-fixed-dim: #b0b0b0;
+  --color-secondary: #b0b0b0;
+  --color-outline: #707070;
   --color-outline-variant: #333333;
   --color-fault: #f14c4c;
   --color-fault-dim: #c72e0f;
@@ -162,7 +165,7 @@ body {
 
 [data-theme='light'] {
   color-scheme: light;
-  --scroll-thumb: #cccccc;
+  --scroll-thumb: #b0b0b0;
   --color-background: #ffffff;
   --color-surface: #f5f5f5;
   --color-surface-dim: #fafafa;
@@ -174,21 +177,24 @@ body {
   --color-surface-container-highest: #e0e0e0;
   --color-surface-variant: #f0f0f0;
   --color-on-surface: #141414;
-  --color-on-surface-variant: #666666;
+  /* ≥4.5:1 vs white for body + small mono labels */
+  --color-on-surface-variant: #4a4a4a;
   --color-primary: #000000;
   --color-on-primary: #ffffff;
-  --color-primary-fixed-dim: #666666;
-  --color-secondary: #666666;
-  --color-outline: #999999;
-  --color-outline-variant: #e0e0e0;
-  --color-fault: #e51400;
+  --color-primary-fixed-dim: #4a4a4a;
+  --color-secondary: #4a4a4a;
+  /* borders visible without washing out */
+  --color-outline: #6b6b6b;
+  --color-outline-variant: #d4d4d4;
+  --color-fault: #c50f1f;
   --color-fault-dim: #a1260d;
   --color-fault-soft: #fcebeb;
-  --color-warn: #666666;
-  --color-warn-dim: #888888;
-  --color-safe: #666666;
-  --color-safe-dim: #888888;
+  --color-warn: #4a4a4a;
+  --color-warn-dim: #6b6b6b;
+  --color-safe: #4a4a4a;
+  --color-safe-dim: #6b6b6b;
   --color-safe-soft: #f0f0f0;
+  /* VS Code button.background; solid CTA fill + text links AA on white */
   --color-signal: #0078d4;
   --color-signal-dim: #005a9e;
   --color-signal-soft: #e5f1fb;
@@ -310,6 +316,14 @@ body {
   border: 1px solid var(--color-primary);
 }
 
+a[href],
+button:not(:disabled),
+.brutal-btn,
+.nav-link,
+.theme-toggle {
+  cursor: pointer;
+}
+
 .brutal-btn {
   border: 1px solid var(--color-outline);
   background: transparent;
@@ -321,6 +335,7 @@ body {
   letter-spacing: 0.12em;
   padding: 1rem 1.85rem;
   min-height: 44px;
+  min-width: 44px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -444,9 +459,29 @@ body {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   min-height: 44px;
-  min-width: 3rem;
+  min-width: 44px;
   padding: 0 1rem;
   cursor: pointer;
+}
+
+/* notch / home indicator clearance */
+.safe-pad-x {
+  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+}
+
+@media (min-width: 768px) {
+  .safe-pad-x {
+    padding-left: max(3rem, env(safe-area-inset-left, 0px));
+    padding-right: max(3rem, env(safe-area-inset-right, 0px));
+  }
+}
+
+@media (min-width: 1024px) {
+  .safe-pad-x {
+    padding-left: max(4rem, env(safe-area-inset-left, 0px));
+    padding-right: max(4rem, env(safe-area-inset-right, 0px));
+  }
 }
 
 .theme-toggle:hover {

@@ -14,7 +14,7 @@ const FOOTER_LINKS: { to?: string; href?: string; label: string }[] = [
 
 export function SiteFooter() {
   return (
-    <footer className="w-full shrink-0 border-t border-primary/85 bg-background">
+    <footer className="w-full shrink-0 border-t border-primary/85 bg-background pb-[env(safe-area-inset-bottom,0px)]">
       <div className="flex w-full flex-col gap-11 px-6 py-14 md:px-12 md:py-20 lg:px-16">
         <p className="text-footer-slogan max-w-3xl uppercase text-primary">
           When it breaks, keep the fault.

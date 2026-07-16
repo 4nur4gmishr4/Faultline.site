@@ -25,11 +25,11 @@ export function SiteHeader() {
   }, [open])
 
   return (
-    <header className="z-50 w-full shrink-0 border-b border-primary/85 bg-background/92 backdrop-blur-xl">
-      <div className="flex h-12 w-full items-stretch">
+    <header className="z-50 w-full shrink-0 border-b border-primary/85 bg-background/92 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
+      <div className="flex h-12 w-full min-h-12 items-stretch">
         <Link
           to="/"
-          className="flex min-h-11 shrink-0 items-center gap-2 border-r border-primary/85 px-5 text-mono-label font-semibold tracking-[0.16em] text-primary"
+          className="flex min-h-12 shrink-0 items-center gap-2 border-r border-primary/85 px-4 text-mono-label font-semibold tracking-[0.16em] text-primary sm:px-5"
         >
           <VscodeIcon size={16} />
           FAULTLINE
@@ -43,7 +43,7 @@ export function SiteHeader() {
               end={item.end}
               className={({ isActive }) =>
                 [
-                  'nav-link flex h-full min-h-11 items-center border-r border-primary/85 px-5 text-mono-label uppercase tracking-[0.12em]',
+                  'nav-link flex h-full min-h-12 items-center border-r border-primary/85 px-5 text-mono-label uppercase tracking-[0.12em]',
                   isActive
                     ? 'bg-primary text-on-primary'
                     : 'text-primary hover:bg-primary hover:text-on-primary',
@@ -69,7 +69,7 @@ export function SiteHeader() {
           href={MARKETPLACE_URL}
           target="_blank"
           rel="noreferrer"
-          className="ml-auto hidden h-full min-h-11 items-center gap-2 border-l border-primary/85 bg-signal px-6 text-mono-label font-semibold tracking-[0.14em] text-white transition-opacity duration-200 hover:opacity-90 sm:flex sm:ml-0"
+          className="ml-auto hidden h-full min-h-12 items-center gap-2 border-l border-primary/85 bg-signal px-5 text-mono-label font-semibold tracking-[0.14em] text-white transition-opacity duration-200 hover:opacity-90 sm:flex sm:ml-0 sm:px-6"
         >
           <VscodeIcon alt size={15} />
           Install
@@ -77,7 +77,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="ml-auto flex h-full min-h-11 min-w-12 items-center justify-center border-l border-primary/85 px-5 text-mono-label tracking-[0.12em] text-primary md:hidden sm:ml-0"
+          className="ml-auto flex h-full min-h-12 min-w-12 items-center justify-center border-l border-primary/85 px-5 text-mono-label tracking-[0.12em] text-primary md:hidden sm:ml-0"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-nav"

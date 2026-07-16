@@ -89,4 +89,37 @@ test.describe('FaultLine showcase', () => {
     await expect(nav.getByRole('link', { name: 'Docs' })).toBeVisible()
     await expect(nav.getByRole('link', { name: 'Security' })).toBeVisible()
   })
+
+  test('end install CTA without re-pitch body', async ({ page }) => {
+    await page.goto('/')
+    const end = page.getByRole('heading', { name: 'Install FaultLine' })
+    await expect(end).toBeVisible()
+    const section = page.locator('section').filter({ has: end })
+    await expect(section.getByRole('link', { name: /Install/i }).first()).toBeVisible()
+    await expect(section.getByRole('link', { name: 'Documentation' })).toBeVisible()
+  })
+
+  test('mobile 375: menu opens and no horizontal overflow', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 })
+    await page.goto('/')
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+    const overflow = await page.evaluate(() => {
+      const el = document.documentElement
+      return el.scrollWidth > el.clientWidth + 1
+    })
+    expect(overflow).toBe(false)
+    await page.getByRole('button', { name: 'Open menu' }).click()
+    await expect(page.locator('#mobile-nav').getByRole('link', { name: 'Install' })).toBeVisible()
+    await page.getByRole('button', { name: 'Close menu' }).click()
+  })
+
+  test('theme toggle switches data-theme', async ({ page }) => {
+    await page.goto('/')
+    const root = page.locator('html')
+    const before = await root.getAttribute('data-theme')
+    await page.getByRole('button', { name: /Switch to light mode|Switch to dark mode/i }).click()
+    const after = await root.getAttribute('data-theme')
+    expect(after).toBeTruthy()
+    expect(after).not.toBe(before)
+  })
 })
