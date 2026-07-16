@@ -13,7 +13,7 @@ const CORE_IDS = new Set([
 ])
 
 /**
- * VS Code–style palette frame with local filter.
+ * VS Code–style palette frame with local filter (Escape clears).
  */
 export function CommandPalette() {
   const [q, setQ] = useState('')
