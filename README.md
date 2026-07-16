@@ -48,3 +48,7 @@ gh repo create faultline-showcase --public --source=. --remote=origin --push
 
 Embedded under `src/content/docs/` (structured pages, not runtime markdown fetch).  
 Re-sync manually when the extension ships a release that changes user-facing docs.
+
+## Commit style
+
+Small local commits after every change. Never push unless asked.
