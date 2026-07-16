@@ -7,7 +7,7 @@ import { VscodeIcon } from '../brand/VscodeIcon'
 export function SpecBar() {
   return (
     <div
-      className="flex w-full flex-wrap items-center gap-x-5 gap-y-3 border-b border-primary/85 px-6 py-3 md:px-12 lg:px-16"
+      className="flex w-full min-w-0 flex-wrap items-center gap-x-4 gap-y-2 border-b border-primary/85 px-5 py-2.5 md:gap-x-5 md:px-12 md:py-3 lg:px-16"
       role="presentation"
     >
       <span className="mono-chip">v{VERSION}</span>

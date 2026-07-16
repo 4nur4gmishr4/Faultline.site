@@ -32,10 +32,10 @@ const ROWS: { feature: string; defaultValue: string; why: string }[] = [
 export function DefaultsMatrix() {
   return (
     <section
-      className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="section-pad w-full min-w-0 max-w-full border-b border-primary/85"
       aria-labelledby="defaults-title"
     >
-      <div className="mb-8 max-w-lg">
+      <div className="mb-6 max-w-lg md:mb-8">
         <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
           Defaults
         </p>
@@ -44,8 +44,8 @@ export function DefaultsMatrix() {
         </h2>
       </div>
 
-      <div className="w-full overflow-x-auto border border-primary/85">
-        <table className="w-full min-w-[480px] border-collapse text-left">
+      <div className="w-full max-w-full min-w-0 overflow-x-auto overscroll-x-contain border border-primary/85 [-webkit-overflow-scrolling:touch]">
+        <table className="w-full min-w-[32rem] border-collapse text-left">
           <thead className="brutal-invert">
             <tr>
               <th

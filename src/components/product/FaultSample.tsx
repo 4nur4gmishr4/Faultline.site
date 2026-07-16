@@ -8,8 +8,8 @@ export function FaultSample() {
       className="border-b border-primary/85"
       aria-labelledby="fault-sample-title"
     >
-      <div className="grid w-full grid-cols-1 lg:grid-cols-12">
-        <div className="border-b border-primary/85 px-6 py-12 md:px-12 lg:col-span-4 lg:border-r lg:border-b-0 lg:px-16 lg:py-16">
+      <div className="grid w-full min-w-0 grid-cols-1 lg:grid-cols-12">
+        <div className="border-b border-primary/85 px-5 py-10 md:px-12 md:py-12 lg:col-span-4 lg:border-r lg:border-b-0 lg:px-16 lg:py-16">
           <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
             Capture
           </p>
@@ -21,7 +21,7 @@ export function FaultSample() {
           </p>
         </div>
 
-        <div className="lg:col-span-8">
+        <div className="min-w-0 lg:col-span-8">
           <div className="border-b border-primary/85 bg-surface">
             <div className="flex items-center justify-between border-b border-primary/85 px-4 py-3 md:px-6">
               <span className="text-mono-label tracking-[0.12em] text-primary">
@@ -31,7 +31,7 @@ export function FaultSample() {
                 task
               </span>
             </div>
-            <pre className="overflow-x-auto p-4 text-mono-code leading-relaxed md:p-6">
+            <pre className="overflow-x-auto p-4 text-mono-code leading-relaxed [-webkit-overflow-scrolling:touch] md:p-6">
               <code>
                 <span className="text-secondary">$ npm run build</span>
                 {'\n\n'}

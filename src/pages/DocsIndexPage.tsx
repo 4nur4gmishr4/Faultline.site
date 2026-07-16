@@ -3,8 +3,8 @@ import { DOCS } from '../content/docs'
 
 export function DocsIndexPage() {
   return (
-    <div className="w-full px-6 py-14 md:px-12 md:py-20 lg:px-16">
-      <div className="mb-12 max-w-xl">
+    <div className="section-pad w-full min-w-0">
+      <div className="mb-8 max-w-xl md:mb-12">
         <p className="mb-5 text-mono-label uppercase tracking-[0.14em] text-secondary">
           Reference
         </p>
@@ -20,7 +20,7 @@ export function DocsIndexPage() {
             key={d.id}
             to={`/docs/${d.id}`}
             className={[
-              'group block border-primary/85 p-7 no-underline transition-colors duration-200 hover:bg-primary',
+              'group block border-primary/85 p-5 no-underline transition-colors duration-200 hover:bg-primary md:p-7',
               i % 2 === 0 ? 'md:border-r' : '',
               i < DOCS.length - 2
                 ? 'border-b'

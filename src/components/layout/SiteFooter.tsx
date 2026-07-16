@@ -19,12 +19,12 @@ const FOOTER_LINKS: { to?: string; href?: string; label: string }[] = [
 export function SiteFooter() {
   return (
     <footer className="w-full max-w-full shrink-0 border-t border-primary/85 bg-background pb-[env(safe-area-inset-bottom,0px)]">
-      <div className="flex w-full min-w-0 flex-col gap-11 px-6 py-14 md:px-12 md:py-20 lg:px-16">
+      <div className="section-pad flex w-full min-w-0 flex-col gap-8 md:gap-11">
         <p className="text-footer-slogan max-w-3xl uppercase text-primary">
           When it breaks, keep the fault.
         </p>
         <nav
-          className="flex max-w-full flex-wrap gap-x-9 gap-y-4"
+          className="flex max-w-full flex-wrap gap-x-6 gap-y-2 md:gap-x-9 md:gap-y-4"
           aria-label="Footer"
         >
           {FOOTER_LINKS.map((item) =>
@@ -49,7 +49,7 @@ export function SiteFooter() {
             )
           )}
         </nav>
-        <div className="flex flex-col gap-3 border-t border-primary/15 pt-9 text-mono-code text-secondary md:flex-row md:items-start md:justify-between">
+        <div className="flex flex-col gap-3 border-t border-primary/15 pt-6 text-mono-code text-secondary md:flex-row md:items-start md:justify-between md:pt-9">
           <span>Anurag Mishra · MIT</span>
         </div>
       </div>

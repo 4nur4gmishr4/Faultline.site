@@ -44,10 +44,10 @@ export function CommandPalette() {
 
   return (
     <section
-      className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="section-pad w-full min-w-0 max-w-full border-b border-primary/85"
       aria-labelledby="palette-title"
     >
-      <div className="mb-8 max-w-lg">
+      <div className="mb-6 max-w-lg md:mb-8">
         <p className="mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
           Command palette
         </p>
@@ -60,7 +60,7 @@ export function CommandPalette() {
         </p>
       </div>
 
-      <div className="mx-auto max-w-3xl border border-primary/85 bg-surface">
+      <div className="mx-auto w-full max-w-3xl border border-primary/85 bg-surface">
         <div className="flex items-stretch border-b border-primary/85">
           <label className="flex min-h-12 flex-1 items-center">
             <span className="sr-only">Filter commands</span>
@@ -95,7 +95,7 @@ export function CommandPalette() {
         </div>
 
         <ul
-          className="max-h-[22rem] overflow-y-auto"
+          className="max-h-[16rem] overflow-y-auto md:max-h-[22rem]"
           role="listbox"
           aria-label="Commands"
           aria-live="polite"

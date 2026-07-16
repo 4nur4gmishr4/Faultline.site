@@ -43,7 +43,7 @@ class LaptopErrorBoundary extends Component<
 
 function FallbackFrame({ message }: { message: string }) {
   return (
-    <div className="flex h-full min-h-[280px] w-full flex-col items-center justify-center bg-background p-8 text-center">
+    <div className="flex h-full min-h-[inherit] w-full flex-col items-center justify-center bg-background p-4 text-center md:p-8">
       <p className="text-body-md text-secondary">{message}</p>
       <p className="mt-3 max-w-sm text-body-md text-primary-fixed-dim">
         The rest of the site works without WebGL.

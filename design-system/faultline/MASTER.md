@@ -89,6 +89,15 @@ Future `/ui-ux-pro-max` work must follow this file.
 8. End Install CTA
 9. Footer
 
+## Mobile (phone-first)
+
+- Laptop stage: `min(32dvh, 240px)`, hard cap **260px** (class `.hero-laptop` / `.laptop-stage`)
+- Section pad: `.section-pad` (mobile 2.5rem / 1.25rem → desktop larger)
+- CTAs full-width under `sm`
+- Use `dvh` not `vh`; `viewport-fit=cover` + safe-area insets
+- Doc nav: horizontal scroll on small screens
+- Touch targets ≥44px; no horizontal page overflow
+
 ## Anti-patterns
 
 - Repeating version/id outside SpecBar

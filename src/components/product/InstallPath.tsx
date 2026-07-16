@@ -7,10 +7,10 @@ import { VscodeIcon } from '../brand/VscodeIcon'
 export function InstallPath() {
   return (
     <section
-      className="border-b border-primary/85 px-6 py-14 md:px-12 md:py-20 lg:px-16"
+      className="section-pad w-full min-w-0 max-w-full border-b border-primary/85"
       aria-labelledby="install-path-title"
     >
-      <div className="mb-8 max-w-lg">
+      <div className="mb-6 max-w-lg md:mb-8">
         <p className="icon-inline mb-4 text-mono-label uppercase tracking-[0.14em] text-secondary">
           <VscodeIcon size={15} />
           Install
@@ -23,8 +23,8 @@ export function InstallPath() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 border border-primary/85 md:grid-cols-2">
-        <div className="border-b border-primary/85 p-6 md:border-r md:border-b-0 md:p-8">
+      <div className="grid w-full grid-cols-1 border border-primary/85 md:grid-cols-2">
+        <div className="border-b border-primary/85 p-5 md:border-r md:border-b-0 md:p-8">
           <p className="mb-3 text-mono-label tracking-[0.12em] text-secondary">
             01 · Marketplace
           </p>
@@ -35,13 +35,13 @@ export function InstallPath() {
             href={MARKETPLACE_URL}
             target="_blank"
             rel="noreferrer"
-            className="brutal-btn brutal-btn-solid"
+            className="brutal-btn brutal-btn-solid w-full sm:w-auto"
           >
             <VscodeIcon size={16} />
             Open Marketplace
           </a>
         </div>
-        <div className="p-6 md:p-8">
+        <div className="p-5 md:p-8">
           <p className="mb-3 text-mono-label tracking-[0.12em] text-secondary">
             02 · VSIX
           </p>
@@ -53,7 +53,7 @@ export function InstallPath() {
             href={RELEASES_URL}
             target="_blank"
             rel="noreferrer"
-            className="brutal-btn"
+            className="brutal-btn w-full sm:w-auto"
           >
             <VscodeIcon size={16} />
             Releases

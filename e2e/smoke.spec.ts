@@ -123,6 +123,16 @@ test.describe('FaultLine showcase', () => {
     await page.getByRole('button', { name: 'Close menu' }).click()
   })
 
+  test('mobile 375: laptop stage stays short', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 })
+    await page.goto('/')
+    const box = await page.locator('.hero-laptop').boundingBox()
+    expect(box).toBeTruthy()
+    // phone stage capped ~260px — must not dominate 812 viewport
+    expect(box!.height).toBeLessThanOrEqual(280)
+    expect(box!.height).toBeGreaterThanOrEqual(180)
+  })
+
   test('theme toggle switches data-theme', async ({ page }) => {
     await page.goto('/')
     const root = page.locator('html')

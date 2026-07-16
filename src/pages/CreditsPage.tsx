@@ -1,6 +1,6 @@
 export function CreditsPage() {
   return (
-    <div className="flex w-full flex-col gap-10 px-6 py-14 md:px-12 md:py-20 lg:px-16">
+    <div className="section-pad flex w-full min-w-0 flex-col gap-8 md:gap-10">
       <section>
         <p className="mb-5 text-mono-label uppercase tracking-[0.14em] text-secondary">
           Attribution
