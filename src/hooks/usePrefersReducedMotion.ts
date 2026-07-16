@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+/** Prefer fewer loops when user asks. */
 export function usePrefersReducedMotion(): boolean {
   const [reduced, setReduced] = useState(false)
 
