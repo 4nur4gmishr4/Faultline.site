@@ -53,7 +53,7 @@ function ToneChip({
 }
 
 /**
- * Privacy defaults as a dense matrix with semantic chips.
+ * Privacy defaults as a dense matrix (chips not cards) with semantic chips.
  */
 export function DefaultsMatrix() {
   return (
