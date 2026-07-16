@@ -388,20 +388,6 @@ export function MacLaptop({
           >
             <planeGeometry args={[SCREEN_SIZE[0], SCREEN_SIZE[1]]} />
           </mesh>
-          {/*
-            MacBook Pro wordmark on the lower display bezel face.
-            Glass sits recessed (~z=-0.11); frame face is ~z=-0.04 — label must
-            sit on/near the frame so it isn’t buried behind black bezel geometry.
-            Screen bottom y≈0.5; lower bezel band centers near y≈0.22.
-          */}
-          <mesh
-            position={[0, 0.22, -0.032]}
-            rotation={[Math.PI, 0, 0]}
-            material={materials.bezelLabel}
-            renderOrder={3}
-          >
-            <planeGeometry args={[13.5, 1.25]} />
-          </mesh>
         </group>
 
         <group ref={bottomGroup}>

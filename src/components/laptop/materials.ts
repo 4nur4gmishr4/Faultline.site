@@ -12,8 +12,6 @@ export interface LaptopMaterials {
   screen: THREE.MeshBasicMaterial
   /** GLB model keycaps — solid black chiclet color, no overlay plane. */
   keyboard: THREE.MeshStandardMaterial
-  /** “MacBook Pro” mark under the display glass (original product lettering). */
-  bezelLabel: THREE.MeshBasicMaterial
   screenImageTexture: THREE.Texture
   screenCameraTexture: THREE.VideoTexture
   videoEl: HTMLVideoElement
@@ -93,49 +91,6 @@ export function createFaultLineScreenTexture(): THREE.CanvasTexture {
   return tex
 }
 
-/**
- * Product wordmark as on a real MacBook Pro — thin, centered on the lower bezel.
- * Transparent canvas so only the letters sit on the black frame.
- */
-export function createMacBookProBezelTexture(): THREE.CanvasTexture {
-  const canvas = document.createElement('canvas')
-  canvas.width = 2048
-  canvas.height = 256
-  const ctx = canvas.getContext('2d')!
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-  const text = 'MacBook Pro'
-  // Medium-light silver so it reads on a black bezel at product scale
-  ctx.fillStyle = '#c8c8cc'
-  ctx.font =
-    '400 96px "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif'
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'middle'
-
-  const spacing = 10
-  const widths = [...text].map((ch) => ctx.measureText(ch).width)
-  const total =
-    widths.reduce((a, b) => a + b, 0) + spacing * (text.length - 1)
-  let x = (canvas.width - total) / 2
-  const y = canvas.height / 2 + 4
-  for (let i = 0; i < text.length; i++) {
-    ctx.fillText(text[i], x, y)
-    x += widths[i] + spacing
-  }
-
-  const tex = new THREE.CanvasTexture(canvas)
-  // Match screen-plane UV orientation (BackSide + Math.PI X flip)
-  tex.flipY = false
-  tex.colorSpace = THREE.SRGBColorSpace
-  tex.anisotropy = 16
-  tex.generateMipmaps = true
-  tex.minFilter = THREE.LinearMipmapLinearFilter
-  tex.magFilter = THREE.LinearFilter
-  tex.needsUpdate = true
-  return tex
-}
-
 export function createLaptopMaterials(videoEl: HTMLVideoElement): LaptopMaterials {
   const screenImageTexture = createFaultLineScreenTexture()
   screenImageTexture.wrapS = THREE.ClampToEdgeWrapping
@@ -143,8 +98,6 @@ export function createLaptopMaterials(videoEl: HTMLVideoElement): LaptopMaterial
 
   const screenCameraTexture = new THREE.VideoTexture(videoEl)
   screenCameraTexture.flipY = false
-
-  const bezelLabelMap = createMacBookProBezelTexture()
 
   const screen = new THREE.MeshBasicMaterial({
     map: screenImageTexture,
@@ -180,18 +133,6 @@ export function createLaptopMaterials(videoEl: HTMLVideoElement): LaptopMaterial
       color: 0x0a0a0a,
       roughness: 0.88,
       metalness: 0.04,
-    }),
-    bezelLabel: new THREE.MeshBasicMaterial({
-      map: bezelLabelMap,
-      transparent: true,
-      opacity: 1,
-      side: THREE.DoubleSide,
-      depthTest: true,
-      depthWrite: false,
-      // Lift off the black screen-frame to avoid z-fighting
-      polygonOffset: true,
-      polygonOffsetFactor: -2,
-      polygonOffsetUnits: -2,
     }),
     screenImageTexture,
     screenCameraTexture,
