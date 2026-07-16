@@ -142,4 +142,16 @@ test.describe('FaultLine showcase', () => {
     expect(after).toBeTruthy()
     expect(after).not.toBe(before)
   })
+
+  test('donate page has free pitch and student presets', async ({ page }) => {
+    await page.goto('/donate')
+    await expect(
+      page.getByRole('heading', { name: /Free forever/i })
+    ).toBeVisible()
+    await expect(page.getByText(/completely free/i).first()).toBeVisible()
+    // INR presets render (geo may flip currency; force INR)
+    await page.getByRole('button', { name: 'INR', exact: true }).click()
+    await expect(page.getByRole('option', { name: /₹50|₹\s*50/i }).first()).toBeVisible()
+    await expect(page.getByLabel(/Custom amount/i)).toBeVisible()
+  })
 })

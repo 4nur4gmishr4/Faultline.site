@@ -117,6 +117,9 @@ export function HomePage() {
             <Link to="/docs" className="brutal-btn w-full sm:w-auto">
               Documentation
             </Link>
+            <Link to="/donate" className="brutal-btn w-full sm:w-auto">
+              Donate
+            </Link>
           </div>
         </div>
       </section>

@@ -57,9 +57,16 @@ Future `/ui-ux-pro-max` work must follow this file.
 ## Navigation
 
 - Primary (header only): **Home · Docs** (+ Install CTA + sun/moon theme)
-- Secondary (footer only): Security · Changelog · Credits · Marketplace · GitHub · License
+- Secondary (footer only): Security · Changelog · **Donate** · Credits · Marketplace · GitHub · License
 - No lid-angle / 95° marketing copy on the site surface
 - Mobile drawer mirrors primary only (+ Install)
+
+## Donate page (`/donate`)
+
+- Copy: free forever; optional support; student floor
+- Presets anchored **INR ₹50 / 100 / 200 / 500 / 1000** + custom
+- Geo (ipwho.is) + FX (frankfurter) convert presets; INR/USD/(local) toggle
+- Payment via env: `VITE_DONATE_GITHUB_SPONSORS`, `VITE_DONATE_PAYPAL_ME`, `VITE_DONATE_UPI`, `VITE_DONATE_BMC`
 
 ## Interaction / a11y
 

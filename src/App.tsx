@@ -4,6 +4,7 @@ import { HomePage } from './pages/HomePage'
 import { DocsIndexPage } from './pages/DocsIndexPage'
 import { DocPage } from './pages/DocPage'
 import { CreditsPage } from './pages/CreditsPage'
+import { DonatePage } from './pages/DonatePage'
 import { NotFoundPage } from './pages/NotFoundPage'
 
 /**
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="license" element={<Navigate to="/docs/license" replace />} />
           <Route path="press" element={<Navigate to="/docs/readme" replace />} />
           <Route path="credits" element={<CreditsPage />} />
+          <Route path="donate" element={<DonatePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

@@ -10,6 +10,7 @@ const FOOTER_LINKS: { to?: string; href?: string; label: string }[] = [
   { to: '/docs', label: 'Docs' },
   { to: '/docs/security', label: 'Security' },
   { to: '/docs/changelog', label: 'Changelog' },
+  { to: '/donate', label: 'Donate' },
   { to: '/credits', label: 'Credits' },
   { href: MARKETPLACE_URL, label: 'Marketplace' },
   { href: GITHUB_URL, label: 'GitHub' },
